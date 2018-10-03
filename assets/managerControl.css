@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css?family=Varela+Round");
+body {
+  margin: 0;
+  background-color: lightskyblue;
+}
+
+button {
+    position: relative;
+    width: 10vw;
+    height: 3vh;
+    left: 8vw;
+    margin-top: 2vh;
+    transform: translate(-50%, -80%);
+    font-family: 'Varela Round', sans-serif;
+    font-size: 1vw;
+    letter-spacing: 0.1em;
+    color: #e8e8e8;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    background: linear-gradient(45deg, #d350db, teal, #d350db);
+    background-size: 400% 400%;
+    box-shadow: 1vw 1vw 0 lightcoral;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+button:hover {
+    animation: gradient 10s ease infinite;
+    font-size: 1vw;
+    box-shadow: 0.2vw 0.2vw 0 lightcoral;
+}
+
+@keyframes gradient {
+    50% {
+    background-position: 100% 0;
+  }
+}
+
+/* ********** */
+
+#contaianer {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    overflow: hidden;
+    font-family: 'Lato', sans-serif;
+    }
+  #wrapper {
+    overflow: hidden;
+    position: absolute;
+    width: 1700px;
+    height: 1000px;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  #wrapper div {
+    position: absolute;
+    background-position: center center;
+    background-size: cover;
+    z-index: -10;
+    
+  }
+  .p1 {
+    width: 1976px;
+    height: 1383px;
+    z-index: 6;
+    background-image: url('./pictures/S6WCriT.jpg');
+    left: -89px;
+    top: -191px;
+  }
+  .p2 {
+    width: 977px;
+    height: 904px;
+    z-index: 8;
+    background-image: url('./pictures/aeffA4C.png');
+    left: -83px;
+    top: 280px;
+  }
+  .p3 {
+    width: 1082px;
+    height: 729px;
+    z-index: 10;
+    background-image: url('./pictures/QAyjA6B.png');
+    left: 718px;
+    top: 300px;
+}
+
+#managerInfo {
+    position: absolute;
+    color: rgb(193, 224, 252);
+    top: 3vh;
+    left: 11rem;
+    background-color: rgba(245, 245, 245, 0.212);
+    z-index: 20;
+}  
+
+#plantStatus {
+    position: absolute;
+    color: rgb(91, 135, 173);
+    top: 3vh;
+    right: 11rem;
+    background-color: rgba(245, 245, 245, 0.212);
+    z-index: 20;
+}
+
+.statusBoxmessage {
+    margin-left: 3vw;
+}
+
+#employeeList {
+    position: absolute;
+    color: rgb(193, 224, 252);
+    bottom: 3vh;
+    right: 11rem;
+    background-color: rgba(245, 245, 245, 0.212);
+    z-index: 20;
+    height: 45vh;
+}
+
+table {
+    margin-left:1.5vw;
+}
