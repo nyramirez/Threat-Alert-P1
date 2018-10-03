@@ -6,28 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    <script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.2.4/email.min.js"></script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init("user_PP4R5lIWEg3DgLHEEEKEz");
+        })();
+    </script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="card mb-3">
-            <form>
-                <div class="form-group row">
-                    <label for="username">Username</label>
-                    <input class="form-control" id="username" type="text" placeholder="username">
-                </div>
-                <br>
-                <div class="form-group row">
-                    <label for="password">Password</label>
-                    <input class="form-control" id="password" type="text" placeholder="password">
-                </div>
-                <br>
-                <button id="login" type="submit">Login</button>
-            </form>
-        </div>
-    </div>
     <script type="text/javascript" src="./assets/script.js"></script>
 </body>

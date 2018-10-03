@@ -1,4 +1,4 @@
-// Initialize Firebase
+/* // Initialize Firebase
 var config = {
     apiKey: "AIzaSyBSVPTQBNPl3m1xaE1X6nFbAV8TM04Een8",
     authDomain: "testdataflag.firebaseapp.com",
@@ -63,3 +63,63 @@ $(document).ready(function () {
     console.log("I am here toooo");
 });
 
+ */
+/* 
+Email = {
+    Send : function (to,from,subject,body,apikey)
+       {
+           if (apikey == undefined)
+           {
+               apikey = Email.apikey;
+           }
+           var nocache= Math.floor((Math.random() * 1000000) + 1);
+           var strUrl = "http://directtomx.azurewebsites.net/mx.asmx/Send?";
+           strUrl += "apikey=" + apikey;
+           strUrl += "&from=" + from;
+           strUrl += "&to=" + to;
+           strUrl += "&subject=" + encodeURIComponent(subject);
+           strUrl += "&body=" + encodeURIComponent(body);
+           strUrl += "&cachebuster=" + nocache;
+           Email.addScript(strUrl);
+       },
+       apikey : "",
+       addScript : function(src){
+               var s = document.createElement('img');
+               s.setAttribute('style', 'opacity: 0.0; filter: alpha(opacity=0);');
+               s.setAttribute('src', src);
+               document.body.appendChild(s);
+       }
+   };
+
+   $(document).ready(function () {
+       console.log("i came to check");
+    Email.apikey = "83c652af-4d45-44a1-a6c5-4c211c342f6f";
+    Email.Send("agaur05@gmail.com","agaur05@gmail.com","Sent from JS API","Worked!");
+}); */
+
+
+/* Email.send("agaur05@gmail.com",
+    "agaur05@gmail.com",
+    "This is a subject",
+    "this is the body",
+    {token: " 244089d3-bcc8-447f-97d9-99635b53553b"}
+); */
+
+var templateVariables={
+    from_name: "cam",
+    to_name: "Akanksha",
+    message_html: `
+        <h1>Hi Akanksha</h1>
+        <p>The emailjs SDK and API both work just fine. For free.</p>
+    `,
+    recipient:"agaur05@gmail.com"
+};
+
+emailjs.send('gmail', 'template_9Z51Po6f', templateVariables)
+    .then(function (res) {
+        console.log('success');
+        
+    },function (err) {
+        console.log('nope',err);
+        
+    });
