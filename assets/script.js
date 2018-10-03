@@ -111,16 +111,15 @@ var templateVariables={
     message_html: `
         <h1>Hi Akanksha</h1>
         <p>The emailjs SDK and API both work just fine. For free.</p>
+        <a href="https://www.google.com/">Click here for survey.</a>
     `,
     recipient:"agaur05@gmail.com"
 };
 
-emailjs.send('gmail', 'template_9Z51Po6f', templateVariables)
+emailjs.send('gmail', 'template_Dz2E8H0d', templateVariables)
     .then(function (res) {
         console.log('success');
         
     },function (err) {
         console.log('nope',err);
-        
     });
-    
