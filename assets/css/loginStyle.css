@@ -15,7 +15,7 @@ body {
   padding: 20px;
 }
 .page {
-  background-image: url(./pictures/green-forest-trees.jpg);
+  background-image: url(../pictures/green-forest-trees.jpg);
   background-size: 100%;
   display: flex;
   flex-direction: column;
