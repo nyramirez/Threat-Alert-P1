@@ -36,7 +36,7 @@ button:hover {
   }
 }
 
-/* ********** */
+/* ***** Background Format ***** */
 
 #contaianer {
     position: absolute;
@@ -93,7 +93,7 @@ button:hover {
     left: 718px;
     top: 300px;
 }
-
+/* ********* Manager Format ************** */
 #managerInfo {
     position: absolute;
     color: rgb(193, 224, 252);
@@ -128,4 +128,44 @@ button:hover {
 
 table {
     margin-left:1.5vw;
+    margin-top: 1.5vh;
 }
+
+/* *********Employee Format********** */
+
+#employeeInfo {
+    position: absolute;
+    color: rgb(193, 224, 252);
+    top: 3vh;
+    left: 11rem;
+    background-color: rgba(245, 245, 245, 0.212);
+    z-index: 20;
+}
+
+#eeImg {
+    z-index:20;
+    margin-top: 1.5vh;
+    margin-left: 2.0vw;
+}
+
+.eeInfo {
+    margin-top: 3vh;
+    left: 1vh;
+}
+
+#eeName, #eeNumber {
+    color: #000;
+    margin-top: 3vh;
+    margin-left: 4vw;
+}
+
+#psicoData {
+    position: absolute;
+    color: black;
+    bottom: 3vh;
+    right: 11rem;
+    background-color: rgba(245, 245, 245, 0.5);
+    z-index: 20;
+    height: 45vh;
+}
+
