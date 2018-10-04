@@ -105,6 +105,7 @@ Email = {
     {token: " 244089d3-bcc8-447f-97d9-99635b53553b"}
 ); */
 
+/* The actual code template to be used for sending email */
 var templateVariables={
     from_name: "cam",
     to_name: "Akanksha",
