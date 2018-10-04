@@ -11,25 +11,35 @@ firebase.initializeApp(config);
 const firestore = firebase.firestore();
 
 // the next two lines stop a firebase error message
-const settings = { 
+const settings = {
     timestampsInSnapshots: true
 };
 firestore.settings(settings);
 
-const empRef = firestore.collection('employees');  // after the settings call
+const empRef = firestore.collection('employees'); // after the settings call
 var oThisRef = empRef.doc('Roger');
 var sImageLink;
-//var sTstImageLink = 'gs://rgb-rps.appspot.com/Roger.jpg';
 
-//$('#imageDiv').append(`<img src='${sTstImageLink}' alt='Tst not there'>`);
+// test routine - just extracts an image and puts it on the screen
 
-oThisRef.get({}).then (oDoc => {
-    if (oDoc.exists) {
-        sImageLink = oDoc.data().imageLink;
-        console.log ("IL: " + sImageLink);
-        $('#imageDiv').append(`<img src='${sImageLink}' alt='not there'>`);
-//        $('#imageDiv').append(`<img src='./Roger2.jpg' alt='missed it'>`);
-    }
-})
+//showImage (1);
 
-//$("#doImage").attr ({src: sImageLink});
+//function showImage(iEmployeeId) {
+//    console.log ("Emp ID: " + iEmployeeId.toString().padStart(3, '0'));
+//    var oThisRef = empRef.doc(iEmployeeId.toString().padStart(3, '0'));
+
+    oThisRef.get({}).then(oDoc => {
+        if (oDoc.exists) {
+            sImageLink = oDoc.data().imageLink;
+            console.log("IL: " + sImageLink);
+            $('#imageDiv').append(`<img src='${sImageLink}' alt='not there'>`);
+            console.log("IL2: " + sImageLink);
+            //        $('#imageDiv').append(`<img src='./Roger2.jpg' alt='missed it'>`);
+        }
+    });
+//}
+
+//    function setEmotions(employee, emotionsObject) {
+
+
+        //$("#doImage").attr ({src: sImageLink});
