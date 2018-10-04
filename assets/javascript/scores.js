@@ -45,7 +45,8 @@ $(document).ready(function () {
         totalScore: 0,
         title: "Employee Questionnaire",
         instructions: "Over the last 2 weeks, how often have you been bothered by any of the following problems?",
-        depStatus:""
+        depStatus:"",
+        sumScoreArray:[],
 
     }
 
@@ -99,7 +100,6 @@ $(document).ready(function () {
         }
     }
 
-    var sumScoreArray = [];
     $(document.body).on("click", "#chosen", function () {
        // $(this).attr("span:after");
         var chosen = $(this);
@@ -108,8 +108,8 @@ $(document).ready(function () {
                 if (chosen.text() === questionnaire.a[j] && parseInt(chosen.attr("data")) === i) {
                     questionnaire["n" + i].score = j;
                     console.log(questionnaire["n" + i].score);
-                    sumScoreArray.push(questionnaire["n" + i].score);
-                    console.log(sumScoreArray);
+                    questionnaire.sumScoreArray.push(questionnaire["n" + i].score);
+                    console.log(questionnaire.sumScoreArray);
                 }
             }
         }
@@ -118,9 +118,9 @@ $(document).ready(function () {
     
     //function to calculate PHQ-9 test
     function getScore() {
-        console.log(sumScoreArray);
-        for (var k = 0; k < sumScoreArray.length; k++) {
-            questionnaire.totalScore += sumScoreArray[k];
+        console.log(questionnaire.sumScoreArray);
+        for (var k = 0; k < questionnaire.sumScoreArray.length; k++) {
+            questionnaire.totalScore += questionnaire.sumScoreArray[k];
         }
         console.log(questionnaire.totalScore);
         return questionnaire.totalScore;
@@ -137,7 +137,6 @@ $(document).ready(function () {
     $("#submitB").on("click", function (event) {
 
         event.preventDefault();
-
         $("#submitB").addClass("fa fa-check-square-o");
         buttonDisplay();
         getScore();
