@@ -1,3 +1,32 @@
+.jumbotron{
+    height:100%;
+    margin: 0 auto;
+}
+
+h2{
+    font-family: 'Merriweather', serif;
+    text-align: center;
+    margin:0;
+}
+
+h6{
+    font-family: 'Lora', serif;
+    margin:2 auto;
+    font-weight: 200;
+}
+
+#question{
+    font-family: 'Lora', serif;
+  
+}
+
+span{
+    font-family: 'Lora', serif;
+    color:grey;
+}
+
+
+
 [type="radio"]:not(:checked) + span, [type="radio"]:checked + span {
     position: relative;
     padding-left: 35px;

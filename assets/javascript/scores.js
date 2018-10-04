@@ -40,18 +40,16 @@ $(document).ready(function () {
             q: "If you checked off any problems, how difficult have those problems made it for you to do your work, take care of things at home, or get along with other people?",
             score: 0,
         },
-
         a: ["Not at all", "Several Days", "More Than Half the Days", "Nearly Every Day"],
         totalScore: 0,
         title: "Employee Questionnaire",
         instructions: "Over the last 2 weeks, how often have you been bothered by any of the following problems?",
-        depStatus:"",
-        sumScoreArray:[],
-
+        depStatus: "",
+        sumScoreArray: [],
     }
 
     var count = 0;
-    $("#container_1").html("<h2>" + questionnaire.title +"</h2><br><h4>"+questionnaire.instructions+"</h4>");
+    $("#container_1").html("<h2>" + questionnaire.title + "</h2><br><h6>" + questionnaire.instructions + "</h6>");
 
     //function to display questionnaire questions and asnwers
     function questionsAnswersDisplay(questionnaire) {
@@ -101,7 +99,7 @@ $(document).ready(function () {
     }
 
     $(document.body).on("click", "#chosen", function () {
-       // $(this).attr("span:after");
+        // $(this).attr("span:after");
         var chosen = $(this);
         for (var i = 1; i < 11; i++) {
             for (var j = 0; j < 4; j++) {
@@ -115,14 +113,11 @@ $(document).ready(function () {
         }
     })
 
-    
     //function to calculate PHQ-9 test
     function getScore() {
-        console.log(questionnaire.sumScoreArray);
         for (var k = 0; k < questionnaire.sumScoreArray.length; k++) {
             questionnaire.totalScore += questionnaire.sumScoreArray[k];
         }
-        console.log(questionnaire.totalScore);
         return questionnaire.totalScore;
     }
 
@@ -133,9 +128,7 @@ $(document).ready(function () {
     function buttonDisplay() {
         setTimeout(removeClassb, 4000);
     }
-
     $("#submitB").on("click", function (event) {
-
         event.preventDefault();
         $("#submitB").addClass("fa fa-check-square-o");
         buttonDisplay();
