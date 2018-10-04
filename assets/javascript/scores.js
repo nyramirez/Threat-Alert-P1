@@ -2,52 +2,71 @@ $(document).ready(function () {
     var questionnaire = {
         n1: {
             q: "Little interest or pleasure in doing things",
-            a: ["Not at all", "Several Days", "More Than Half the Days", "Nearly Every Day"],
+            score: 0,
         },
         n2: {
             q: "Feeling down, depressed or hopeless",
+            score: 0,
         },
         n3: {
             q: "Trouble falling asleep, stayng asleep, or sleeping too much",
+            score: 0,
         },
         n4: {
             q: "Feeling tired or having little energy",
+            score: 0,
         },
         n5: {
             q: "Poor appetite or overeating",
+            score: 0,
         },
         n6: {
             q: "Feeling bad about yourself - or that you're a failure r hav let yourself or your family down",
+            score: 0,
         },
         n7: {
             q: "Trouble concetrating on things, usch as reading the newspaper or watching television",
+            score: 0,
         },
         n8: {
             q: "Moving or speaking so slowly that other people could have noticed. Or, the opposite -being so fidgety or restless that you have been moving around a lot more than usual",
+            score: 0,
         },
         n9: {
             q: "Thoughts that you would be better off dead or of hurting yourself in some way",
+            score: 0,
         },
         n10: {
             q: "If you checked off any problems, how difficult have those problems made it for you to do your work, take care of things at home, or get along with other people?",
-        }
+            score: 0,
+        },
+
+        a: ["Not at all", "Several Days", "More Than Half the Days", "Nearly Every Day"],
+        totalScore: 0,
+        title: "Employee Questionnaire",
+        instructions: "Over the last 2 weeks, how often have you been bothered by any of the following problems?",
+        depStatus:""
+
     }
 
-    var title = $('<h2>Employee Questionnaire</h2>').appendTo("#container_1");
+    var count = 0;
+    $("#container_1").html("<h2>" + questionnaire.title +"</h2><br><h4>"+questionnaire.instructions+"</h4>");
+
     //function to display questionnaire questions and asnwers
     function questionsAnswersDisplay(questionnaire) {
         for (var i = 1; i < 11; i++) {
+            count++;
             var question = $('<div class="py-2"><p></p></div>');
             question.attr("id", "question");
             question.text(questionnaire["n" + i].q).appendTo("#form");
 
             for (var j = 0; j < 4; j++) {
                 var p = $("<p>");
-                var input = $("<input>").attr("type", "radio").attr("name", "options");;
-                var span = $("<span>").attr("id", "chosen");
+                var input = $("<input>").attr("type", "radio").attr("name", "options").attr("id", questionnaire.a[j]).addClass("with-gap");
+                var span = $("<span>").attr("id", "chosen").attr("data", count);
                 var input2 = input.add(span);
-                span.text(questionnaire["n" + 1].a[j]);
-                var label = $("<label>").attr("for", questionnaire["n" + 1].a[j]);
+                span.text(questionnaire.a[j]);
+                var label = $("<label>").attr("for", questionnaire.a[j]);
                 var answers = label.append(input2);
                 p.append(answers);
                 $("#form").append(p);
@@ -58,48 +77,55 @@ $(document).ready(function () {
 
     //phq9Scores(questionsAnswersDisplay);
 
-    //function to calculate PHQ-9 test
-    function phq9testResults(scoreSum) {
-
-        var depStatus = "";
-        switch (scoreSum) {
-            case scoreSum <= 4:
-                depStatus = "Minimal Depression";
+    function phq9testResults() {
+        switch (true) {
+            case questionnaire.totalScore <= 4:
+                questionnaire.depStatus = "Minimal Depression";
                 break;
-            case scoreSum > 4 && scoreSum < 10:
-                depStatus = "Minimal Depression";
+            case questionnaire.totalScore > 4 && questionnaire.totalScore < 10:
+                questionnaire.depStatus = "Minimal Depression";
                 break;
-            case scoreSum > 10 && scoreSum < 15:
-                depStatus = "Mild Depression";
+            case questionnaire.totalScore > 10 && questionnaire.totalScore < 15:
+                questionnaire.depStatus = "Mild Depression";
                 break;
-            case scoreSum > 15 && scoreSum < 20:
-                depStatus = "Moderate Depression";
+            case questionnaire.totalScore > 15 && questionnaire.totalScore < 20:
+                questionnaire.depStatus = "Moderate Depression";
                 break;
-            case scoreSum > 20 && scoreSum < 28:
-                depStatus = "Severe Depression";
+            case questionnaire.totalScore > 20 && questionnaire.totalScore < 28:
+                questionnaire.depStatus = "Severe Depression";
                 break;
             default:
-                depStatus = "Employee has not completed PHQ-9 assesment.";
+                questionnaire.depStatus = "Employee has not completed PHQ-9 assesment.";
         }
     }
 
+    var sumScoreArray = [];
     $(document.body).on("click", "#chosen", function () {
-        var sumScoreArray = [];
+       // $(this).attr("span:after");
         var chosen = $(this);
-        console.log(chosen);
-        for (var j = 0; j < 4; j++) {
-            if (chosen.text() === questionnaire["n" + 1].a[j]) {
-                var score = [j];
-                sumScoreArray.push(score);
+        for (var i = 1; i < 11; i++) {
+            for (var j = 0; j < 4; j++) {
+                if (chosen.text() === questionnaire.a[j] && parseInt(chosen.attr("data")) === i) {
+                    questionnaire["n" + i].score = j;
+                    console.log(questionnaire["n" + i].score);
+                    sumScoreArray.push(questionnaire["n" + i].score);
+                    console.log(sumScoreArray);
+                }
             }
         }
-        var scoreSum = 0;
-        for (var i = 0; i < sumScoreArray.length; i++) {
-            scoreSum += someArray[i];
-        }
-
-        return scoreSum
     })
+
+    
+    //function to calculate PHQ-9 test
+    function getScore() {
+        console.log(sumScoreArray);
+        for (var k = 0; k < sumScoreArray.length; k++) {
+            questionnaire.totalScore += sumScoreArray[k];
+        }
+        console.log(questionnaire.totalScore);
+        return questionnaire.totalScore;
+    }
+
     //click submit button
     function removeClassb() {
         $("#submitB").removeClass("fa fa-check-square-o");
@@ -114,10 +140,13 @@ $(document).ready(function () {
 
         $("#submitB").addClass("fa fa-check-square-o");
         buttonDisplay();
+        getScore();
+        phq9testResults();
     });
 
     questionsAnswersDisplay(questionnaire);
 });
+
 
 //PHQ-9 Depression Test
 //Scoring{}
