@@ -24,7 +24,7 @@ $(document).ready(function () {
         questions: "Moving or speaking so slowly that other people could have noticed. Or, the opposite -being so fidgety or restless that you have been moving around a lot more than usual",
         answers: ["Not at all", "Several Days", "More Than Half the Days", "Nearly Every Day"],
     }, {
-        quetions: "Thoughts that you would be better off dead or of hurting yourself in some way",
+        questions: "Thoughts that you would be better off dead or of hurting yourself in some way",
         answers: ["Not at all", "Several Days", "More Than Half the Days", "Nearly Every Day"],
     }, {
         questions: "If you checked off any problems, how difficult have those problems made it for you to do your work, take care of things at home, or get along with other people?",
@@ -52,7 +52,7 @@ $(document).ready(function () {
             for (var j = 0; j < questionnaire[i].answers.length; j++) {
                 var p = $("<p>");
                 var input = $("<input>").attr("type", "radio").attr("name", game.count).addClass("with-gap").attr("id", questionnaire[i].answers[j]);
-                var span = $("<span>").attr("id", "chosen").attr("data", game.count);
+                var span = $("<span>").addClass("chosen").attr("data", game.count);
                 span.text(questionnaire[i].answers[j]);
                 var label = $("<label>").attr("for", questionnaire[i].answers[j]);
                 p.append(label.append(input.add(span)));
@@ -61,7 +61,7 @@ $(document).ready(function () {
         }
         return questionnaire;
     }
-  
+
 
     //questionnaire results
     function phq9testResults() {
@@ -88,7 +88,7 @@ $(document).ready(function () {
         console.log(game.depStatus);
     }
 
-    $(document.body).on("click", '#chosen', function () {
+    $(document.body).on("click", '.chosen', function () {
         var chosen = $(this);
         console.log(this);
         for (var i = 0; i < questionnaire.length; i++) {
