@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <p>
+        <h1>Hey Team!Let's get started.....</h1>
+    </p>
+</body>
+<script>
+    var queryURL = "https://api-us.faceplusplus.com/facepp/v3/detect";
+    var API_KEY= "cKYAUp9G8wVG1XId1bmDMSGFD5wxU6tZ";
+    var API_SECRET ="0CSTJZCXhE-gSZD_EWl8vDsCRsR1Nlny";
+    var imageURL = "https://cdn.newsapi.com.au/image/v1/0e7562d17cf11b49e4ef17d9fe07f8a3";
+    $.ajax({
+        url: queryURL,
+        data: {
+            api_key: API_KEY,
+            api_secret: API_SECRET,
+            image_url: imageURL,
+            return_attributes: "emotion"
+        },
+        method: "POST"
+    }).then(function(response){
+        console.log(response);
+    })
+
+</script>
+
+</html>
