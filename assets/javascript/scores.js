@@ -40,7 +40,7 @@ $(document).ready(function () {
         count: 0,
     }
 
-    $("#container_1").html("<h2>" + game.title + "</h2><br><h6>" + game.instructions + "</h6>");
+    $("#container_1").html(`<h2>${game.title}</h2><br><h6>${game.instructions}</h6>`);
     //function to display questionnaire questions and asnwers
     function questionsAnswersDisplay(questionnaire) {
         for (var i = 0; i < questionnaire.length; i++) {
@@ -55,17 +55,15 @@ $(document).ready(function () {
                 var span = $("<span>").attr("id", "chosen").attr("data", game.count);
                 span.text(questionnaire[i].answers[j]);
                 var label = $("<label>").attr("for", questionnaire[i].answers[j]);
-                var answers = label.append(input.add(span));
-                p.append(answers);
+                p.append(label.append(input.add(span)));
                 $("#form").append(p);
             }
         }
         return questionnaire;
     }
-    // displayAnswers();
+  
 
-    //phq9Scores(questionsAnswersDisplay);
-
+    //questionnaire results
     function phq9testResults() {
         switch (true) {
             case game.totalScore <= 4:
@@ -86,7 +84,7 @@ $(document).ready(function () {
             default:
                 game.depStatus = "Employee has not completed PHQ-9 assesment.";
         }
-        game.depStatus = $("<script>" + game.depStatus + "</script>");
+        game.depStatus = $(`<script>${game.depStatus}</script>`);
         console.log(game.depStatus);
     }
 
