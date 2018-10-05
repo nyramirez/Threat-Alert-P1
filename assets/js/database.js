@@ -1,13 +1,5 @@
 // Roger's functions - for now just calls and comments
 
-//console.log("Test");
-/*
-var firebase = require('firebase');
-const admin = require('firebase-admin');
-*/
-//var storage = require('google-cloud/storage');
-//const storage = require('firebase-storage');
-
 var config = {
   ///  credential: admin.credential.applicationDefault(),
   apiKey: "AIzaSyCsDh3ra7faSCJycuwelMipu-6biTdqFMM",
@@ -19,7 +11,6 @@ var config = {
 };
 firebase.initializeApp(config);
 
-//admin.initializeApp(config);
 var fbStorage = firebase.storage();
 var fbRef = fbStorage.ref();
 var RogerImageRef = fbRef.child('Roger.jpg');
@@ -101,10 +92,12 @@ aoCompany[3] = new Employee("Nestor", "Ramirez", "M", false, "");
 
 const empsRef = firestore.collection('employees');
 
+addAllEmployees();
+
 // walk through the employees, adding them
 function addAllEmployees() {
   for (var i = 0; i < aoCompany.length; i++) {
-    addEmployee(i, aoCompany[i]);
+    //    addEmployee(i, aoCompany[i]);
     if (aoCompany[i].sImageFile != "") {
       addImage(i, aoCompany[i].sImageFile);
     }
@@ -159,10 +152,12 @@ function addImage(iEmployee, sFileName) {
   file.name = sFullFileName;
 
   // Upload file
-  //  BUCKET.upload(sFullFileName)
-  RogerImageRef.put(file).then(function (snapshot) {
+  var ImageRef = fbRef.child(sFileName);
+  
+  ImageRef.put(file).then(function (snapshot) {
     console.log('Uploaded a file!');
   });
+  //  BUCKET.upload(sFullFileName)
   // bucket.upload(sFullFileName)
   //     .then(() => {
   //       // Put the link into Firestore
@@ -291,9 +286,9 @@ async function listEmployees(iManagerID) {
   let oDoc = await (query.get());
   if (oDoc.docs.length > 0) {
     for (var i = 0; i < oDoc.docs.length; i++) {
-      aiEmp.push (oDoc.docs[i].id);
+      aiEmp.push(oDoc.docs[i].id);
     }
   }
-  console.log ("Employees: ", + aiEmp);
+  console.log("Employees: ", +aiEmp);
   return (aiEmp);
 }
