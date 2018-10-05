@@ -105,7 +105,7 @@ function addEmployee(iEmpNum, oEmployeeStats) {
   // employee info (name, id, manager, ...)
   empsRef.doc(iEmpNum).update({
     firstName: oEmployeeStats.sFirstName,
-    lastNamee: oEmployeeStats.sLastName;
+    lastNamee: oEmployeeStats.sLastName
   });
 }
 
