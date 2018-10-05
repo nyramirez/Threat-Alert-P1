@@ -63,13 +63,14 @@ var storageRef = fbStorage.bucket_;
 //console.log('Firebase: ' + firebase.auth());
 
 class Employee {
-  constructor(sFirstName, sLastName, sGender, bIsManager, sImageFile) {
+  constructor(sFirstName, sLastName, sGender, bIsManager, sImageFile, sImageSize) {
     this.sFirstName = sFirstName;
     this.sLastName = sLastName;
     this.sGender = sGender;
     this.bIsManager = bIsManager;
     this.oEmotions = [{}]; // of type Emotions
     this.sImageFile = sImageFile;
+    this.sImageSize = sImageSize;
     this.sImageLink = "";
   }
 }
@@ -85,14 +86,14 @@ class Emotions {
 
 const EMOTIONS_MAX = 10; // the number in the array
 
-aoCompany[0] = new Employee("Roger", "Byford", "M", false, "Roger.jpg");
-aoCompany[1] = new Employee("Akanksha", "Kapoor", "F", true, "Akanksha.jpg");
-aoCompany[2] = new Employee("Aime", "Urquieta", "F", false, "");
-aoCompany[3] = new Employee("Nestor", "Ramirez", "M", false, "");
+aoCompany[0] = new Employee("Roger", "Byford", "M", false, "Roger.jpg", 6846);
+aoCompany[1] = new Employee("Akanksha", "Kapoor", "F", true, "Akanksha.jpg", 7919);
+aoCompany[2] = new Employee("Aime", "Urquieta", "F", false, "", 0);
+aoCompany[3] = new Employee("Nestor", "Ramirez", "M", false, "", 0);
 
 const empsRef = firestore.collection('employees');
 
-addAllEmployees();
+//addAllEmployees();
 
 // walk through the employees, adding them
 function addAllEmployees() {
@@ -113,8 +114,6 @@ var srcFileName = 'Roger.jpg';
 
 function showImages() {
   bucket(bucket.name)
-    //    storage.bucket(BUCKET.name)
-    //  BUCKET(BUCKET.name)
     .file(srcFileName)
     .download(options)
     .then(() => {
@@ -131,70 +130,74 @@ function addEmployee(iEmpNum, oEmployeeStats) {
   empsRef.doc(iEmpNum.toString().padStart(3, '0')).set({
     firstName: oEmployeeStats.sFirstName,
     lastName: oEmployeeStats.sLastName,
-    gender: oEmployeeStats.sGender
+    gender: oEmployeeStats.sGender,
+    isMamager: oEmployeeStats.bIsManager,
+    email: oEmployeeStats.sEmail,
+    password: oEmployeeStats.sPassword,
+    sImageLink: oEmployeeStats.sImageLink
   });
 }
 
-/*
-function getBucket() {
-  var request = gapi.client.storage.buckets.get({
-    'bucket': BUCKET
-  });
-  executeRequest(request, 'getBucket');
+var files = [];
+
+function handleFileSelect(evt) {
+  files = evt.target.files; // FileList object
+  for (var i = 0; i < files.length; i++) {
+    addImage(files[i]);
+  }
+  //    getImageLinks();
 }
-*/
+
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
 // Puts the image pointed to by the file name into storage
 // for future use in identifying somebody.  And stores the image
 // URL as part of the employee record.
-function addImage(iEmployee, sFileName) {
-  var sFullFileName = "../pictures/" + sFileName;
-  var file = new File([], sFullFileName);
-  file.name = sFullFileName;
+function addImage(oFile) {
+  var sShortName = oFile.name;
+  var sFullFileName = "../pictures/" + oFile.name;
+  oFile.name = sFullFileName;
+  var ImageRef = fbRef.child(oFile.name);
 
-  // Upload file
-  var ImageRef = fbRef.child(sFileName);
-  
-  ImageRef.put(file).then(function (snapshot) {
+  ImageRef.put(oFile).then(function (snapshot) {
     console.log('Uploaded a file!');
   });
-  //  BUCKET.upload(sFullFileName)
-  // bucket.upload(sFullFileName)
-  //     .then(() => {
-  //       // Put the link into Firestore
-  // //      BUCKET.file(sFileName.getSignedUrl({
-  //       bucket.file(sFileName.getSignedUrl({
-  //           action: 'read',
-  //           expires: '03-09-2491'
-  //         })
-  //         .then((results) => {
-  //           let url = results[0];
-  //           empsRef.doc(iEmployee).update({
-  //             imageLink: url
-  //           });
-  //         })
-  //         .catch(err => {
-  //           console.log("Error in gSU: " + err);
-  //         }));
-  //     });
+  ImageRef.getDownloadURL().then(function (url) {
+    for (var iEmp = 0; iEmp < aoCompany.length; iEmp++) {
+      if (aoCompany[iEmp].sImageFile === sShortName) {
+        let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
+        oThisEmp.update({
+          //        oThisEmp.get().then(function (oDoc) {
+          //          oDoc.update({
+          sImageLink: url
+        });
+        //        });
+        break;
+      }
+    }
+  });
 }
 
-function getImages() {
+//getImages();
+
+async function getImages() {
   // gets the URLS for all the images from storage, so we can pass them to
   // face++ for comparison with the current camera picture.
-  // This will return an array of Employee objects with the
-  // employee id and the image URL, so we can get the employee
-  // id from the comparison.
-  var aoEmpFetched = [{}];
+  // This will return an array of image links for the image URLs,
+  // so we can get the employee id from the comparison.  The array is indexed
+  // by employee ID.
+  var asImageLinks = [];
 
-  for (var i = 0; i < aoCompany.length; i++) {
-    empsRef.get({}).then(oDoc => {
-      if (oDoc.exists) {
-        aoEmpFetched[i].sImageLink = oDoc.data().imageLink;
-        aoEmpFetched[i].iEmployee = oDoc.data().iEmployee;
-      }
-    });
+  let oDoc = await (empsRef.get());
+  if (oDoc.docs.length > 0) {
+    for (var iEmp = 0; iEmp < oDoc.docs.length; iEmp++) {
+      let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
+      let oEmp = await (oThisEmp.get());
+      asImageLinks[iEmp] = oEmp.data().sImageLink;
+      console.log(asImageLinks[iEmp]);
+    }
   }
-  return (aoEmpFetched);
+  return (asImageLinks);
 }
 
 function setEmotions(iEmployee, oEmotions) {
@@ -202,7 +205,7 @@ function setEmotions(iEmployee, oEmotions) {
   // This will put each emotion's "score" into an
   // array (discarding the oldest if there are n stored
   // already).
-  let oThisEmp = empsRef.doc(iEmployee);
+  let oThisEmp = (iEmployee);
   oThisEmp.get({}).then(oDoc => {
     if (oDoc.exists) {
       let iNumEmotions = oDoc.oEmotions.length;
