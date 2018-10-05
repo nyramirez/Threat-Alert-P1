@@ -61,7 +61,7 @@ firestore.settings(settings);
 //const storage = new Storage();
 
 //var bucket = admin.storage().bucket();
-//console.log ("BN: " + bucket.name);
+//console.log (" " + bucket.name);
 
 //var BUCKET = "rgb-rps.appspot.com";
 //var storageRef11 = firebase.storage().ref();
@@ -254,16 +254,16 @@ function compareEmotions(iEmployee, oEmotions) {
   return (oDeltatEmotions);
 }
 
-testIsManager();
+//testIsManager();
 
 function testIsManager() {
-  isManager("akapoor@gmail.com", "abc123").then (function (iMgr) {
-  if (iMgr > 0) {
-    console.log("Success: ", iMgr);
-  } else {
-    console.log("Failure");
-  }
-});
+  isManager("akapoor@gmail.com", "abc123").then(function (iMgr) {
+    if (iMgr > 0) {
+      console.log("Success: ", iMgr);
+    } else {
+      console.log("Failure");
+    }
+  });
 }
 
 async function isManager(sEmail, sPassword) {
@@ -276,21 +276,24 @@ async function isManager(sEmail, sPassword) {
   return (-1);
 }
 
-function listEmployees(managerID) {
-  // returns a list of the manager's employees' IDs
+//testListEmployees ();
+
+function testListEmployees() {
+  listEmployees(1).then(function (aoEmp) {
+    console.log(aoEmp);
+  });
 }
 
-//    empsRef.get().then(function (oDoc) {
-//    console.log(oDoc.size + " employees");
-//    for (var j = 0; j < oDoc.size; j++) {
-
-// const thisEmpRef = empsRef.doc(oDoc.docs[j].id);
-// thisEmpRef.get().then(function (oDocEmp) {
-//   console.log("Pwd: " + Object.keys(oDocEmp.data()));
-//   if (oDocEmp.data().password === sPassword &&
-//     oDocEmp.data().email === sEmail &&
-//     oDocEmp.data().isManager === true) {
-//     iThisId = parseInt(oDocEmp.id);
-//     return (iThisId);
-//   }
-// });
+async function listEmployees(iManagerID) {
+  // returns a list of the manager's employees' IDs
+  aiEmp = [];
+  var query = empsRef.where('managerID', '==', iManagerID);
+  let oDoc = await (query.get());
+  if (oDoc.docs.length > 0) {
+    for (var i = 0; i < oDoc.docs.length; i++) {
+      aiEmp.push (oDoc.docs[i].id);
+    }
+  }
+  console.log ("Employees: ", + aiEmp);
+  return (aiEmp);
+}
