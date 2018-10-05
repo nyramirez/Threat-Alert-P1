@@ -27,19 +27,27 @@ var sImageLink;
 //function showImage(iEmployeeId) {
 //    console.log ("Emp ID: " + iEmployeeId.toString().padStart(3, '0'));
 //    var oThisRef = empRef.doc(iEmployeeId.toString().padStart(3, '0'));
+var getOptions = {
+    source: 'server'
+}
+oThisRef.get(getOptions)
+    .then(oDoc => {
+            if (oDoc.exists) {
+                sImageLink = oDoc.data().imageLink;
+                console.log("IL: " + sImageLink);
+                $('#imageDiv').append(`<img src='${sImageLink}' alt='not there'>`);
+                console.log("IL2: " + sImageLink);
+                //        $('#imageDiv').append(`<img src='./Roger2.jpg' alt='missed it'>`);
+            }
+        });
+        
+        // .then () {
+        //     $('#imageDiv').append(`<img src='${sImageLink}' alt='not there'>`);
 
-    oThisRef.get({}).then(oDoc => {
-        if (oDoc.exists) {
-            sImageLink = oDoc.data().imageLink;
-            console.log("IL: " + sImageLink);
-            $('#imageDiv').append(`<img src='${sImageLink}' alt='not there'>`);
-            console.log("IL2: " + sImageLink);
-            //        $('#imageDiv').append(`<img src='./Roger2.jpg' alt='missed it'>`);
-        }
-    });
-//}
+        // };
+        //}
 
-//    function setEmotions(employee, emotionsObject) {
+        //    function setEmotions(employee, emotionsObject) {
 
 
         //$("#doImage").attr ({src: sImageLink});
