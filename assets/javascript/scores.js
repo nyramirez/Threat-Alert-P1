@@ -51,10 +51,10 @@ $(document).ready(function () {
 
             for (var j = 0; j < questionnaire[i].answers.length; j++) {
                 var p = $("<p>");
-                var input = $("<input>").attr("type", "radio").attr("name", game.count).addClass("with-gap").attr("id", questionnaire[i].answers[j]);
+                var input = $("<input>").attr("type", "radio").attr("name", game.count).addClass("with-gap").attr("id", questionnaire[i].answers[j]+game.count);
                 var span = $("<span>").addClass("chosen").attr("data", game.count);
                 span.text(questionnaire[i].answers[j]);
-                var label = $("<label>").attr("for", questionnaire[i].answers[j]);
+                var label = $("<label>").attr("for", questionnaire[i].answers[j]+game.count);
                 p.append(label.append(input.add(span)));
                 $("#form").append(p);
             }
