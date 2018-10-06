@@ -73,7 +73,7 @@ function addAllEmployees() {
 
 // var srcFileName = 'Roger.jpg';
 
-showImages ();
+//showImages ();
 
 function showImages() {
   getImages().then(function (asImageLinks) {
@@ -98,16 +98,7 @@ function addEmployee(iEmpNum, oEmployeeStats) {
   // employee info (name, id, manager, ...)
   empsRef.doc(iEmpNum.toString().padStart(3, '0')).set({
     firstName: oEmployeeStats.sFirstName,
-    lastName: oEmployeeStats.sLastName,
-    gender: oEmployeeStats.sGender,
-    isMamager: oEmployeeStats.bIsManager,
-    email: oEmployeeStats.sEmail,
-    password: oEmployeeStats.sPassword,
-    sImageLink: oEmployeeStats.sImageLink,
-    sDepression: "",
-    aiAnger: [5],
-    aiFear: [5],
-    aiSad: [5]
+    lastNamee: oEmployeeStats.sLastName
   });
 }
 
@@ -256,18 +247,31 @@ function compareEmotions(iEmployee, oEmotions) {
 //testIsManager();
 
 function testIsManager() {
-  isManager("agaur05@gmail.com", "abc123").then(function (iMgr) {
+  event.preventDefault();
+  var email= $("#email").val().trim();
+  var password= $("#password").val().trim();
+  console.log(empsRef);
+  isManager(email, password).then(function (iMgr) {
+    console.log(iMgr);
     if (iMgr > 0) {
-      console.log("Success: ", iMgr);
+      console.log("Success");
     } else {
       console.log("Failure");
+      if(email ===""|| password===""){
+      $("#displayMessage").attr("class", "error");
+      $("#displayMessage").html("Incorrect email/password");
+      }else{
+        $("#displayMessage").attr("class", "error");
+        $("#displayMessage").html("Invalid Login");
+      }
     }
   });
 }
 
-async function isManager(sEmail, sPassword) {
+
+async function isManager(email,password) {
   // returns employee ID if sPassword and sEmail match and the person is designated as a manager.  Else -1
-  var query = empsRef.where('isManager', '==', true).where('password', '==', sPassword).where('email', '==', sEmail);
+  var query = empsRef.where('isManager', '==', true).where('password', '==', password).where('email', '==', email);
   let oDoc = await (query.get());
   if (oDoc.docs.length > 0) {
     return (parseInt(oDoc.docs[0].id));
