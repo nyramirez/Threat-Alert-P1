@@ -1,0 +1,57 @@
+body {
+    z-index:0;
+    background-image: url(../pictures/Stratocumulus_Clouds_-_Pacific_Ocean.jpg);
+    background-position: center center;
+    background-size: cover;
+}
+
+#pageHead {
+    top: 2vh;
+    height: 13vh;
+}
+
+#custLogo {
+    width: 10vw;
+    height: auto;
+    float: right;
+}
+
+#ownLogo {
+    margin-top: 1.5vh;
+    width: 23vw;
+    height: auto;
+}
+#contentPage {
+    background-color: rgba(245, 245, 245, 0.50);
+    margin-top: 5vh;
+    width: 80vh;
+}
+
+#instruction {
+    position: relative;
+    font-size: .9rem;
+    margin-left: 20vh;
+}
+
+#pictureID {
+    height: 45vh;
+}
+
+#eeInfo {
+    background-color: rgba(245, 245, 245, 0.7);
+    bottom: 1vh;
+    height: 20vh;
+    overflow: scroll;
+}
+
+.info {
+    margin-top:1vh;
+    color: black;
+    font-size: 1.4rem;
+}
+
+#video {
+    z-index:10;
+    border-color: black;
+    border-width: 1px;
+}
