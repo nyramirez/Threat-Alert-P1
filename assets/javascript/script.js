@@ -107,7 +107,7 @@ Email = {
 
 /* The actual code template to be used for sending email */
 var templateVariables={
-    from_name: "cam",
+    from_name: "Support Team",
     to_name: "Akanksha",
     message_html: `
         <h1>Hi Akanksha</h1>

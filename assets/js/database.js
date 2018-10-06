@@ -1,13 +1,7 @@
 // Roger's functions - for now just calls and comments
 
-//console.log("Test");
-var firebase = require('firebase');
-const admin = require('firebase-admin');
-//var storage = require('@google-cloud/storage');
-//const storage = require('firebase-storage');
-
 var config = {
-  credential: admin.credential.applicationDefault(),
+  ///  credential: admin.credential.applicationDefault(),
   apiKey: "AIzaSyCsDh3ra7faSCJycuwelMipu-6biTdqFMM",
   authDomain: "rgb-rps.firebaseapp.com",
   databaseURL: "https://rgb-rps.firebaseio.com",
@@ -16,15 +10,33 @@ var config = {
   messagingSenderId: "277284413470"
 };
 firebase.initializeApp(config);
-//admin.initializeApp(config);
-//var fbStorage = firebase.storage();
-var serviceAccount = require("./rgb-rps-firebase-adminsdk-679jx-e13ef35a17.json");
+
+var fbStorage = firebase.storage();
+var fbRef = fbStorage.ref();
+var RogerImageRef = fbRef.child('Roger.jpg');
+///var serviceAccount = require("./rgb-rps-firebase-adminsdk-679jx-e13ef35a17.json");
+
+/*
+var serviceAccount = {
+  type: "service_account",
+  project_id: "rgb-rps",
+  private_key_id: "e13ef35a174546fa5fcf7af9d182c284df22c533",
+  private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDPHnDq6bhNsnsg\njniasxXBTTkqpv58LVqZYWkXcuW42s4j8LaJbEqXZinRVtThrhyKDpA8HZDtPzeS\nWD73qbX8z5jCLYBON1SSrrNGrSjCIvrZE025enzwoVD+pAKnds/iKJvjyPbUEy5t\narTop+hrj82NfG4jPPwRpOfOElX4bwIuNwRAHgYcSMCpyb+08iIQJ22iVcKZW2MQ\nu6R5Y/aC9WUwYB5LQeOsZ0LM85mJKLGxKBwqIFeMR45JXeb52cMDxUqOPeqfv7j5\nqPR6uk/8uUEdg2Lwh40vkMvaB6oEWyhnbnn798NeUlXXoG1TsTdHkTex0EQ9Ij4q\nJFyqnh+FAgMBAAECggEAHcYFe29/pAOtOX/hjHOEBBaiyiPZX2ZxqKzdG5bTuSAT\nFA2NX/HmQx9XkZVG4u5RgfMX/txNMh2tUmdHHfkShTYegoNh91xy1ucwNE++FTJM\nFxp0SN53yWuXJhPTodkthxhJWJRSDyh2uxnkybEhcxzn8pfZiU1B+xNWk0QFgcHJ\nIL+ZuT5PYEfsdQNRrNqg71HVLUHs8vcV2q4oW/FCZr/O5V4WwloEsdVMBPKtOmhB\n4FGNLT51/wlEMZR1xzkRn3ZOfPHF9XgOsEZiymqSDRAo/glG1dCjX6/zJFbRIAY9\njgB+ccM5V5j3aQGcFqsx4fwQyW3D2zlRSaP99MTr3QKBgQD0FIKB5JJwqulyh9cg\niD8Tn6jCorziAqURJ5dWK9qL3iMKbt8BUrYdWW4AAGgMucVLxeMJ+D9FskyDPCT5\ntbbR7LA8nC8uk6M5ngFVEFDDRDDLApA5ggMDMn08ajSj+8g00pyYG8bHFtjvqlDE\n7CaBB3J+gPZXDCliPSQdDS6aawKBgQDZO9eatYrcRIcz6XzVdlS3YKHDLiRvFrKa\nJNBrs6Mq5RuthWW4EHbudpIrV32a9xNIjmE1jYtwpU/DbUoeKNvOYBlScVSSmfSo\nN7rHM+uBzp6GS5UzLzfZya7OY7u5MQ1n7lPXG67Lj+/m3uNsgcGkM9bNQixBBXZ+\npA9lHuSJzwKBgQDqQlUPvgUexarRFbdPrfR8LRyX0gFfGhK7aDhDqEtVOpp/BPJc\nHrpTaOW+cqVqsVG+6+qAQxbXGc19l1gVomYZDQYI5g4SsfhS8Gdu8P3Sq7v43Dj4\nOOQTSX4RYg2r5Ze9uvY4t1AM/MyxGdHzboN2C2PELpo/6Zg+hVgH2gMEiQKBgQDI\nxQ/9Qm/2J7e1eMQRHW4qlTqsA0dVDGtBH2kpQTs6d8je1H0wYrcoqZlqSVAjGttN\noZmiPxFyqLZRbf6kZSrRT+vXUDrTy0pc9jS/yvKMZAQLJmvchHVf6ZCP24kyHW3A\ncno2QrWIGZ2liLY0ILBxLCAIUHJKHdxoKwS3dpfN7QKBgEsPGPTwqq+WQTfTeqJJ\n2X356TZ64O3VAiBPQzN5IL88HvN0eqAVcswffXFwt7VDeVB/3JcJZfI4kMB4ssG2\nMV7WqIQYGC2KSxwOoBh12JRyl7lGg+Z0ZPZbqeBC00nP8l+dx0MzfLlEd1mtBqFp\ntokYBIVjwOZD1DbO523/0g1t\n-----END PRIVATE KEY-----\n",
+  client_email: "firebase-adminsdk-679jx@rgb-rps.iam.gserviceaccount.com",
+  client_id: "105244866798034024459",
+  auth_uri: "https://accounts.google.com/o/oauth2/auth",
+  token_uri: "https://oauth2.googleapis.com/token",
+  auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+  client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-679jx%40rgb-rps.iam.gserviceaccount.com"
+};
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://rgb-rps.firebaseio.com",
   storageBucket: "rgb-rps.appspot.com"
 });
+
+*/
 
 // the next three lines stop a firebase error message
 const firestore = firebase.firestore(); //have to do this anyway
@@ -33,28 +45,37 @@ const settings = {
 };
 firestore.settings(settings);
 
-const {
-  Storage
-} = require('@google-cloud/storage');
+//const {
+//  Storage
+//} = require('@google-cloud/storage');
 
-const storage = new Storage();
+//const storage = new Storage();
 
-var bucket = admin.storage().bucket();
+//var bucket = admin.storage().bucket();
+//console.log (" " + bucket.name);
 
-console.log('Admin: ' + admin.auth());
-console.log('Firebase: ' + firebase.auth());
+//var BUCKET = "rgb-rps.appspot.com";
+//var storageRef11 = firebase.storage().ref();
+var storageRef = fbStorage.bucket_;
+//var bucket = storageRef11.bucket;
+//console.log("BN: " + bucket.name);
+//console.log('Admin: ' + admin.auth());
+//console.log('Firebase: ' + firebase.auth());
 
 class Employee {
-  constructor(iId, sFirstName, sLastName) {
+  constructor(sFirstName, sLastName, sGender, bIsManager, sImageFile, sImageSize) {
     this.sFirstName = sFirstName;
     this.sLastName = sLastName;
+    this.sGender = sGender;
+    this.bIsManager = bIsManager;
     this.oEmotions = [{}]; // of type Emotions
-    this.sImageFile = "";
+    this.sImageFile = sImageFile;
+    this.sImageSize = sImageSize;
     this.sImageLink = "";
   }
 }
 
-var oCompany = [{}];
+var aoCompany = [{}];
 
 class Emotions {
   constructor(iFear, iAnger) {
@@ -65,13 +86,24 @@ class Emotions {
 
 const EMOTIONS_MAX = 10; // the number in the array
 
-oComapny[0] = new Employee("Roger", "Byford", "Roger.jpg");
-oCompany[1] = new Employee("Akanksha", "Kapoor", "");
-oCompany[2] = new Employee("Aime", "77", "");
-oCompany[3] = new Employee("Nestor", "Ramirez", "");
+aoCompany[0] = new Employee("Roger", "Byford", "M", false, "Roger.jpg", 6846);
+aoCompany[1] = new Employee("Akanksha", "Kapoor", "F", true, "Akanksha.jpg", 7919);
+aoCompany[2] = new Employee("Aime", "Urquieta", "F", false, "", 0);
+aoCompany[3] = new Employee("Nestor", "Ramirez", "M", false, "", 0);
 
-console.log("Calling addImage");
 const empsRef = firestore.collection('employees');
+
+//addAllEmployees();
+
+// walk through the employees, adding them
+function addAllEmployees() {
+  for (var i = 0; i < aoCompany.length; i++) {
+    //    addEmployee(i, aoCompany[i]);
+    if (aoCompany[i].sImageFile != "") {
+      addImage(i, aoCompany[i].sImageFile);
+    }
+  }
+}
 
 // for debugging only
 const options = {
@@ -81,7 +113,7 @@ const options = {
 var srcFileName = 'Roger.jpg';
 
 function showImages() {
-  storage.bucket(bucket.name)
+  bucket(bucket.name)
     .file(srcFileName)
     .download(options)
     .then(() => {
@@ -92,68 +124,80 @@ function showImages() {
     });
 }
 
-// walk through the employees, adding them
-for (var i = 0; i < oCompany.length; i++) {
-  addEmployee(i, oCompany[i]);
-  if (oCompany[i].sImageFile != "") {
-    addImage(i, oCompany[i].sImageFile);
-  }
-}
-
 function addEmployee(iEmpNum, oEmployeeStats) {
   // takes an object (to be defined) that has all the
   // employee info (name, id, manager, ...)
-  empsRef.doc(iEmpNum).update({
+  empsRef.doc(iEmpNum.toString().padStart(3, '0')).set({
     firstName: oEmployeeStats.sFirstName,
-    lastNamee: oEmployeeStats.sLastName;
+    lastName: oEmployeeStats.sLastName,
+    gender: oEmployeeStats.sGender,
+    isMamager: oEmployeeStats.bIsManager,
+    email: oEmployeeStats.sEmail,
+    password: oEmployeeStats.sPassword,
+    sImageLink: oEmployeeStats.sImageLink
   });
 }
+
+var files = [];
+
+function handleFileSelect(evt) {
+  files = evt.target.files; // FileList object
+  for (var i = 0; i < files.length; i++) {
+    addImage(files[i]);
+  }
+  //    getImageLinks();
+}
+
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 // Puts the image pointed to by the file name into storage
 // for future use in identifying somebody.  And stores the image
 // URL as part of the employee record.
-function addImage(iEmployee, sFileName) {
-  var sFullFileName = "../pictures/" + sFileName;
+function addImage(oFile) {
+  var sShortName = oFile.name;
+  var sFullFileName = "../pictures/" + oFile.name;
+  oFile.name = sFullFileName;
+  var ImageRef = fbRef.child(oFile.name);
 
-  // Upload file
-  bucket.upload(sFullFileName)
-    .then(() => {
-      // Put the link into Firestore
-      bucket.file(sFileName.getSignedUrl({
-        action: 'read',
-        expires: '03-09-2491'
-      })
-        .then((results) => {
-          let url = results[0];
-          empsRef.doc(iEmployee).update({
-            imageLink: url
-          });
-        })
-        .catch(err => {
-          console.log("Error in gSU: " + err);
-        }));
-    });
+  ImageRef.put(oFile).then(function (snapshot) {
+    console.log('Uploaded a file!');
+  });
+  ImageRef.getDownloadURL().then(function (url) {
+    for (var iEmp = 0; iEmp < aoCompany.length; iEmp++) {
+      if (aoCompany[iEmp].sImageFile === sShortName) {
+        let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
+        oThisEmp.update({
+          //        oThisEmp.get().then(function (oDoc) {
+          //          oDoc.update({
+          sImageLink: url
+        });
+        //        });
+        break;
+      }
+    }
+  });
 }
 
+//getImages();
 
-
-function getImages() {
+async function getImages() {
   // gets the URLS for all the images from storage, so we can pass them to
   // face++ for comparison with the current camera picture.
-  // This will return an array of Employee objects with the
-  // employee id and the image URL, so we can get the employee
-  // id from the comparison.
-  var empFetched = [{}];
+  // This will return an array of image links for the image URLs,
+  // so we can get the employee id from the comparison.  The array is indexed
+  // by employee ID.
+  var asImageLinks = [];
 
-  for (var i = 0; i < oCompany.length; i++) {
-    empsRef.get({}).then(oDoc => {
-      if (oDoc.exists) {
-        oEmp[i].sImageLink = oDoc.data().imageLink;
-        oEmp[i].iEmployee = oDoc.data().iEmployee;
-      }
-    });
+  let oDoc = await (empsRef.get());
+  if (oDoc.docs.length > 0) {
+    for (var iEmp = 0; iEmp < oDoc.docs.length; iEmp++) {
+      let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
+      let oEmp = await (oThisEmp.get());
+      asImageLinks[iEmp] = oEmp.data().sImageLink;
+      console.log(asImageLinks[iEmp]);
+    }
   }
-  return (empFetched);
+  return (asImageLinks);
 }
 
 function setEmotions(iEmployee, oEmotions) {
@@ -161,7 +205,7 @@ function setEmotions(iEmployee, oEmotions) {
   // This will put each emotion's "score" into an
   // array (discarding the oldest if there are n stored
   // already).
-  let oThisEmp = empsRef.doc(iEmployee);
+  let oThisEmp = (iEmployee);
   oThisEmp.get({}).then(oDoc => {
     if (oDoc.exists) {
       let iNumEmotions = oDoc.oEmotions.length;
@@ -208,3 +252,46 @@ function compareEmotions(iEmployee, oEmotions) {
   return (oDeltatEmotions);
 }
 
+//testIsManager();
+
+function testIsManager() {
+  isManager("akapoor@gmail.com", "abc123").then(function (iMgr) {
+    if (iMgr > 0) {
+      console.log("Success: ", iMgr);
+    } else {
+      console.log("Failure");
+    }
+  });
+}
+
+async function isManager(sEmail, sPassword) {
+  // returns employee ID if sPassword and sEmail match and the person is designated as a manager.  Else -1
+  var query = empsRef.where('isManager', '==', true).where('password', '==', sPassword).where('email', '==', sEmail);
+  let oDoc = await (query.get());
+  if (oDoc.docs.length > 0) {
+    return (parseInt(oDoc.docs[0].id));
+  }
+  return (-1);
+}
+
+//testListEmployees ();
+
+function testListEmployees() {
+  listEmployees(1).then(function (aoEmp) {
+    console.log(aoEmp);
+  });
+}
+
+async function listEmployees(iManagerID) {
+  // returns a list of the manager's employees' IDs
+  aiEmp = [];
+  var query = empsRef.where('managerID', '==', iManagerID);
+  let oDoc = await (query.get());
+  if (oDoc.docs.length > 0) {
+    for (var i = 0; i < oDoc.docs.length; i++) {
+      aiEmp.push(oDoc.docs[i].id);
+    }
+  }
+  console.log("Employees: ", +aiEmp);
+  return (aiEmp);
+}
