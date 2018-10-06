@@ -8,7 +8,7 @@
     <!-- Icons for MAterilize in HTML -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- MomentJS Link to Document -->
-    <script src="/assets/moment.js"></script>
+    <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
     <!-- Materialize CSS CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css">
     <!-- bootstrap CSS CDN -->
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="./assets/css/clockinStyle.css">
 </head>
 <body>
-    <div id="pageHead" class="container">
+    <!-- <div id="pageHead" class="container">
         <div class="row">
             <div class="col s2 m4 l8">
                 <img id="ownLogo" class="z-depth-3" src="">
@@ -27,7 +27,7 @@
                 <img id="custLogo" class="z-depth-3" src="">
             </div>
         </div>
-    </div>
+    </div> -->
     <div id="contentPage" class="container z-depth-5 border-0 rounded">
         <div class="row">
             <div class="col s3 m2 l1"></div>
@@ -46,7 +46,9 @@
         <hr>
         <div class="row">
                 <div class="col s3 m2 l1"></div>
-                <div id="pictureID" class="col s6 m8 l10"></div>
+                <div id="pictureID" class="col s6 m8 l10">
+                    <video id="video" autoplay></video>
+                </div>
                 <div class="col s3 m2 l1"></div>
             </div>
     </div>
@@ -96,6 +98,6 @@
     <!-- jquery CDN -->
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <!-- Link to js file -->
-    <script src="/assets/javascript/script.js"></script>
+    <script src="./assets/javascript/clockin.js"></script>
 </body>
 </html>

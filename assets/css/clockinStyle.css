@@ -1,4 +1,5 @@
 body {
+    z-index:0;
     background-image: url(../pictures/Stratocumulus_Clouds_-_Pacific_Ocean.jpg);
     background-position: center center;
     background-size: cover;
@@ -22,7 +23,7 @@ body {
 }
 #contentPage {
     background-color: rgba(245, 245, 245, 0.50);
-    top: 10vh;
+    margin-top: 5vh;
     width: 80vh;
 }
 
@@ -40,10 +41,17 @@ body {
     background-color: rgba(245, 245, 245, 0.7);
     bottom: 1vh;
     height: 20vh;
+    overflow: scroll;
 }
 
 .info {
     margin-top:1vh;
     color: black;
     font-size: 1.4rem;
+}
+
+#video {
+    z-index:10;
+    border-color: black;
+    border-width: 1px;
 }
