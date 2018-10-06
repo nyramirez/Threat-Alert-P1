@@ -120,9 +120,9 @@ function addImage(iEmployee, sFileName) {
     .then(() => {
       // Put the link into Firestore
       bucket.file(sFileName.getSignedUrl({
-          action: 'read',
-          expires: '03-09-2491'
-        })
+        action: 'read',
+        expires: '03-09-2491'
+      })
         .then((results) => {
           let url = results[0];
           empsRef.doc(iEmployee).update({
