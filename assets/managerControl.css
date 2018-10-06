@@ -94,21 +94,22 @@ button:hover {
     top: 300px;
 }
 /* ********* Manager Format ************** */
+
 #managerInfo {
     position: absolute;
-    color: rgb(193, 224, 252);
+    color: black;
     top: 3vh;
     left: 11rem;
-    background-color: rgba(245, 245, 245, 0.212);
+    background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
 }  
 
 #plantStatus {
     position: absolute;
-    color: rgb(91, 135, 173);
+    color: black;
     top: 3vh;
     right: 11rem;
-    background-color: rgba(245, 245, 245, 0.212);
+    background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
 }
 
@@ -118,16 +119,16 @@ button:hover {
 
 #employeeList {
     position: absolute;
-    color: rgb(193, 224, 252);
+    color: black;
     bottom: 3vh;
     right: 11rem;
-    background-color: rgba(245, 245, 245, 0.212);
+    background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
     height: 45vh;
 }
 
 table {
-    margin-left:1.5vw;
+    margin-left: 1.5vw;
     margin-top: 1.5vh;
 }
 
@@ -135,10 +136,10 @@ table {
 
 #employeeInfo {
     position: absolute;
-    color: rgb(193, 224, 252);
+    color: black;
     top: 3vh;
     left: 11rem;
-    background-color: rgba(245, 245, 245, 0.212);
+    background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
 }
 
@@ -169,3 +170,6 @@ table {
     height: 45vh;
 }
 
+#tableContent {
+    overflow: scroll;
+}
