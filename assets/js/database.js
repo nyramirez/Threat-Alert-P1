@@ -59,7 +59,7 @@ const empsRef = firestore.collection('employees');
 // walk through the employees, adding them
 function addAllEmployees() {
   for (var i = 0; i < aoCompany.length; i++) {
-    //    addEmployee(i, aoCompany[i]);
+    addEmployee(i, aoCompany[i]);
     if (aoCompany[i].sImageFile != "") {
       addImage(i, aoCompany[i].sImageFile);
     }
@@ -67,22 +67,30 @@ function addAllEmployees() {
 }
 
 // for debugging only
-const options = {
-  destination: './Roger2.jpg',
-};
+// const options = {
+//   destination: './Roger2.jpg',
+// };
 
-var srcFileName = 'Roger.jpg';
+// var srcFileName = 'Roger.jpg';
+
+showImages ();
 
 function showImages() {
-  bucket(bucket.name)
-    .file(srcFileName)
-    .download(options)
-    .then(() => {
-      console.log(`gs://${config.storageBucket}/${srcFileName} downloaded to ${options}.`);
-    })
-    .catch(err => {
-      console.error('ERROR:' + err);
-    });
+  getImages().then(function (asImageLinks) {
+    for (var i = 0; i < asImageLinks.length; i++) {
+      console.log (asImageLinks[i]);
+    }
+  });
+  // getImages ()()
+  // bucket(bucket.name)
+  //   .file(srcFileName)
+  //   .download(options)
+  //   .then(() => {
+  //     console.log(`gs://${config.storageBucket}/${srcFileName} downloaded to ${options}.`);
+  //   })
+  //   .catch(err => {
+  //     console.error('ERROR:' + err);
+  //   });
 }
 
 function addEmployee(iEmpNum, oEmployeeStats) {
@@ -95,7 +103,11 @@ function addEmployee(iEmpNum, oEmployeeStats) {
     isMamager: oEmployeeStats.bIsManager,
     email: oEmployeeStats.sEmail,
     password: oEmployeeStats.sPassword,
-    sImageLink: oEmployeeStats.sImageLink
+    sImageLink: oEmployeeStats.sImageLink,
+    sDepression: "",
+    aiAnger: [5],
+    aiFear: [5],
+    aiSad: [5]
   });
 }
 
@@ -154,8 +166,14 @@ async function getImages() {
     for (var iEmp = 0; iEmp < oDoc.docs.length; iEmp++) {
       let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
       let oEmp = await (oThisEmp.get());
-      asImageLinks[iEmp] = oEmp.data().sImageLink;
-      console.log(asImageLinks[iEmp]);
+      let oData = oEmp.data();
+      if (oEmp.data().sImageLink != undefined) {
+        asImageLinks[iEmp] = oEmp.data().sImageLink;
+//        console.log(asImageLinks[iEmp]);
+      }
+      else {
+        asImageLinks[iEmp] = "";
+      }
     }
   }
   return (asImageLinks);
