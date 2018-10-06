@@ -38,9 +38,10 @@ class Employee {
 var aoCompany = [{}];
 
 class Emotions {
-  constructor(iFear, iAnger) {
+  constructor(iFear, iAnger, iSad) {
     this.iFear = iFear;
     this.iAnger = iAnger;
+    this.iSad = iSad;
   }
 }
 
@@ -160,11 +161,11 @@ async function getImages() {
   return (asImageLinks);
 }
 
-//testSetEmotions ();
+// testSetEmotions();
 
-function testSetEmotions ()  {
-  var oTestEmotions = new Emotions (4, 7);
-  setEmotions (0, oTestEmotions);
+function testSetEmotions() {
+  var oTestEmotions = new Emotions(4, 7, 6);
+  setEmotions(0, oTestEmotions);
 }
 
 function setEmotions(iEmpNum, oEmotions) {
@@ -173,27 +174,36 @@ function setEmotions(iEmpNum, oEmotions) {
   // array (discarding the oldest if there are n stored
   // already).
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
-  oThisEmp.get().then (oDoc => {
-  //empsRef.doc(iEmpNum.toString().padStart(3, '0')).get().then(oDoc => {
+  oThisEmp.get().then(oDoc => {
+    //empsRef.doc(iEmpNum.toString().padStart(3, '0')).get().then(oDoc => {
     if (oDoc.exists) {
-      let iNumEmotions = oDoc.data().aoEmotions.length;
-      let aoEmotions = oDoc.data().aoEmotions;
-      if (iNumEmotions >= EMOTIONS_MAX) { // should never be >
+      //      let iNumEmotions = oDoc.data().aoEmotions.length;
+      //      let aoEmotions = oDoc.data().aoEmotions;
+      let iNumEmotions = oDoc.data().aiAnger.length;
+
+      var aiFear = oDoc.data().aiFear;
+      var aiAnger = oDoc.data().aiAnger;
+      var aiSad = oDoc.data().aiSad;
+      if (iNumEmotions >= EMOTIONS_MAX) {
         for (var i = 0; i < EMOTIONS_MAX - 1; i++) {
           // move them all down 1
-          aoEmotions[i] = aoEmotions[i + 1];
+          aiSad[i] = aiSad[i + 1];
+          aiAnger[i] = aiAnger[i + 1];
+          aiFear[i] = aiFear[i + 1];
         }
-        aoEmotions[EMOTIONS_MAX - 1] = oEmotions; // [9] is the latest
-      } else { // less than max - just add this one
-        aoEmotions[iNumEmotions] = oEmotions;
+        aiSad[EMOTIONS_MAX - 1] = oEmotions.iSad;
+        aiAnger[EMOTIONS_MAX - 1] = oEmotions.iAnger;
+        aiFear[EMOTIONS_MAX - 1] = oEmotions.iFear;
+      } else { // less than max - just add these
+        aiSad[iNumEmotions] = oEmotions.iSad;
+        aiAnger[iNumEmotions] = oEmotions.iAnger;
+        aiFear[iNumEmotions] = oEmotions.iFear;
       }
-      let oEmotion = aoEmotions[0];              // this will update
-      let aoOdd = Object.assign ({}, aoEmotions);    // this will not
       oThisEmp.update({
-        // aoEmotions: aoEmotions            will not work
-        aoEmotions: firebase.firestore.FieldValue.arrayUnion(oEmotion)
-//        aoEmotions: aoEmotions
-      })
+        aiAnger: aiAnger,
+        aiSad: aiSad,
+        aiFear: aiFear
+      });
     }
   });
   return;
@@ -225,7 +235,7 @@ function compareEmotions(iEmployee, oEmotions) {
   return (oDeltatEmotions);
 }
 
-testIsManager();
+//testIsManager();
 
 function testIsManager() {
   isManager("agaur05@gmail.com", "abc123").then(function (iMgr) {
@@ -267,4 +277,38 @@ async function listEmployees(iManagerID) {
   }
   console.log("Employees: ", +aiEmp);
   return (aiEmp);
+}
+
+//testDepression();
+
+function testDepression() {
+  putDepressionResults(0, "depressed");
+  getDepressionResults(0).then(function (sDepression) {
+    //    sDepression = getDepressionResults(0);
+    console.log("Depression: ", sDepression);
+  });
+}
+
+function putDepressionResults(iEmpNum, sValue) {
+  let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
+  oThisEmp.get().then(oDoc => {
+    if (oDoc.exists) {
+      oThisEmp.update({
+        sDepression: sValue
+      });
+
+    }
+  });
+}
+
+async function getDepressionResults(iEmpNum) {
+  let sDepression = "";
+  let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
+  let oDoc = await (oThisEmp.get());
+  //  if (oDoc.docs.length > 0) {
+  //  oThisEmp.get().then(oDoc => {
+  //    if (oDoc.exists) {
+  sDepression = oDoc.data().sDepression;
+  //  }
+  return (sDepression);
 }
