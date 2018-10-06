@@ -66,31 +66,14 @@ function addAllEmployees() {
   }
 }
 
-// for debugging only
-// const options = {
-//   destination: './Roger2.jpg',
-// };
+//testGetImages ();
 
-// var srcFileName = 'Roger.jpg';
-
-showImages ();
-
-function showImages() {
+function testGetImages() {
   getImages().then(function (asImageLinks) {
     for (var i = 0; i < asImageLinks.length; i++) {
       console.log (asImageLinks[i]);
     }
   });
-  // getImages ()()
-  // bucket(bucket.name)
-  //   .file(srcFileName)
-  //   .download(options)
-  //   .then(() => {
-  //     console.log(`gs://${config.storageBucket}/${srcFileName} downloaded to ${options}.`);
-  //   })
-  //   .catch(err => {
-  //     console.error('ERROR:' + err);
-  //   });
 }
 
 function addEmployee(iEmpNum, oEmployeeStats) {
@@ -167,8 +150,8 @@ async function getImages() {
       let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
       let oEmp = await (oThisEmp.get());
       let oData = oEmp.data();
-      if (oEmp.data().sImageLink != undefined) {
-        asImageLinks[iEmp] = oEmp.data().sImageLink;
+      if (oData != undefined && oData.sImageLink != undefined) {
+        asImageLinks[iEmp] = oData.sImageLink;
 //        console.log(asImageLinks[iEmp]);
       }
       else {
@@ -193,12 +176,8 @@ function setEmotions(iEmpNum, oEmotions) {
   // already).
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   oThisEmp.get().then(oDoc => {
-    //empsRef.doc(iEmpNum.toString().padStart(3, '0')).get().then(oDoc => {
     if (oDoc.exists) {
-      //      let iNumEmotions = oDoc.data().aoEmotions.length;
-      //      let aoEmotions = oDoc.data().aoEmotions;
       let iNumEmotions = oDoc.data().aiAnger.length;
-
       var aiFear = oDoc.data().aiFear;
       var aiAnger = oDoc.data().aiAnger;
       var aiSad = oDoc.data().aiSad;
@@ -293,7 +272,7 @@ async function listEmployees(iManagerID) {
       aiEmp.push(oDoc.docs[i].id);
     }
   }
-  console.log("Employees: ", +aiEmp);
+//  console.log("Employees: ", +aiEmp);
   return (aiEmp);
 }
 
@@ -302,7 +281,6 @@ async function listEmployees(iManagerID) {
 function testDepression() {
   putDepressionResults(0, "depressed");
   getDepressionResults(0).then(function (sDepression) {
-    //    sDepression = getDepressionResults(0);
     console.log("Depression: ", sDepression);
   });
 }
@@ -319,14 +297,11 @@ function putDepressionResults(iEmpNum, sValue) {
   });
 }
 
+// must call this with a then, as in the testDepression routine above
 async function getDepressionResults(iEmpNum) {
   let sDepression = "";
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   let oDoc = await (oThisEmp.get());
-  //  if (oDoc.docs.length > 0) {
-  //  oThisEmp.get().then(oDoc => {
-  //    if (oDoc.exists) {
   sDepression = oDoc.data().sDepression;
-  //  }
   return (sDepression);
 }
