@@ -60,10 +60,10 @@
 
         window.onload = function () {
 
-            function display(){
-            $("#myform input[type=text]").val('');
-            $("#valueFromMyModal").val('');
-            $("#myform").show(500);
+            function display() {
+                $("#myform input[type=text]").val('');
+                $("#valueFromMyModal").val('');
+                $("#myform").show(500);
             }
 
             display();
@@ -83,7 +83,25 @@
                     $(".demo-frame").append(timeSpace);
                     clockInMsg.html(`<h3 class='center-align'>You are now clocked-in.<br>Have a great day at work!`);
                     $(".welcome").append(clockInMsg);
+                    var queryURL = "https://api-us.faceplusplus.com/facepp/v3/detect";
+                    var API_KEY = "cKYAUp9G8wVG1XId1bmDMSGFD5wxU6tZ";
+                    var API_SECRET = "0CSTJZCXhE-gSZD_EWl8vDsCRsR1Nlny";
+                    var imageURL = file.name;
+                    $.ajax({
+                        url: queryURL,
+                        data: {
+                            api_key: API_KEY,
+                            api_secret: API_SECRET,
+                            image_url: imageURL,
+                            return_attributes: "emotion"
+                        },
+                        method: "POST"
+                    }).then(function (response) {
+                        console.log(response);
+                    })
+
                     reset();
+
                 });
             });
 
