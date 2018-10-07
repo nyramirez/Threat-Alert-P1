@@ -49,8 +49,7 @@ document.querySelector('#btnSubmit').addEventListener('focus', function (e) {
 });
 
 $(document).ready(function () {
-    console.log("I am here.");
-    $(".seconDiv").hide();
+
     event.preventDefault();
     $("#btnSubmit").on("click", testIsManager);
 });

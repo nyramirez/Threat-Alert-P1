@@ -95,7 +95,7 @@ function handleFileSelect(evt) {
   //    getImageLinks();
 }
 
-document.getElementById('files').addEventListener('change', handleFileSelect, false);
+//document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 // Puts the image pointed to by the file name into storage
 // for future use in identifying somebody.  And stores the image
@@ -234,6 +234,10 @@ function testIsManager() {
     console.log(iMgr);
     if (iMgr > 0) {
       console.log("Success");
+      $("#displayMessage").html("");
+      $('#firstDiv').css('display', 'none');
+      $('#contaianer').css('display', 'block');
+      testListEmployees(iMgr);
     } else {
       console.log("Failure");
       if(email ===""|| password===""){
@@ -247,6 +251,14 @@ function testIsManager() {
   });
 }
 
+function displayEmployees(employees){
+    return `<tr id="${employees.id}">
+               <td>${employees.id}</td>
+                <td>${employees.firstName+" "+employees.lastName}</td>
+                <td>${employees.email}</td>
+                <td>${employees.issues}</td>
+            </tr>`;
+}
 
 async function isManager(email,password) {
   // returns employee ID if sPassword and sEmail match and the person is designated as a manager.  Else -1
@@ -260,9 +272,10 @@ async function isManager(email,password) {
 
 //testListEmployees ();
 
-function testListEmployees() {
-  listEmployees(1).then(function (aoEmp) {
+function testListEmployees(iMgr) {
+  listEmployees(iMgr).then(function (aoEmp) {
     console.log(aoEmp);
+    $("tbody").append(displayEmployees(aoEmp));
   });
 }
 
@@ -270,14 +283,14 @@ async function listEmployees(iManagerID) {
   // returns a list of the manager's employees' IDs
   aiEmp = [];
   var query = empsRef.where('managerID', '==', iManagerID);
-  let oDoc = await (query.get());
+  let oDoc = await(query.get());
   if (oDoc.docs.length > 0) {
     for (var i = 0; i < oDoc.docs.length; i++) {
       aiEmp.push(oDoc.docs[i].id);
     }
   }
-//  console.log("Employees: ", +aiEmp);
-  return (aiEmp);
+   console.log("Employees: ", +aiEmp);
+  $("tbody").append(displayEmployees(aiEmp));
 }
 
 //testDepression();

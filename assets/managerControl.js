@@ -20,3 +20,11 @@ $('html').mousemove(function (e) {
 
 });
 
+
+$(document).ready(function () {
+    $('#contaianer').css('display', 'none');
+    $('#firstDiv').css('background-image', 'url(./assets/pictures/green-forest-trees.jpg)');
+    $('#firstDiv').css('height', '94%');
+    event.preventDefault();
+    $("#btnSubmit").on("click", testIsManager);
+});
