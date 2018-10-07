@@ -260,13 +260,19 @@ function displayEmployees(employees){
   var length=employees.length;
   console.log("length:" +length);
   for(i=0;i<length;i++){
-    return `<tr id="${employees[i].empID}">
+    var issues=0;
+    if(employees[i].aiAnger!=0 || employees[i].aiFear!=0 || employees[i].aiSad!=0 ){
+      issues+=1;
+    }
+    $("#pendingIssues").html(issues);
+    $("tbody").append( `<tr id="${employees[i].empID}">
                <td>${employees[i].empID}</td>
                 <td>${employees[i].firstName+" "+employees[i].lastName}</td>
                 <td>${employees[i].email}</td>
-                <td>${employees[i].aiAnger}</td>
-            </tr>`;
+                <td>${issues}</td>
+            </tr>`);
   }
+ 
 }
 
 async function isManager() {
@@ -346,7 +352,7 @@ async function listEmployeeDetails(iManagerID) {
       aoEmp.push(oEmpDoc.data());
     }
   }
-  $("tbody").append(displayEmployees(aoEmp));
+  displayEmployees(aoEmp);
 }
 
 //testGetEmployeeDetails();

@@ -31,6 +31,6 @@ $(document).ready(function () {
 
 $("body").on("click", "tr", function() {
     empID = parseInt($(this).attr("id"));
-    findArrayID(); 
-    switchMode("edit");
+    // findArrayID(); 
+    // switchMode("edit");
 });
