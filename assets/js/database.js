@@ -36,6 +36,7 @@ class Employee {
 }
 
 var aoCompany = [{}];
+var aoEmp = [];
 
 class Emotions {
   constructor(iFear, iAnger, iSad) {
@@ -259,6 +260,7 @@ function testIsManager() {
       $("#displayMessage").html("");
       $('#firstDiv').css('display', 'none');
       $('#contaianer').css('display', 'block');
+      testGetEmployeeDetails(iMgr,true);//is Manager
       testListEmployeeDetails(iMgr);
     } else {
       console.log("Failure");
@@ -331,7 +333,6 @@ function testListEmployeeDetails(managerID) {
 async function listEmployeeDetails(iManagerID) {
   // returns an array of the manager's employees
   // must call this with a then - see testListEmployees
-  var aoEmp = [];
   var query = empsRef.where('managerID', '==', iManagerID);
   let oDoc = await (query.get());
   if (oDoc.docs.length > 0) {
@@ -346,9 +347,13 @@ async function listEmployeeDetails(iManagerID) {
 
 //testGetEmployeeDetails();
 
-function testGetEmployeeDetails() {
-  getEmployeeDetails(1).then(function (oEmp) {
+function testGetEmployeeDetails(empID,isFlag) {
+  getEmployeeDetails(empID).then(function (oEmp) {
     console.log(oEmp);
+    if(isFlag){
+    $("#managerName").text(oEmp.firstName +" "+oEmp.lastName);
+    $("#managerEE").text("Employee ID: " +empID);
+    }
   });
 }
 

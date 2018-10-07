@@ -28,3 +28,9 @@ $(document).ready(function () {
     event.preventDefault();
     $("#btnSubmit").on("click", testIsManager);
 });
+
+$("body").on("click", "tr", function() {
+    empID = parseInt($(this).attr("id"));
+    findArrayID(); 
+    switchMode("edit");
+});
