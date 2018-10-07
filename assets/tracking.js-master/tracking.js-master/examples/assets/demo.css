@@ -1,32 +1,57 @@
-* {
-  margin: 0;
-  padding: 0;
-  font-family: Helvetica, Arial, sans-serif;
+body, html {
+  background-image: url(../pictures/Stratocumulus_Clouds_-_Pacific_Ocean.jpg);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: repeat;
 }
 
-.demo-title {
-  position: absolute;
-  width: 100%;
-  background: #2e2f33;
-  z-index: 2;
-  padding: .7em 0;
+jumbotron{
+  height:100%;
 }
 
-.demo-title a {
-  color: #fff;
-  border-bottom: 1px dotted #a64ceb;
-  text-decoration: none;
+#pageHead {
+  width: 854px;
+  height: 658px;
+  top: 2vh;
+  height: 13vh;
 }
 
-.demo-title p {
-  color: #fff;
-  text-align: center;
-  text-transform: lowercase;
-  font-size: 15px;
+#custLogo {
+  width: 10vw;
+  height: auto;
+  float: right;
+}
+
+#ownLogo {
+  margin-top: 1.5vh;
+  width: 23vw;
+  height: auto;
+}
+#contentPage {
+  background-color: rgba(245, 245, 245, 0.50);
+  top: 10vh;
+  width: 80vh;
+}
+
+#instruction {
+  position: relative;
+  font-size: .9rem;
+  margin-left: 20vh;
+}
+
+#eeInfo {
+  background-color: rgba(245, 245, 245, 0.7);
+  bottom: 1vh;
+  height: 20vh;
+}
+
+.info {
+  margin-top:1vh;
+  color: black;
+  font-size: 1.4rem;
 }
 
 .demo-frame {
-  background: url(frame.png) no-repeat;
   width: 854px;
   height: 658px;
   position: fixed;
@@ -51,7 +76,47 @@
   border-bottom-left-radius: 10px;
 }
 
-.dg.ac {
-  z-index: 100 !important;
-  top: 50px !important;
+.timeSpace{
+  background-color: antiquewhite;
+}
+
+.button{
+  border:1px solid #333;
+  background: paleturquoise;
+  height:40px;
+  align-items: center;
+}
+.button:hover{
+  background:#a4a9fd;
+}
+.modal{
+  border:5px solid #666;
+  height:200px;
+  padding:10px;
+  background:lightblue;
+  position:absolute;
+  display:none;
+}
+.dialog label{
+  display:inline-block;
+  color:#cecece;
+}
+input[type=text]{
+  border:1px solid #333;
+  display:inline-block;
+  margin:5px;
+  text-align: center;
+}
+#btnOK{
+  border:1px solid #000;
+  background:#ff9999;
+  margin:5px;
+}
+
+#btnOK:hover{
+  border:1px solid #000;
+  background:#ffacac;
+}
+.welcome{
+    background-color: #cecece;
 }
