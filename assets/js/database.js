@@ -1,5 +1,4 @@
-// Roger's functions - for now just calls and comments
-
+// set up Firebase
 var config = {
   ///  credential: admin.credential.applicationDefault(),
   apiKey: "AIzaSyCsDh3ra7faSCJycuwelMipu-6biTdqFMM",
@@ -13,7 +12,7 @@ firebase.initializeApp(config);
 
 var fbStorage = firebase.storage();
 var fbRef = fbStorage.ref();
-var RogerImageRef = fbRef.child('Roger.jpg');
+//var RogerImageRef = fbRef.child('Roger.jpg');
 
 // the next three lines stop a firebase error message
 const firestore = firebase.firestore(); //have to do this anyway
@@ -23,7 +22,7 @@ const settings = {
 firestore.settings(settings);
 
 class Employee {
-  constructor(sFirstName, sLastName, sGender, bIsManager, sImageFile, sImageSize) {
+  constructor(sFirstName, sLastName, sGender, bIsManager, sImageFile, sImageSize, sEmail) {
     this.sFirstName = sFirstName;
     this.sLastName = sLastName;
     this.sGender = sGender;
@@ -32,6 +31,7 @@ class Employee {
     this.sImageFile = sImageFile;
     this.sImageSize = sImageSize;
     this.sImageLink = "";
+    this.email = sEmail;
   }
 }
 
@@ -47,10 +47,10 @@ class Emotions {
 
 const EMOTIONS_MAX = 10; // the number in the array
 
-aoCompany[0] = new Employee("Roger", "Byford", "M", false, "Roger.jpg", 6846);
-aoCompany[1] = new Employee("Akanksha", "Kapoor", "F", true, "Akanksha.jpg", 7919);
-aoCompany[2] = new Employee("Aime", "Urquieta", "F", false, "", 0);
-aoCompany[3] = new Employee("Nestor", "Ramirez", "M", false, "", 0);
+aoCompany[0] = new Employee("Roger", "Byford", "M", false, "Roger.jpg", 6846, "rgbyford@gmail.com");
+aoCompany[1] = new Employee("Akanksha", "Kapoor", "F", true, "Akanksha.jpg", 7919, "agaur05@gmail.com");
+aoCompany[2] = new Employee("Aime", "Urquieta", "F", false, "", 0, "7aime7@gamail.com");
+aoCompany[3] = new Employee("Nestor", "Ramirez", "M", false, "", 0, "nyramirez@gmail.com");
 
 const empsRef = firestore.collection('employees');
 
@@ -59,31 +59,37 @@ const empsRef = firestore.collection('employees');
 // walk through the employees, adding them
 function addAllEmployees() {
   for (var i = 0; i < aoCompany.length; i++) {
-    addEmployee(i, aoCompany[i]);
-    if (aoCompany[i].sImageFile != "") {
-      addImage(i, aoCompany[i].sImageFile);
-    }
+    addEmployee(i, aoCompany[i]).then(function () {});
+    // the following doesn't work, because of the inability to create File objects
+    // (see below)
+    //       if (aoCompany[i].sImageFile != "") {
+    //         addImage(i, aoCompany[i].sImageFile);
+    //       }
   }
 }
 
-//testGetImages ();
-
-function testGetImages() {
-  getImages().then(function (asImageLinks) {
-    for (var i = 0; i < asImageLinks.length; i++) {
-      console.log (asImageLinks[i]);
-    }
-  });
-}
-
-function addEmployee(iEmpNum, oEmployeeStats) {
-  // takes an object (to be defined) that has all the
+async function addEmployee(iEmpNum, oEmployeeStats) {
+  // takes an object that has all the
   // employee info (name, id, manager, ...)
-  empsRef.doc(iEmpNum.toString().padStart(3, '0')).set({
+
+  await (empsRef.doc(iEmpNum.toString().padStart(3, '0')).set({
     firstName: oEmployeeStats.sFirstName,
-    lastNamee: oEmployeeStats.sLastName
-  });
+    lastName: oEmployeeStats.sLastName,
+    sGender: oEmployeeStats.sGender,
+    isManager: false,
+    aiAnger: [],
+    aiSad: [],
+    aiFear: [],
+    sDepression: "",
+    email: oEmployeeStats.email,
+    sImageLink: ""
+  }));
 }
+
+/*
+// the following is the only way to get File objects made that can be passed to "put"
+// for adding an image to the Firebase storage.  The documentation says you can't make
+// File objects for security reasons.
 
 var files = [];
 
@@ -92,40 +98,46 @@ function handleFileSelect(evt) {
   for (var i = 0; i < files.length; i++) {
     addImage(files[i]);
   }
-  //    getImageLinks();
 }
 
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
+*/
 
 // Puts the image pointed to by the file name into storage
 // for future use in identifying somebody.  And stores the image
 // URL as part of the employee record.
 function addImage(oFile) {
+  // the dialog box used to get the oFile doesn't give the path, so we have to add it
   var sShortName = oFile.name;
   var sFullFileName = "../pictures/" + oFile.name;
   oFile.name = sFullFileName;
-  var ImageRef = fbRef.child(oFile.name);
+  var oImageRef = fbRef.child(oFile.name);
 
-  ImageRef.put(oFile).then(function (snapshot) {
+  oImageRef.put(oFile).then(function (snapshot) {
     console.log('Uploaded a file!');
   });
-  ImageRef.getDownloadURL().then(function (url) {
+  oImageRef.getDownloadURL().then(function (url) {
     for (var iEmp = 0; iEmp < aoCompany.length; iEmp++) {
       if (aoCompany[iEmp].sImageFile === sShortName) {
         let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
         oThisEmp.update({
-          //        oThisEmp.get().then(function (oDoc) {
-          //          oDoc.update({
           sImageLink: url
         });
-        //        });
         break;
       }
     }
   });
 }
 
-//getImages();
+//testGetImages ();
+
+function testGetImages() {
+  getImages().then(function (asImageLinks) {
+    for (var i = 0; i < asImageLinks.length; i++) {
+      console.log(asImageLinks[i]);
+    }
+  });
+}
 
 async function getImages() {
   // gets the URLS for all the images from storage, so we can pass them to
@@ -143,9 +155,8 @@ async function getImages() {
       let oData = oEmp.data();
       if (oData != undefined && oData.sImageLink != undefined) {
         asImageLinks[iEmp] = oData.sImageLink;
-//        console.log(asImageLinks[iEmp]);
-      }
-      else {
+        //        console.log(asImageLinks[iEmp]);
+      } else {
         asImageLinks[iEmp] = "";
       }
     }
@@ -153,11 +164,18 @@ async function getImages() {
   return (asImageLinks);
 }
 
-// testSetEmotions();
+//testSetEmotions();
 
 function testSetEmotions() {
-  var oTestEmotions = new Emotions(4, 7, 6);
-  setEmotions(0, oTestEmotions);
+  var oTestEmotions1 = new Emotions(4, 7, 6);
+  var oTestEmotions2 = new Emotions(6, 8, 2);
+
+  setEmotions(0, oTestEmotions1);
+  let oDeltaEmotions = compareEmotions(0, oTestEmotions2);
+  console.log(oDeltaEmotions);
+  setEmotions(0, oTestEmotions2);
+  oDeltatEmtions = compareEmotions(0, oTestEmotions1);
+  console.log(oDeltaEmotions);
 }
 
 function setEmotions(iEmpNum, oEmotions) {
@@ -193,18 +211,19 @@ function setEmotions(iEmpNum, oEmotions) {
         aiFear: aiFear
       });
     }
+    return;
   });
-  return;
 }
 
-function compareEmotions(iEmployee, oEmotions) {
-  // returns a score, calculated by comparing (in some way)
+function compareEmotions(iEmpNum, oEmotions) {
+  // returns a score, calculated by comparing 
   // the current score with the stored ones
   let iAnger = 0;
   let iFear = 0;
-  let oDeltaEmotions = new Emotions(0, 0);
+  let iSad = 0;
+  let oDeltaEmotions = new Emotions(0, 0, 0);
 
-  let oThisEmp = empsRef.doc(iEmployee);
+  let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   oThisEmp.get({}).then(oDoc => {
     if (oDoc.exists) {
       iNumEmotions = oDoc.oEmotions.length;
@@ -212,23 +231,26 @@ function compareEmotions(iEmployee, oEmotions) {
         for (var i = 0; i < iNumEmotions; i++) {
           iAnger += oDoc.oEmotions.iAnger[i];
           iFear += oDoc.oEmotions.iFear[i];
+          iSad += oDoc.oEmotions.iSad[i];
         }
         iAnger /= iNumEmotions;
         iFear /= iNumEmotions;
+        iSad /= iNumEmotions;
       }
       oDeltaEmotions.iAnger = oEmotions.iAnger - iAnger;
       oDeltaEmotions.iFear = oEmotions.iFear - iFear;
+      oDeltatEmotions.iSad = oEmotions.iSad - iSad;
     }
+    return (oDeltatEmotions);
   });
-  return (oDeltatEmotions);
 }
 
 //testIsManager();
 
 function testIsManager() {
   event.preventDefault();
-  var email= $("#email").val().trim();
-  var password= $("#password").val().trim();
+  var email = $("#email").val().trim();
+  var password = $("#password").val().trim();
   console.log(empsRef);
   isManager(email, password).then(function (iMgr) {
     console.log(iMgr);
@@ -236,10 +258,10 @@ function testIsManager() {
       console.log("Success");
     } else {
       console.log("Failure");
-      if(email ===""|| password===""){
-      $("#displayMessage").attr("class", "error");
-      $("#displayMessage").html("Incorrect email/password");
-      }else{
+      if (email === "" || password === "") {
+        $("#displayMessage").attr("class", "error");
+        $("#displayMessage").html("Incorrect email/password");
+      } else {
         $("#displayMessage").attr("class", "error");
         $("#displayMessage").html("Invalid Login");
       }
@@ -248,7 +270,7 @@ function testIsManager() {
 }
 
 
-async function isManager(email,password) {
+async function isManager(email, password) {
   // returns employee ID if sPassword and sEmail match and the person is designated as a manager.  Else -1
   var query = empsRef.where('isManager', '==', true).where('password', '==', password).where('email', '==', email);
   let oDoc = await (query.get());
@@ -258,16 +280,17 @@ async function isManager(email,password) {
   return (-1);
 }
 
-//testListEmployees ();
+//testListEmployees();
 
 function testListEmployees() {
-  listEmployees(1).then(function (aoEmp) {
-    console.log(aoEmp);
+  listEmployees(1).then(function (aiEmp) {
+    console.log(aiEmp);
   });
 }
 
 async function listEmployees(iManagerID) {
   // returns a list of the manager's employees' IDs
+  // must call this with a then - see testListEmployees
   aiEmp = [];
   var query = empsRef.where('managerID', '==', iManagerID);
   let oDoc = await (query.get());
@@ -276,8 +299,49 @@ async function listEmployees(iManagerID) {
       aiEmp.push(oDoc.docs[i].id);
     }
   }
-//  console.log("Employees: ", +aiEmp);
+  //  console.log("Employees: ", +aiEmp);
   return (aiEmp);
+}
+
+//testListEmployeeDetails();
+
+function testListEmployeeDetails() {
+  listEmployeeDetails(1).then(function (aoEmp) {
+    console.log(aoEmp);
+  });
+}
+
+async function listEmployeeDetails(iManagerID) {
+  // returns an array of the manager's employees
+  // must call this with a then - see testListEmployees
+  var aoEmp = [];
+  var query = empsRef.where('managerID', '==', iManagerID);
+  let oDoc = await (query.get());
+  if (oDoc.docs.length > 0) {
+    for (var i = 0; i < oDoc.docs.length; i++) {
+      let oThisEmp = empsRef.doc(oDoc.docs[i].id);
+      let oEmpDoc = await (oThisEmp.get());
+      aoEmp.push(oEmpDoc.data());
+    }
+  }
+  return (aoEmp);
+}
+
+//testGetEmployeeDetails();
+
+function testGetEmployeeDetails() {
+  getEmployeeDetails(1).then(function (oEmp) {
+    console.log(oEmp);
+  });
+}
+
+async function getEmployeeDetails(iEmpNum) {
+  // returns an object with the employee info
+  // must call this with a then - see testListEmployees
+  var oEmp;
+  let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
+  let oEmpDoc = await (oThisEmp.get());
+  return (oEmpDoc.data());
 }
 
 //testDepression();
@@ -301,8 +365,8 @@ function putDepressionResults(iEmpNum, sValue) {
   });
 }
 
-// must call this with a then, as in the testDepression routine above
 async function getDepressionResults(iEmpNum) {
+  // must call this with a then - see testDepression
   let sDepression = "";
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   let oDoc = await (oThisEmp.get());
