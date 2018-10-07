@@ -59,8 +59,7 @@ const empsRef = firestore.collection('employees');
 // walk through the employees, adding them
 function addAllEmployees() {
   for (var i = 0; i < aoCompany.length; i++) {
-    addEmployee(i, aoCompany[i]).then(function () {
-    });
+    addEmployee(i, aoCompany[i]).then(function () {});
     // the following doesn't work, because of the inability to create File objects
     // (see below)
     //       if (aoCompany[i].sImageFile != "") {
@@ -69,7 +68,7 @@ function addAllEmployees() {
   }
 }
 
-async function addEmployee (iEmpNum, oEmployeeStats) {
+async function addEmployee(iEmpNum, oEmployeeStats) {
   // takes an object that has all the
   // employee info (name, id, manager, ...)
 
@@ -165,11 +164,18 @@ async function getImages() {
   return (asImageLinks);
 }
 
-// testSetEmotions();
+//testSetEmotions();
 
 function testSetEmotions() {
-  var oTestEmotions = new Emotions(4, 7, 6);
-  setEmotions(0, oTestEmotions);
+  var oTestEmotions1 = new Emotions(4, 7, 6);
+  var oTestEmotions2 = new Emotions(6, 8, 2);
+
+  setEmotions(0, oTestEmotions1);
+  let oDeltaEmotions = compareEmotions(0, oTestEmotions2);
+  console.log(oDeltaEmotions);
+  setEmotions(0, oTestEmotions2);
+  oDeltatEmtions = compareEmotions(0, oTestEmotions1);
+  console.log(oDeltaEmotions);
 }
 
 function setEmotions(iEmpNum, oEmotions) {
@@ -205,18 +211,19 @@ function setEmotions(iEmpNum, oEmotions) {
         aiFear: aiFear
       });
     }
+    return;
   });
-  return;
 }
 
-function compareEmotions(iEmployee, oEmotions) {
-  // returns a score, calculated by comparing (in some way)
+function compareEmotions(iEmpNum, oEmotions) {
+  // returns a score, calculated by comparing 
   // the current score with the stored ones
   let iAnger = 0;
   let iFear = 0;
-  let oDeltaEmotions = new Emotions(0, 0);
+  let iSad = 0;
+  let oDeltaEmotions = new Emotions(0, 0, 0);
 
-  let oThisEmp = empsRef.doc(iEmployee);
+  let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   oThisEmp.get({}).then(oDoc => {
     if (oDoc.exists) {
       iNumEmotions = oDoc.oEmotions.length;
@@ -224,15 +231,18 @@ function compareEmotions(iEmployee, oEmotions) {
         for (var i = 0; i < iNumEmotions; i++) {
           iAnger += oDoc.oEmotions.iAnger[i];
           iFear += oDoc.oEmotions.iFear[i];
+          iSad += oDoc.oEmotions.iSad[i];
         }
         iAnger /= iNumEmotions;
         iFear /= iNumEmotions;
+        iSad /= iNumEmotions;
       }
       oDeltaEmotions.iAnger = oEmotions.iAnger - iAnger;
       oDeltaEmotions.iFear = oEmotions.iFear - iFear;
+      oDeltatEmotions.iSad = oEmotions.iSad - iSad;
     }
+    return (oDeltatEmotions);
   });
-  return (oDeltatEmotions);
 }
 
 //testIsManager();
@@ -270,11 +280,11 @@ async function isManager(email, password) {
   return (-1);
 }
 
-//testListEmployees ();
+//testListEmployees();
 
 function testListEmployees() {
-  listEmployees(1).then(function (aoEmp) {
-    console.log(aoEmp);
+  listEmployees(1).then(function (aiEmp) {
+    console.log(aiEmp);
   });
 }
 
@@ -291,6 +301,30 @@ async function listEmployees(iManagerID) {
   }
   //  console.log("Employees: ", +aiEmp);
   return (aiEmp);
+}
+
+//testListEmployeeDetails();
+
+function testListEmployeeDetails() {
+  listEmployeeDetails(1).then(function (aoEmp) {
+    console.log(aoEmp);
+  });
+}
+
+async function listEmployeeDetails(iManagerID) {
+  // returns an array of the manager's employees
+  // must call this with a then - see testListEmployees
+  aoEmp = [];
+  var query = empsRef.where('managerID', '==', iManagerID);
+  let oDoc = await (query.get());
+  if (oDoc.docs.length > 0) {
+    for (var i = 0; i < oDoc.docs.length; i++) {
+      let oThisEmp = empsRef.doc(oDoc.docs[i].id);
+      let oEmpDoc = await (oThisEmp.get());
+      aoEmp.push(oEmpDoc.data());
+    }
+  }
+  return (aoEmp);
 }
 
 //testDepression();
