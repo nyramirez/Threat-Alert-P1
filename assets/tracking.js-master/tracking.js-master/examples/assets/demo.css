@@ -1,5 +1,5 @@
 body, html {
-  background-image: url(../pictures/Stratocumulus_Clouds_-_Pacific_Ocean.jpg);
+  background-image: url(/pictures/Stratocumulus_Clouds_-_Pacific_Ocean.jpg);
   background-position: center center;
   background-size: cover;
   background-repeat: repeat;
@@ -53,7 +53,7 @@ jumbotron{
 
 .demo-frame {
   width: 854px;
-  height: 658px;
+  height: 800px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -68,7 +68,7 @@ jumbotron{
 
 .demo-container {
   width: 100%;
-  height: 530px;
+  height: 600px;
   position: relative;
   background: #eee;
   overflow: hidden;
