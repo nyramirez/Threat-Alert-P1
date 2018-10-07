@@ -314,7 +314,7 @@ function testListEmployeeDetails() {
 async function listEmployeeDetails(iManagerID) {
   // returns an array of the manager's employees
   // must call this with a then - see testListEmployees
-  aoEmp = [];
+  var aoEmp = [];
   var query = empsRef.where('managerID', '==', iManagerID);
   let oDoc = await (query.get());
   if (oDoc.docs.length > 0) {
@@ -325,6 +325,23 @@ async function listEmployeeDetails(iManagerID) {
     }
   }
   return (aoEmp);
+}
+
+//testGetEmployeeDetails();
+
+function testGetEmployeeDetails() {
+  getEmployeeDetails(1).then(function (oEmp) {
+    console.log(oEmp);
+  });
+}
+
+async function getEmployeeDetails(iEmpNum) {
+  // returns an object with the employee info
+  // must call this with a then - see testListEmployees
+  var oEmp;
+  let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
+  let oEmpDoc = await (oThisEmp.get());
+  return (oEmpDoc.data());
 }
 
 //testDepression();
