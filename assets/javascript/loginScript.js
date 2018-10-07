@@ -49,7 +49,6 @@ document.querySelector('#btnSubmit').addEventListener('focus', function (e) {
 });
 
 $(document).ready(function () {
-
     event.preventDefault();
-    $("#btnSubmit").on("click", testIsManager);
+    $("#btnSubmit").on("submit", isManager);
 });

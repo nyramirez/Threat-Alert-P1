@@ -249,29 +249,10 @@ function compareEmotions(iEmpNum, oEmotions) {
 //testIsManager();
 
 function testIsManager() {
-  event.preventDefault();
-  var email = $("#email").val().trim();
-  var password = $("#password").val().trim();
+ 
   console.log(empsRef);
   isManager(email, password).then(function (iMgr) {
-    console.log(iMgr);
-    if (iMgr > 0) {
-      console.log("Success");
-      $("#displayMessage").html("");
-      $('#firstDiv').css('display', 'none');
-      $('#contaianer').css('display', 'block');
-      testGetEmployeeDetails(iMgr,true);//is Manager
-      testListEmployeeDetails(iMgr);
-    } else {
-      console.log("Failure");
-      if (email === "" || password === "") {
-        $("#displayMessage").attr("class", "error");
-        $("#displayMessage").html("Incorrect email/password");
-      } else {
-        $("#displayMessage").attr("class", "error");
-        $("#displayMessage").html("Invalid Login");
-      }
-    }
+    
   });
 }
 
@@ -288,14 +269,37 @@ function displayEmployees(employees){
   }
 }
 
-async function isManager(email, password) {
+async function isManager() {
+  event.preventDefault();
+  var email = $("#email").val().trim();
+  var password = $("#password").val().trim();
+  var managerID;
   // returns employee ID if sPassword and sEmail match and the person is designated as a manager.  Else -1
   var query = empsRef.where('isManager', '==', true).where('password', '==', password).where('email', '==', email);
   let oDoc = await (query.get());
   if (oDoc.docs.length > 0) {
-    return (parseInt(oDoc.docs[0].id));
+    managerID= (parseInt(oDoc.docs[0].id));
+  }else{
+    managerID= (-1);
   }
-  return (-1);
+  console.log(managerID);
+    if (managerID > 0) {
+      console.log("Success");
+      $("#displayMessage").html("");
+      $('#firstDiv').css('display', 'none');
+      $('#contaianer').css('display', 'block');
+      getEmployeeDetails(managerID,true);//is Manager
+      listEmployeeDetails(managerID);
+    } else {
+      console.log("Failure");
+      if (email === "" || password === "") {
+        $("#displayMessage").attr("class", "error");
+        $("#displayMessage").html("Incorrect email/password");
+      } else {
+        $("#displayMessage").attr("class", "error");
+        $("#displayMessage").html("Invalid Login");
+      }
+    }
 }
 
 //testListEmployees();
@@ -342,7 +346,7 @@ async function listEmployeeDetails(iManagerID) {
       aoEmp.push(oEmpDoc.data());
     }
   }
-  return (aoEmp);
+  $("tbody").append(displayEmployees(aoEmp));
 }
 
 //testGetEmployeeDetails();
@@ -357,13 +361,17 @@ function testGetEmployeeDetails(empID,isFlag) {
   });
 }
 
-async function getEmployeeDetails(iEmpNum) {
+async function getEmployeeDetails(iEmpNum,isFlag) {
   // returns an object with the employee info
   // must call this with a then - see testListEmployees
   var oEmp;
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   let oEmpDoc = await (oThisEmp.get());
-  return (oEmpDoc.data());
+  oEmp=(oEmpDoc.data());
+  if(isFlag){
+    $("#managerName").text(oEmp.firstName +" "+oEmp.lastName);
+    $("#managerEE").text("Employee ID: " +iEmpNum);
+    }
 }
 
 //testDepression();
