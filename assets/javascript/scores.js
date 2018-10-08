@@ -144,10 +144,10 @@ $(document).ready(function () {
         changeDisplay();
     });
 
-    var test = function changeDisplay() {
+        function changeDisplay() {
         $('#beforeSub').css('display', 'none');
         $('#afterSub').css('display', 'block');
-        setTimeout(document.location.replace('https://www.narscosmetics.com'), 4000);
+        setTimeout(document.location.replace('https://www.narscosmetics.com'), 6000);
     }
 
 
@@ -158,7 +158,25 @@ $(document).ready(function () {
         $('#beforeSub').css('display', 'block');
     }
 
-
+    $('#submitB').click(function(){
+        form.employeeID = parseInt($("#input_text").val().trim());
+        var check = true;
+        $("input:radio").each(function(){
+            var name = $(this).attr("name");
+            if($("input:radio[name="+name+"]:checked").length == 0){
+                check = false;
+            }
+        });
+        
+        if(check && !(form.employeeID==="")){
+            $.blockUI({ message: '<h3>Please wait while we process your answers.</h3>' });}
+        else if(!(form.employeeID==="")){
+            location.reload()
+        }   
+        else{
+            $.blockUI({ message: '<h3>Please wait while we process your answers.</h3>' });;
+        }
+    });
 
     displayQuestionnaire();
     questionsAnswersDisplay(questionnaire);
