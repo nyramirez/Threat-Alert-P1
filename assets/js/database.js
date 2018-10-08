@@ -49,7 +49,7 @@ const EMOTIONS_MAX = 10; // the number in the array
 
 aoCompany[0] = new Employee("Roger", "Byford", "M", false, "Roger.jpg", 6846, "rgbyford@gmail.com");
 aoCompany[1] = new Employee("Akanksha", "Kapoor", "F", true, "Akanksha.jpg", 7919, "agaur05@gmail.com");
-aoCompany[2] = new Employee("Aime", "Urquieta", "F", false, "", 0, "7aime7@gamail.com");
+aoCompany[2] = new Employee("Aime", "Urquieta", "F", false, "", 0, "7aime7@gmail.com");
 aoCompany[3] = new Employee("Nestor", "Ramirez", "M", false, "", 0, "nyramirez@gmail.com");
 
 const empsRef = firestore.collection('employees');

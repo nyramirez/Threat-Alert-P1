@@ -32,7 +32,7 @@ $(document).ready(function () {
     }];
 
     var form = {
-        employeeID,
+        employeeID: "",
         totalScore: 0,
         title: "Employee Questionnaire",
         instructions: "Over the last 2 weeks, how often have you been bothered by any of the following problems?",
@@ -41,9 +41,13 @@ $(document).ready(function () {
         count: 0,
     }
 
-    $("#container_1").html(`<h2>${form.title}</h2>`);
+    var afterSubmitting = {
+        msg: "Thank you for submitting your assesment!",
+        closeButton: $("<a class='waves-effect waves-light btn-small' href='https://www.narscosmetics.com/'>Okay</a>"),
+    }
 
-    $("#employeeID").html(`<div class=row>
+    $("#container_1").html(`<h2>${form.title}</h2>`);
+    $("#employeeIDspace").html(`<div class=row>
                             <div class="input-field col s3">
                             <input id="input_text" type="text" data-length="3" maxlength="3" required>
                             <label for="input_text">Employee ID</label></div></div>`);
@@ -74,11 +78,6 @@ $(document).ready(function () {
         return questionnaire;
     }
 
-
-    function cleanData() {
-        $("#input_text").val("");
-        $("input:radio").attr("checked", false);
-    }
     //questionnaire results
     function phq9testResults() {
         switch (true) {
@@ -124,16 +123,44 @@ $(document).ready(function () {
         console.log(form.totalScore);
         return form.totalScore;
     }
-
+    function changeDisplay() {
+        $('#beforeSub').css('display', 'none');
+        $('#afterSub').css('display', 'block');
+        setTimeout(document.location.replace('https://www.narscosmetics.com'), 4000);
+    }
     $("#submitB").on("click", function (event) {
+
         event.preventDefault();
+       // if (form.employeeID === "") {
+          //  console.log("test");
+          //  $("#afterSub").block({ message: '<h3>You are required to enter your employee ID.</h3>' });
+           // $.blockUI({ message: '<h3>You are required to enter your employee ID.</h3>' })
+       // };
+
         form.employeeID = parseInt($("#input_text").val().trim());
         getScore();
         phq9testResults();
         //getDepressionResult(iEmpNum);
-        cleanData();
+        changeDisplay();
     });
 
+    var test = function changeDisplay() {
+        $('#beforeSub').css('display', 'none');
+        $('#afterSub').css('display', 'block');
+        setTimeout(document.location.replace('https://www.narscosmetics.com'), 4000);
+    }
+
+
+    function displayQuestionnaire() {
+        $("#afterSub").html(`<h2>${afterSubmitting.msg}</h2>`);
+        //$("#afterSub").append(afterSubmitting.closeButton);
+        $('#afterSub').css('display', 'none');
+        $('#beforeSub').css('display', 'block');
+    }
+
+
+
+    displayQuestionnaire();
     questionsAnswersDisplay(questionnaire);
 });
 

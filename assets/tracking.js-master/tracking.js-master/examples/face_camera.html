@@ -8,8 +8,6 @@
     <title>Clock-in</title>
     <link rel="stylesheet" href="assets/demo.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- MomentJS Link to Document -->
-    <script src="/assets/moment.js"></script>
     <!-- Materialize CSS CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css">
     <!-- bootstrap CSS CDN -->
@@ -61,15 +59,17 @@
         window.onload = function () {
 
             function display() {
-                $("#myform input[type=text]").val('');
-                $("#valueFromMyModal").val('');
+               $("#myform input[type=text]").val('');
+               $("#valueFromMyModal").val('');
                 $("#myform").show(500);
             }
 
             display();
 
             $("#btnOK").click(function () {
+                var employeeID= $("#input_text").val().trim();
                 $("#valueFromMyModal").val($("#myform input[type=text]").val().trim());
+                console.log(employeeID);
                 $("#myform").hide(400);
                 canvas.toBlob(function (blob) {
                     name = Date.now() + '.png';
@@ -83,16 +83,19 @@
                     $(".demo-frame").append(timeSpace);
                     clockInMsg.html(`<h3 class='center-align'>You are now clocked-in.<br>Have a great day at work!`);
                     $(".welcome").append(clockInMsg);
+
                     var queryURL = "https://api-us.faceplusplus.com/facepp/v3/detect";
                     var API_KEY = "cKYAUp9G8wVG1XId1bmDMSGFD5wxU6tZ";
                     var API_SECRET = "0CSTJZCXhE-gSZD_EWl8vDsCRsR1Nlny";
                     var imageURL = file.name;
+                    console.log(typeof file.name);
+                    console.log(imageURL);
                     $.ajax({
                         url: queryURL,
                         data: {
                             api_key: API_KEY,
                             api_secret: API_SECRET,
-                            image_url: imageURL,
+                            image_base64: imageURL,
                             return_attributes: "emotion"
                         },
                         method: "POST"
