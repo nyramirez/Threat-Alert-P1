@@ -49,6 +49,7 @@ document.querySelector('#btnSubmit').addEventListener('focus', function (e) {
 });
 
 function showMainPage(){
+    window.location.reload();
     $("#email").val("");
     $("#password").val("");
     $("#displayMessage").text("Please enter login details");

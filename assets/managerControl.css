@@ -324,3 +324,7 @@ table {
     font-family: serif;
     cursor: pointer;
 }
+
+.issueClass{
+  background-color: rgb(238, 132, 132);
+}
