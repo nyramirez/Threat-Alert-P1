@@ -48,7 +48,15 @@ document.querySelector('#btnSubmit').addEventListener('focus', function (e) {
     });
 });
 
+function showMainPage(){
+    $("#email").val("");
+    $("#password").val("");
+    $("#displayMessage").text("Please enter login details");
+    $('#contaianer').css('display', 'none');
+    $('#firstDiv').css('display', 'block');
+}
 $(document).ready(function () {
     event.preventDefault();
     $("#btnSubmit").on("submit", isManager);
+    $("#logOut").on("click", showMainPage);
 });

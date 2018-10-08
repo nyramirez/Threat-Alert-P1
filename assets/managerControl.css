@@ -315,3 +315,12 @@ table {
 #tableContent {
     overflow: scroll;
 }
+
+#logOut{
+    float: right;
+    text-decoration: underline;
+    color: blue;
+    font-size: large;
+    font-family: serif;
+    cursor: pointer;
+}
