@@ -3,9 +3,16 @@ body {
     background-image: url(../pictures/Stratocumulus_Clouds_-_Pacific_Ocean.jpg);
     background-position: center center;
     background-size: cover;
+    background-repeat: repeat;
+}
+
+jumbotron{
+    height:100%;
 }
 
 #pageHead {
+    width: 854px;
+    height: 658px;
     top: 2vh;
     height: 13vh;
 }
@@ -31,10 +38,6 @@ body {
     position: relative;
     font-size: .9rem;
     margin-left: 20vh;
-}
-
-#pictureID {
-    height: 45vh;
 }
 
 #eeInfo {

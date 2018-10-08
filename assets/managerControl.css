@@ -241,18 +241,24 @@ button:hover {
     position: absolute;
     color: black;
     top: 3vh;
-    left: 11rem;
+    left: 7vw;
+    height: 35vh;
+    width: 40vw;
     background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
+    overflow: scroll;
 }  
 
 #plantStatus {
     position: absolute;
     color: black;
     top: 3vh;
-    right: 11rem;
+    right: 7vw;
+    height: 35vh;
+    width: 40vw;
     background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
+    overflow: scroll;
 }
 
 .statusBoxmessage {
@@ -263,10 +269,13 @@ button:hover {
     position: absolute;
     color: black;
     bottom: 3vh;
-    right: 11rem;
+    right: 7vw;
+    height: 45vh;
+    width: 70vw;
     background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
-    height: 45vh;
+    overflow: scroll;
+    
 }
 
 table {
@@ -324,11 +333,290 @@ table >tbody >tr{
     float: right;
     text-decoration: underline;
     color: blue;
-    font-size: large;
+    font-size: 2rem;
     font-family: serif;
     cursor: pointer;
+    right: 1vw;
+    top: 1vh;
 }
 
+/* Media queries  */
+@media only screen and (max-width: 850px) {
+  .login {
+    font-size:2rem;    
+  }
+
+  .eula {
+    font-size:1rem; 
+  }
+
+  .statusBoxmessage {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 2.7rem;
+  }
+
+  h3 {
+    font-size:1.8rem;
+  }
+
+  h5 {
+    font-size:1.8rem;
+  }
+
+  #logOut{
+    font-size: 1.5rem;
+    right: .1vw;
+    top: .1vh;
+  }
+
+  th {
+    font-size: 1.3rem;
+  }
+
+  td {
+    font-size: 1.0rem;
+  }
+
+  #employeeList {
+    right: 3vw;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .login {
+    font-size: 2rem;    
+  }
+
+  .eula {
+    font-size:1rem; 
+  }
+
+  .right {
+    right: 1vw;
+    bottom: 1vh;
+    width: 60vw;
+    height: 30vh;
+  }
+
+  .statusBoxmessage {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 2.3rem;
+  }
+
+  h3 {
+    font-size:1.7rem;
+  }
+
+  h5 {
+    font-size:1.5rem;
+  }
+
+  #logOut{
+    font-size: 1.2rem;
+    right: .1vw;
+    top: .1vh;
+  }
+
+  th {
+    font-size: 1.5rem;
+  }
+
+  td {
+    font-size: 1.2rem;
+  }
+
+  #leftSpacer {
+    display: none;
+  }
+
+  #employeeList {
+    height: 45vh;
+    width: 90vw;
+    right: 3vw;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .login {
+    font-size:2rem;    
+  }
+
+  .eula {
+    font-size:1rem; 
+  }
+
+  .right {
+    right: 1vw;
+    bottom: 1vh;
+    width: 81vw;
+    height: 40vh;
+  }
+
+  .statusBoxmessage {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+
+  h3 {
+    font-size:1.2rem;
+  }
+
+  h5 {
+    font-size:1.2rem;
+  }
+
+  #logOut{
+    font-size: 1rem;
+    right: .1vw;
+    top: .1vh;
+  }
+
+  th {
+    font-size: 1rem;
+  }
+
+  td {
+    font-size: 0.8rem;
+  }
+
+  #leftSpacer {
+    display: none;
+  }
+
+  #employeeList {
+    height: 55vh;
+    width: 95vw;
+    right: 3vw;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .login {
+    font-size:2rem;    
+  }
+
+  .eula {
+    font-size:1rem; 
+  }
+
+  .right {
+    right: 1vw;
+    bottom: 1vh;
+    width: 80vw;
+    height: 40vh;
+  }
+
+  .statusBoxmessage {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size:1rem;
+  }
+
+  h5 {
+    font-size:1rem;
+  }
+
+  #logOut{
+    font-size: .8rem;
+    right: .1vw;
+    top: .1vh;
+  }
+
+  th {
+    font-size: 1rem;
+  }
+
+  td {
+    font-size: 0.8rem;
+  }
+
+  #leftSpacer {
+    display: none;
+  }
+
+  #employeeList {
+    height: 55vh;
+    width: 95vw;
+    right: 3vw;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .login {
+    font-size:2rem;    
+  }
+
+  .eula {
+    font-size:1rem; 
+  }
+
+  .right {
+    right: 1vw;
+    bottom: 1vh;
+    width: 90vw;
+    height: 50vh;
+  }
+
+  .statusBoxmessage {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size:1rem;
+  }
+
+  h5 {
+    font-size:1rem;
+  }
+
+  #logOut{
+    font-size: .8rem;
+    right: .1vw;
+    top: .1vh;
+  }
+
+  th {
+    font-size: 0.8rem;
+  }
+
+  td {
+    font-size: 0.6rem;
+  }
+
+  #leftSpacer {
+    display: none;
+  }
+
+  #employeeList {
+    height: 55vh;
+    width: 95vw;
+    right: 3vw;
+  }
+}
 
 .center-modal {
   display: flex;
