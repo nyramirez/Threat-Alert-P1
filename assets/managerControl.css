@@ -283,6 +283,10 @@ table {
     margin-top: 1.5vh;
 }
 
+table >tbody >tr{
+  cursor: pointer;
+}
+
 /* *********Employee Format********** */
 
 #employeeInfo {
@@ -612,4 +616,12 @@ table {
     width: 95vw;
     right: 3vw;
   }
+}
+
+.center-modal {
+  display: flex;
+}
+.center-modal .modal {
+  position: relative;
+  width: auto;
 }
