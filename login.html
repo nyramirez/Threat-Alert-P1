@@ -7,7 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login Page</title>
     <!-- CSS link -->
-    <link rel="stylesheet" href="./assets/css/loginStyle.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+    <!--    <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase-admin.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-storage.js"></script>
+    <script src="https://apis.google.com/js/client.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://apis.google.com/js/client:plusone.js" tybpe="text/javascript"></script>
+   <link rel="stylesheet" href="./assets/css/loginStyle.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 <body>
@@ -35,7 +44,7 @@
                     <input type="email" id="email">
                     <label for="password">Password</label>
                     <input type="password" id="password">
-                    <input type="submit" id="submit" value="Submit">
+                    <input type="submit" id="btnSubmit" value="Submit">
                 </div>
             </div>
         </div>
@@ -45,6 +54,7 @@
     
     <!-- Link to js file -->
     <script src="./assets/javascript/loginScript.js"></script>
+    <script src="./assets/js/database.js"></script>
     <!-- Resource called -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
 </body>
