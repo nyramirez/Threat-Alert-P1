@@ -72,6 +72,12 @@ body {
   line-height: 1.5;
   margin: 40px;
 }
+.error {
+    color: red;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 40px;
+  }
 .right {
   background: #474A59;
   box-shadow: 0px 0px 40px 16px rgba(0,0,0,0.22);
@@ -138,8 +144,7 @@ input::-moz-focus-inner {
 @import url("https://fonts.googleapis.com/css?family=Varela+Round");
 body {
   margin: 0;
-  background-color: lightskyblue;
-}
+  background-color: whitesmoke;}
 
 button {
     position: relative;
@@ -309,4 +314,13 @@ table {
 
 #tableContent {
     overflow: scroll;
+}
+
+#logOut{
+    float: right;
+    text-decoration: underline;
+    color: blue;
+    font-size: large;
+    font-family: serif;
+    cursor: pointer;
 }
