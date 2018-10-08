@@ -329,6 +329,11 @@ table >tbody >tr{
     cursor: pointer;
 }
 
-.issueClass{
-  background-color: rgb(238, 132, 132);
+
+.center-modal {
+  display: flex;
+}
+.center-modal .modal {
+  position: relative;
+  width: auto;
 }

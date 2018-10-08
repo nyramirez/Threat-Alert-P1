@@ -26,7 +26,7 @@ $(document).ready(function () {
     $('#firstDiv').css('background-image', 'url(./assets/pictures/green-forest-trees.jpg)');
     $('#firstDiv').css('height', '94%');
     event.preventDefault();
-    $("#btnSubmit").on("click", testIsManager);
+    $("#btnSubmit").on("click", isManager);
 });
 
 $("body").on("click", "tr", function() {

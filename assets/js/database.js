@@ -37,7 +37,8 @@ class Employee {
 
 var aoCompany = [{}];
 var aoEmp = [];
-var myEmp, trainID, arrayID;
+var myEmp, arrayID;
+var totalIssues = 0;
 
 class Emotions {
   constructor(iFear, iAnger, iSad) {
@@ -261,7 +262,6 @@ function testIsManager() {
 function displayEmployees(employees) {
   var length = employees.length;
   console.log("length:" + length);
-  var totalIssues = 0;
   for (i = 0; i < length; i++) {
     var issues = 0;
     if (employees[i].aiAnger != 0 || employees[i].aiFear != 0 || employees[i].aiSad != 0) {
@@ -380,7 +380,7 @@ async function getEmployeeDetails(iEmpNum, isFlag) {
   let oEmpDoc = await (oThisEmp.get());
   oEmp = (oEmpDoc.data());
   if (isFlag) {
-    var mgrName=oEmp.firstName + " " + oEmp.lastName;
+    var mgrName = oEmp.firstName + " " + oEmp.lastName;
     $("#managerName").text(mgrName);
     $("#managerEE").text("Employee ID: " + iEmpNum);
     localStorage.setItem("ManagerName", mgrName);
@@ -421,31 +421,34 @@ function findArrayID() {
   // Find the train in the array
   for (arrayID = 0; arrayID < aoEmp.length; arrayID++) {
     if (aoEmp[arrayID].empID === empID) {
-      myEmp = aoEmp[arrayID].firstName+" "+aoEmp[arrayID].lastName;
+      myEmp = aoEmp[arrayID].firstName + " " + aoEmp[arrayID].lastName;
       break;
     }
   }
 }
 
-function getValues(){
-  var employeeName=myEmp;
-  var managerEmail=localStorage.getItem("email");
-  var managerName=localStorage.getItem("ManagerName");
-  var templateVariables={
+function getValues() {
+  var employeeName = myEmp;
+  var managerEmail = localStorage.getItem("email");
+  var managerName = localStorage.getItem("ManagerName");
+  var templateVariables = {
     from_name: "Support Team",
     to_name: managerName,
-    emp_name:employeeName,
+    emp_name: employeeName,
     message_html: `
         <a href="https://www.google.com/">Click here for survey.</a>
     `,
-    recipient:managerEmail
-};
+    recipient: managerEmail
+  };
 
-emailjs.send('gmail', 'template_Dz2E8H0d', templateVariables)
+  emailjs.send('gmail', 'template_Dz2E8H0d', templateVariables)
     .then(function (res) {
-        console.log('success');
-        
-    },function (err) {
-        console.log('nope',err);
+      console.log('success');
+      $('.modal').modal();
+      $('#modal1').modal('open');
+    }, function (err) {
+      $('.modal').modal();
+      $('#modal2').modal('open');
+      console.log('nope', err);
     });
 }
