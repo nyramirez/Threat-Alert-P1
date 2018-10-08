@@ -187,11 +187,11 @@ button:hover {
     top: 0;
     left: 0;
     background-color: #000;
-    overflow: hidden;
+    /* overflow: hidden; */
     font-family: 'Lato', sans-serif;
     }
   #wrapper {
-    overflow: hidden;
+    /* overflow: hidden; */
     position: absolute;
     width: 1700px;
     height: 1000px;
@@ -246,7 +246,7 @@ button:hover {
     width: 40vw;
     background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
-    overflow: scroll;
+    /* overflow: scroll; */
 }  
 
 #plantStatus {
@@ -258,7 +258,7 @@ button:hover {
     width: 40vw;
     background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
-    overflow: scroll;
+    /* overflow: scroll; */
 }
 
 .statusBoxmessage {
@@ -325,9 +325,9 @@ table >tbody >tr{
     height: 45vh;
 }
 
-#tableContent {
+/* #tableContent {
     overflow: scroll;
-}
+} */
 
 #logOut{
     float: right;
@@ -562,18 +562,31 @@ table >tbody >tr{
 
 @media only screen and (max-width: 320px) {
   .login {
-    font-size:2rem;    
+    font-size:1.5rem;    
   }
 
   .eula {
-    font-size:1rem; 
+    font-size:.8rem; 
+  }
+
+  .left {
+    left: 1vw;
+    top: 1vh;
+    width: 70vw;
+    height: 40vh;
   }
 
   .right {
     right: 1vw;
     bottom: 1vh;
-    width: 90vw;
-    height: 50vh;
+    width: 70vw;
+    height: 40vh;
+  }
+
+  label {
+    font-size: 0.8rem;
+    margin-top: .5rem;
+    margin-bottom: .1rem;
   }
 
   .statusBoxmessage {
