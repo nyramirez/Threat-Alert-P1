@@ -274,6 +274,10 @@ table {
     margin-top: 1.5vh;
 }
 
+table >tbody >tr{
+  cursor: pointer;
+}
+
 /* *********Employee Format********** */
 
 #employeeInfo {
