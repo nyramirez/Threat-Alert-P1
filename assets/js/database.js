@@ -20,7 +20,7 @@ const settings = {
   timestampsInSnapshots: true
 };
 firestore.settings(settings);
-
+  
 class Employee {
   constructor(sFirstName, sLastName, sGender, bIsManager, sImageFile, sImageSize, sEmail, iEmpID) {
     this.sFirstName = sFirstName;
