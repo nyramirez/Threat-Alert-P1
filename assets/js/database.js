@@ -22,7 +22,7 @@ const settings = {
 firestore.settings(settings);
 
 class Employee {
-  constructor(sFirstName, sLastName, sGender, bIsManager, sImageFile, sImageSize, sEmail) {
+  constructor(sFirstName, sLastName, sGender, bIsManager, sImageFile, sImageSize, sEmail, iEmpID) {
     this.sFirstName = sFirstName;
     this.sLastName = sLastName;
     this.sGender = sGender;
@@ -32,6 +32,7 @@ class Employee {
     this.sImageSize = sImageSize;
     this.sImageLink = "";
     this.email = sEmail;
+    this.iempID = iEmpID;
   }
 }
 
@@ -50,10 +51,10 @@ class Emotions {
 
 const EMOTIONS_MAX = 10; // the number in the array
 
-aoCompany[0] = new Employee("Roger", "Byford", "M", false, "Roger.jpg", 6846, "rgbyford@gmail.com");
-aoCompany[1] = new Employee("Akanksha", "Kapoor", "F", true, "Akanksha.jpg", 7919, "agaur05@gmail.com");
-aoCompany[2] = new Employee("Aime", "Urquieta", "F", false, "", 0, "7aime7@gamail.com");
-aoCompany[3] = new Employee("Nestor", "Ramirez", "M", false, "", 0, "nyramirez@gmail.com");
+aoCompany[0] = new Employee("Roger", "Byford", "M", false, "Roger.jpg", 6846, "rgbyford@gmail.com", 0);
+aoCompany[1] = new Employee("Akanksha", "Kapoor", "F", true, "Akanksha.jpg", 7919, "agaur05@gmail.com", 1);
+aoCompany[2] = new Employee("Aime", "Urquieta", "F", false, "", 0, "7aime7@gamail.com", 2);
+aoCompany[3] = new Employee("Nestor", "Ramirez", "M", false, "", 0, "nyramirez@gmail.com", 3);
 
 const empsRef = firestore.collection('employees');
 
@@ -109,27 +110,38 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 // Puts the image pointed to by the file name into storage
 // for future use in identifying somebody.  And stores the image
 // URL as part of the employee record.
-function addImage(oFile) {
+async function addImage(sEmployeeID, oFile) {
   // the dialog box used to get the oFile doesn't give the path, so we have to add it
-  var sShortName = oFile.name;
-  var sFullFileName = "../pictures/" + oFile.name;
-  oFile.name = sFullFileName;
-  var oImageRef = fbRef.child(oFile.name);
+  //   var sShortName = oFile.name;
+  var sShortName = sEmployeeID;
 
-  oImageRef.put(oFile).then(function (snapshot) {
-    console.log('Uploaded a file!');
-  });
-  oImageRef.getDownloadURL().then(function (url) {
-    for (var iEmp = 0; iEmp < aoCompany.length; iEmp++) {
-      if (aoCompany[iEmp].sImageFile === sShortName) {
-        let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
-        oThisEmp.update({
-          sImageLink: url
-        });
-        break;
-      }
-    }
-  });
+  //  var sFullFileName = "../pictures/" + oFile.name;
+  //  oFile.name = sFullFileName;
+  var oImageRef = fbRef.child(oFile.name);
+    await (oImageRef.put(oFile));
+//  oImageRef.put(oFile).then(function (snapshot) {
+        console.log('Uploaded a file!');
+        await (url = oImageRef.getDownloadURL());
+//        oImageRef.getDownloadURL().then(function (url) {
+            //      var iEmp = 2;
+            // for (var iEmp = 0; iEmp < aoCompany.length; iEmp++) {
+            //   //        if (aoCompany[iEmp].sImageFile === sShortName) {
+            //   iEmpID = parseInt(sEmployeeID) - 100;
+            //   if (aoCompany[iEmp].iempID === iEmpID) {
+            //     let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
+            //     //let oThisEmp = empsRef.doc(sEmployeeID);
+            //     oThisEmp.update({
+            //       sImageLink: url
+            //     });
+            //     break;
+            //   }
+        // }
+        return (url);
+//        });
+    // },
+    // function (err) {
+    //   console.log("Error: " + err);
+    // });
 }
 
 //testGetImages ();
@@ -452,3 +464,4 @@ function getValues() {
       console.log('nope', err);
     });
 }
+
