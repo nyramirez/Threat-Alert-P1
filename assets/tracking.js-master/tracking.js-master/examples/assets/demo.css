@@ -1,5 +1,5 @@
 body, html {
-  background-image: url(/pictures/Stratocumulus_Clouds_-_Pacific_Ocean.jpg);
+  background-image: url(earth.jpg);
   background-position: center center;
   background-size: cover;
   background-repeat: repeat;
@@ -34,7 +34,7 @@ jumbotron{
 }
 
 #instruction {
-  position: relative;
+  position: absolute;
   font-size: .9rem;
   margin-left: 20vh;
 }
