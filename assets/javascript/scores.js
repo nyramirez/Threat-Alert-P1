@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    //questionnaire questions/answers object
     var questionnaire = [{
         questions: "Little interest or pleasure in doing things",
         answers: ["Not at all", "Several Days", "More Than Half the Days", "Nearly Every Day"],
@@ -31,6 +32,7 @@ $(document).ready(function () {
         answers: ["Not at all", "Somewhat Difficult", "Very difficult", "Extremely difficult"],
     }];
 
+    //questionnaire properties object
     var form = {
         employeeID: "",
         totalScore: 0,
@@ -41,23 +43,27 @@ $(document).ready(function () {
         count: 0,
     }
 
-    var afterSubmitting = {
-        msg: "Thank you for submitting your assesment! </br> Your manager will contact you shortly.",
-    }
-
-    $("#container_1").html(`<h2>${form.title}</h2>`);
-    $("#employeeIDspace").html(`<div class=row>
-                            <div class="input-field col s3">
-                            <input id="input_text" type="text" data-length="3" maxlength="3" class="validate" />
-                            <label for="input_text">Employee ID</label></div></div>`);
+    //after submission object
+    //var afterSubmitting = {
+      //  msg: "Thank you for submitting your assesment! </br></br> Your manager will contact you shortly.",
+    //}
 
 
     $('input#input_text, textarea#textarea2').characterCounter();
 
+    //function to display title, employee ID input field and instructions
+    function displayTitle_Instruct_EmpID() {
+        $("#container_1").html(`<h2>${form.title}</h2>`);
+        $("#employeeIDspace").html(`<div class=row>
+                            <div class="input-field col s3">
+                            <input id="input_text" type="text" data-length="3" maxlength="3" class="validate" />
+                            <label for="input_text">Employee ID</label></div></div>`);
+        $("#form").html(`<h6>${form.instructions}</h6>`);
+    }
 
-    $("#form").html(`<h6>${form.instructions}</h6>`);
     //function to display questionnaire questions and asnwers
     function questionsAnswersDisplay(questionnaire) {
+        displayTitle_Instruct_EmpID();
         for (var i = 0; i < questionnaire.length; i++) {
             form.count++;
             var question = $('<div class="py-2"><p></p></div>');
@@ -102,6 +108,7 @@ $(document).ready(function () {
         console.log(form.depStatus);
     }
 
+    //on click answer to get a number value from every question
     $(document.body).on("click", '.chosen', function () {
         var chosen = $(this);
         console.log(this);
@@ -115,6 +122,7 @@ $(document).ready(function () {
         }
     })
 
+    //fucntion to sum up score
     function getScore() {
         for (var k = 0; k < form.sumScoreArray.length; k++) {
             form.totalScore += form.sumScoreArray[k];
@@ -122,66 +130,88 @@ $(document).ready(function () {
         console.log(form.totalScore);
         return form.totalScore;
     }
+
+    //fucntion to change the html after user submits questionnaire
     function changeDisplay() {
         $('#beforeSub').css('display', 'none');
         $('#afterSub').css('display', 'block');
-        setTimeout(document.location.replace('https://www.narscosmetics.com'), 4000);
+        setTimeout(document.location.replace('https://www.narscosmetics.com'), 8000);
     }
-    $("#submitB").on("click", function (event) {
 
+    //on click after submission
+    $("#submitB").on("click", function (event) {
         event.preventDefault();
+
         if ($('#input_text').val().length < 1) {
             $.blockUI({ message: "<h4>You must enter an Employee ID</h4>" });
-            setTimeout($.unblockUI, 2000); 
+            setTimeout($.unblockUI, 4000);
             return false;
-          }
-
+        }
         else if ($('#input_text').val().length < 3) {
             $.blockUI({ message: "<h4>Please check your Employee ID</h4>" });
-            setTimeout($.unblockUI, 2000); 
+            setTimeout($.unblockUI, 4000);
             return false;
-          }
+        }
 
+        
+        checkInputs();
         form.employeeID = parseInt($("#input_text").val().trim());
+        console.log(form.employeeID);
         getScore();
         phq9testResults();
         //getDepressionResult(iEmpNum);
         changeDisplay();
+
     });
 
-        function changeDisplay() {
-        $('#beforeSub').css('display', 'none');
-        $('#afterSub').css('display', 'block');
-        setTimeout(document.location.replace('https://www.narscosmetics.com'), 6000);
-    }
-
-
+    //function to show form before submission
     function displayQuestionnaire() {
-        $("#afterSub").html(`<h2>${afterSubmitting.msg}</h2>`);
+        //$("#afterSub").html(`<h2>${afterSubmitting.msg}</h2>`);
         //$("#afterSub").append(afterSubmitting.closeButton);
         $('#afterSub').css('display', 'none');
         $('#beforeSub').css('display', 'block');
     }
 
-   // $('#submitB').click(function(){
-     //   var check = true;
-       // $("input:radio").each(function(){
-          //  var name = $(this).attr("name");
-          //  if($("input:radio[name="+name+"]:checked").length == 0){
-            //    check = false;
-           // }
-        //});
-        
-       // if(check){
-           // $.blockUI({ message: '<h3>Please wait while we process your answers.</h3>' });}
-            // else if(!(form.employeeID==="")){
-          //  location.reload()
-        //}   
-       // else{
-        //    $.blockUI({ message: '<h3>Please wait while we process your answers.</h3>' });;
-        //}
-   // });
+    function checkInputs() {
+        var check = true;
+        $("input:radio").each(function () {
+            var name = $(this).attr("name");
+            if ($("input:radio[name=" + name + "]:checked").length == 0) {
+                check = false;
+            }
+        });
 
+        if (check) {
+            $.blockUI({ message: '<h5>Thank you for submitting your assesment! </br></br> Your manager will contact you shortly.</h5>' });
+            setTimeout($.unblockUI, 8000); 
+            
+        }
+        else {
+            $.blockUI({ message: $('#modalquestion'), css: { width: '275px' } }); 
+            $('#yes').click(function () {
+                $.blockUI({ message: "<h5>Please wait while we process your answers...</h5>" });
+            
+
+            $.ajax({ 
+                url: 'wait.php', 
+                cache: false, 
+                complete: function() { 
+                    // unblock when remote call returns 
+                    $.unblockUI(); 
+                } 
+            }); 
+        }); 
+
+            $('#no').click(function () {
+                console.log("works");
+                window.location.reload(true);
+                $.unblockUI(); 
+                return false; 
+            });
+        }
+    }
+
+    //calling functions
     displayQuestionnaire();
     questionsAnswersDisplay(questionnaire);
 });
