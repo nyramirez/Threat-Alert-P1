@@ -190,6 +190,7 @@ $(document).ready(function () {
             $.blockUI({ message: $('#modalquestion'), css: { width: '275px' } }); 
             $('#yes').click(function () {
                 $.blockUI({ message: "<h5>Please wait while we process your answers...</h5>" });
+                setTimeout($.unblockUI, 8000); 
             
 
             $.ajax({ 
