@@ -42,22 +42,26 @@
   <body>
 
     <div class="demo-frame p-0">
-      <div class="demo-container">
+      <div class="demo-container rounded">
         <div id="panel">
           <div class="welcome py-4">
             <h1 class="center-align">Welcome to NA2RS</h1>
           </div>
           <!-- Dialog Box-->
-          <div class="modal" id="myform" class="rgb">
-            <form id=empID>
-              <label id="valueFromMyButton">
-              </label>
-              <input align=center id="input_text" type="text" id="name" data-length="3" maxlength="3" placeholder="ENTER EMPLOYEE ID" required>
-              <div align="center">
-                <input type="button" value="OK" id="btnOK">
-              </div>
-            </form>
+
+          <!-- Modal Structure -->
+          <div id="modal1" class="modal col-lg-3 col-md-4 col-sm-5 rounded">
+            <div class="modal-content border-0">
+              <h4>Clock-in</h4>
+              <input align=center id="input_text" type="text" id="name" data-length="3" maxlength="3" placeholder="ENTER EMPLOYEE ID" class='required'
+              />
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="btnOK">OK</a>
+            </div>
           </div>
+
+
         </div>
         <video id="video" width="320" height="240" preload autoplay loop muted></video>
         <canvas id="canvas" width="320" height="240"></canvas>
@@ -69,38 +73,42 @@
       window.onload = function () {
         //function to display modal box once window loads
         function display() {
-          $("#myform input[type=text]").val('');
-          $("#valueFromMyModal").val('');
-          $("#myform").show(500);
+          $("#modal1 input[type=text]").val('');
+          $("#modal1").show(500);
         }
 
         display();
 
-        var timeSpace = $("<div class='timeSpace py-auto'>");
-          var clockInMsg = $("<div>");
-          var video = document.getElementById('video');
-          var canvas = document.getElementById('canvas');
-          var context = canvas.getContext('2d');
-          var name;
-          var file;
-          context.drawImage(video, 0, 0, 320, 240);
+        var timeSpace = $("<div class='timeSpace py-auto text-center py-3'>");
+        var clockInMsg = $("<div>");
+        var video = document.getElementById('video');
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        var name;
+        var file;
+        context.drawImage(video, 0, 0, 320, 240);
 
-          //face tracker function
-          var tracker = new tracking.ObjectTracker(['face']);
-            tracker.setInitialScale(4);
-            tracker.setStepSize(2);
-            tracker
-              .setEdgesDensity(0.1);
+        //face tracker function
+        var tracker = new tracking.ObjectTracker(['face']);
+        tracker.setInitialScale(4);
+        tracker.setStepSize(2);
+        tracker
+          .setEdgesDensity(0.1);
 
-         tracking.track('#video', tracker, {
-              camera: true
-            });
+        tracking.track('#video', tracker, {
+          camera: true
+        });
         //on click once employee enters employee ID
         $("#btnOK").click(function () {
-          //$("#valueFromMyModal").val($("#myform input[type=text]").val().trim());
+          if ($('#input_text').val().length < 1) {
+            $.blockUI({ message: "<h1>You must enter an Employee ID</h1>" });
+            setTimeout($.unblockUI, 2000); 
+            return false;
+          }
+
           var employeeID = $("#input_text").val().trim();
           $(".modal").css("display", "none");
-          $("#myform").hide(400);
+          $("#modal1").hide(400);
 
           //function to get time
           canvas.toBlob(function (blob) {
@@ -117,140 +125,140 @@
             clockInMsg.html(
               `<h3 class='center-align'>You are now clocked-in.<br>Have a great day at work!`);
             $(".welcome").append(clockInMsg);
-              });
+          });
 
-          
 
-            function func() {
+
+          function func() {
+            return;
+          }
+
+          tracker.on('track', function (event) {
+            if (event.data.length === 0) {
               return;
             }
+            if (event.data[0].width > 100) {
+              //          setTimeout(func, 5 * 1000);
 
-            tracker.on('track', function (event) {
-              if (event.data.length === 0) {
-                return;
-              }
-              if (event.data[0].width > 100) {
-                //          setTimeout(func, 5 * 1000);
+              var hidden_canvas = document.querySelector('canvas'),
+                video = document.querySelector('video'),
+                //            image = document.querySelector('img.photo'),
 
-                var hidden_canvas = document.querySelector('canvas'),
-                  video = document.querySelector('video'),
-                  //            image = document.querySelector('img.photo'),
+                // Get the exact size of the video element.
+                width = video.videoWidth,
+                height = video.videoHeight,
 
-                  // Get the exact size of the video element.
-                  width = video.videoWidth,
-                  height = video.videoHeight,
+                // Context object for working with the canvas.
+                context = hidden_canvas.getContext('2d');
 
-                  // Context object for working with the canvas.
-                  context = hidden_canvas.getContext('2d');
+              // Set the canvas to the same dimensions as the video.
+              hidden_canvas.width = width;
+              hidden_canvas.height = height;
 
-                // Set the canvas to the same dimensions as the video.
-                hidden_canvas.width = width;
-                hidden_canvas.height = height;
+              // Draw a copy of the current frame from the video on the canvas.
+              context.drawImage(video, 0, 0, width, height);
 
-                // Draw a copy of the current frame from the video on the canvas.
-                context.drawImage(video, 0, 0, width, height);
+              // Get an image dataURL from the canvas.
+              var imageData = hidden_canvas.toDataURL('image/png');
+              // document.querySelector('#dl-btn').href = imageData;
+              //console.log(imageData.length);
+              /*
+                        var promise = navigator.mediaDevices.getUserMedia({
+                            audio: false,
+                            video: true
+                          })
+                          .then(function (stream) {
+                            console.log(stream);
+                          })
+                          .catch(function (err) {
+                            console.log(err);
+                          });
+              */
+              //             let mediaStreamTrack = mediaStream.getVideoTracks()[0];
+              //     imageCapture = new ImageCapture(mediaStreamTrack);
+              //     console.log(imageCapture);
+              // })
+              // const img = img || document.querySelector('img');
 
-                // Get an image dataURL from the canvas.
-                var imageData = hidden_canvas.toDataURL('image/png');
-               // document.querySelector('#dl-btn').href = imageData;
-                //console.log(imageData.length);
-                /*
-                          var promise = navigator.mediaDevices.getUserMedia({
-                              audio: false,
-                              video: true
-                            })
-                            .then(function (stream) {
-                              console.log(stream);
-                            })
-                            .catch(function (err) {
-                              console.log(err);
-                            });
-                */
-                //             let mediaStreamTrack = mediaStream.getVideoTracks()[0];
-                //     imageCapture = new ImageCapture(mediaStreamTrack);
-                //     console.log(imageCapture);
-                // })
-                // const img = img || document.querySelector('img');
-
-                // imageCapture.takePhoto()
-                // .then(blob => {
-                //     let url = window.URL.createObjectURL(blob);
-                //     img.src = url;
-                //     window.URL.revokeObjectURL(url); 
-                // })
-                // .catch(error);
+              // imageCapture.takePhoto()
+              // .then(blob => {
+              //     let url = window.URL.createObjectURL(blob);
+              //     img.src = url;
+              //     window.URL.revokeObjectURL(url); 
+              // })
+              // .catch(error);
 
 
 
-                //console.log(event.data[0].x, event.data[0].y, event.data[0].width, event.data[0].height);
-                //imageData = imageData.slice(22);
-                //          file = new File([imageData], "test.png", {
-                //            type: 'image.png'
-                //          });
+              //console.log(event.data[0].x, event.data[0].y, event.data[0].width, event.data[0].height);
+              //imageData = imageData.slice(22);
+              //          file = new File([imageData], "test.png", {
+              //            type: 'image.png'
+              //          });
 
-                urltoFile(imageData, 'test.png', 'image/png')
-              .then(function (file) {
-                console.log(file);
+              urltoFile(imageData, 'test.png', 'image/png')
+                .then(function (file) {
+                  console.log(file);
 
-                addImage(employeeID, file).then(function (url) {
-                  console.log(url);
+                  addImage(employeeID, file).then(function (url) {
+                    console.log(url);
 
-                  var queryURL = "https://api-us.faceplusplus.com/facepp/v3/detect";
-                  var API_KEY = "cKYAUp9G8wVG1XId1bmDMSGFD5wxU6tZ";
-                  var API_SECRET = "0CSTJZCXhE-gSZD_EWl8vDsCRsR1Nlny";
-                  //            var imageURL = "https://firebasestorage.googleapis.com/v0/b/rgb-rps.appspot.com/o/Roger.jpg?alt=media&token=4648484d-7008-439f-b22f-be2957f45499";
-                  var imageURL = url;
-                  $.ajax({
-                    url: queryURL,
-                    data: {
-                      api_key: API_KEY,
-                      api_secret: API_SECRET,
-                      image_url: imageURL,
-                      return_attributes: "emotion"
-                    },
-                    method: "POST"
-                  }).then(function (response) {
-                    console.log(response);
-                  }).catch(function (err) {
-                    console.log(err);
+                    var queryURL = "https://api-us.faceplusplus.com/facepp/v3/detect";
+                    var API_KEY = "cKYAUp9G8wVG1XId1bmDMSGFD5wxU6tZ";
+                    var API_SECRET = "0CSTJZCXhE-gSZD_EWl8vDsCRsR1Nlny";
+                    //            var imageURL = "https://firebasestorage.googleapis.com/v0/b/rgb-rps.appspot.com/o/Roger.jpg?alt=media&token=4648484d-7008-439f-b22f-be2957f45499";
+                    var imageURL = url;
+                    $.ajax({
+                      url: queryURL,
+                      data: {
+                        api_key: API_KEY,
+                        api_secret: API_SECRET,
+                        image_url: imageURL,
+                        return_attributes: "emotion"
+                      },
+                      method: "POST"
+                    }).then(function (response) {
+                      console.log(response);
+                    }).catch(function (err) {
+                      console.log(err);
+                    });
+
                   });
-
-            });
+                });
+            }
           });
+
+          //return a promise that resolves with a File instance
+          function urltoFile(url, filename, mimeType) {
+            return (fetch(url)
+              .then(function (res) {
+                return res.arrayBuffer();
+              })
+              .then(function (buf) {
+                //            var shortBuf = buf.slice(0, 30);
+                //            var enc = new TextDecoder("utf-8");
+                //            console.log(enc.decode(shortBuf));
+                //            console.log("SB: ", shortBuf);
+                return new File([buf], filename, {
+                  type: mimeType
+                });
+              })
+            );
           }
+
+          //Usage example:
+          urltoFile('data:text/plain;base64,aGVsbG8gd29ybGQ=', 'hello.txt', 'text/plain')
+            .then(function (file) {
+              console.log(file);
+            })
+
+          // tracking.track('#video', tracker, {
+          //camera: true
+          // });
+
+          reset();
         });
 
-            //return a promise that resolves with a File instance
-            function urltoFile(url, filename, mimeType) {
-              return (fetch(url)
-                .then(function (res) {
-                  return res.arrayBuffer();
-                })
-                .then(function (buf) {
-                  //            var shortBuf = buf.slice(0, 30);
-                  //            var enc = new TextDecoder("utf-8");
-                  //            console.log(enc.decode(shortBuf));
-                  //            console.log("SB: ", shortBuf);
-                  return new File([buf], filename, {
-                    type: mimeType
-                  });
-                })
-              );
-            }
-
-            //Usage example:
-            urltoFile('data:text/plain;base64,aGVsbG8gd29ybGQ=', 'hello.txt', 'text/plain')
-              .then(function (file) {
-                console.log(file);
-              })
-
-             // tracking.track('#video', tracker, {
-              //camera: true
-           // });
-
-                  reset();
-                });
-      
 
         function resetFunct() {
           display();
@@ -298,6 +306,7 @@
   <!-- jQUery -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="../../../../assets/javascript/block.js" type="text/javascript"></script>
 
 
   </html>
