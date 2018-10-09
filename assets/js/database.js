@@ -37,6 +37,7 @@ class Employee {
 }
 
 var aoCompany = [{}];
+var aoEmp = [];
 
 class Emotions {
   constructor(iFear, iAnger, iSad) {
@@ -260,14 +261,53 @@ function compareEmotions(iEmpNum, oEmotions) {
 //testIsManager();
 
 function testIsManager() {
+ 
+  console.log(empsRef);
+  isManager(email, password).then(function (iMgr) {
+    
+  });
+}
+
+function displayEmployees(employees){
+  var length=employees.length;
+  console.log("length:" +length);
+  for(i=0;i<length;i++){
+    var issues=0;
+    if(employees[i].aiAnger!=0 || employees[i].aiFear!=0 || employees[i].aiSad!=0 ){
+      issues+=1;
+    }
+    $("#pendingIssues").html(issues);
+    $("tbody").append( `<tr id="${employees[i].empID}">
+               <td>${employees[i].empID}</td>
+                <td>${employees[i].firstName+" "+employees[i].lastName}</td>
+                <td>${employees[i].email}</td>
+                <td>${issues}</td>
+            </tr>`);
+  }
+ 
+}
+
+async function isManager() {
   event.preventDefault();
   var email = $("#email").val().trim();
   var password = $("#password").val().trim();
-  console.log(empsRef);
-  isManager(email, password).then(function (iMgr) {
-    console.log(iMgr);
-    if (iMgr > 0) {
+  var managerID;
+  // returns employee ID if sPassword and sEmail match and the person is designated as a manager.  Else -1
+  var query = empsRef.where('isManager', '==', true).where('password', '==', password).where('email', '==', email);
+  let oDoc = await (query.get());
+  if (oDoc.docs.length > 0) {
+    managerID= (parseInt(oDoc.docs[0].id));
+  }else{
+    managerID= (-1);
+  }
+  console.log(managerID);
+    if (managerID > 0) {
       console.log("Success");
+      $("#displayMessage").html("");
+      $('#firstDiv').css('display', 'none');
+      $('#contaianer').css('display', 'block');
+      getEmployeeDetails(managerID,true);//is Manager
+      listEmployeeDetails(managerID);
     } else {
       console.log("Failure");
       if (email === "" || password === "") {
@@ -278,24 +318,12 @@ function testIsManager() {
         $("#displayMessage").html("Invalid Login");
       }
     }
-  });
-}
-
-
-async function isManager(email, password) {
-  // returns employee ID if sPassword and sEmail match and the person is designated as a manager.  Else -1
-  var query = empsRef.where('isManager', '==', true).where('password', '==', password).where('email', '==', email);
-  let oDoc = await (query.get());
-  if (oDoc.docs.length > 0) {
-    return (parseInt(oDoc.docs[0].id));
-  }
-  return (-1);
 }
 
 //testListEmployees();
 
-function testListEmployees() {
-  listEmployees(1).then(function (aiEmp) {
+function testListEmployees(managerID) {
+  listEmployees(managerID).then(function (aiEmp) {
     console.log(aiEmp);
   });
 }
@@ -305,28 +333,28 @@ async function listEmployees(iManagerID) {
   // must call this with a then - see testListEmployees
   aiEmp = [];
   var query = empsRef.where('managerID', '==', iManagerID);
-  let oDoc = await (query.get());
+  let oDoc = await(query.get());
   if (oDoc.docs.length > 0) {
     for (var i = 0; i < oDoc.docs.length; i++) {
       aiEmp.push(oDoc.docs[i].id);
     }
   }
   //  console.log("Employees: ", +aiEmp);
-  return (aiEmp);
+  return (aiEmp);   
 }
 
 //testListEmployeeDetails();
 
-function testListEmployeeDetails() {
-  listEmployeeDetails(1).then(function (aoEmp) {
+function testListEmployeeDetails(managerID) {
+  listEmployeeDetails(managerID).then(function (aoEmp) {
     console.log(aoEmp);
+    $("tbody").append(displayEmployees(aoEmp));
   });
 }
 
 async function listEmployeeDetails(iManagerID) {
   // returns an array of the manager's employees
   // must call this with a then - see testListEmployees
-  var aoEmp = [];
   var query = empsRef.where('managerID', '==', iManagerID);
   let oDoc = await (query.get());
   if (oDoc.docs.length > 0) {
@@ -336,24 +364,32 @@ async function listEmployeeDetails(iManagerID) {
       aoEmp.push(oEmpDoc.data());
     }
   }
-  return (aoEmp);
+  displayEmployees(aoEmp);
 }
 
 //testGetEmployeeDetails();
 
-function testGetEmployeeDetails() {
-  getEmployeeDetails(1).then(function (oEmp) {
+function testGetEmployeeDetails(empID,isFlag) {
+  getEmployeeDetails(empID).then(function (oEmp) {
     console.log(oEmp);
+    if(isFlag){
+    $("#managerName").text(oEmp.firstName +" "+oEmp.lastName);
+    $("#managerEE").text("Employee ID: " +empID);
+    }
   });
 }
 
-async function getEmployeeDetails(iEmpNum) {
+async function getEmployeeDetails(iEmpNum,isFlag) {
   // returns an object with the employee info
   // must call this with a then - see testListEmployees
   var oEmp;
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   let oEmpDoc = await (oThisEmp.get());
-  return (oEmpDoc.data());
+  oEmp=(oEmpDoc.data());
+  if(isFlag){
+    $("#managerName").text(oEmp.firstName +" "+oEmp.lastName);
+    $("#managerEE").text("Employee ID: " +iEmpNum);
+    }
 }
 
 //testDepression();
