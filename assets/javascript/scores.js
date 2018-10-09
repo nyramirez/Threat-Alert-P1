@@ -43,7 +43,6 @@ $(document).ready(function () {
 
     var afterSubmitting = {
         msg: "Thank you for submitting your assesment!",
-        closeButton: $("<a class='waves-effect waves-light btn-small' href='https://www.narscosmetics.com/'>Okay</a>"),
     }
 
     $("#container_1").html(`<h2>${form.title}</h2>`);
