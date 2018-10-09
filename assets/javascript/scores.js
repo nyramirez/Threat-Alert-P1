@@ -42,13 +42,13 @@ $(document).ready(function () {
     }
 
     var afterSubmitting = {
-        msg: "Thank you for submitting your assesment!",
+        msg: "Thank you for submitting your assesment! </br> Your manager will contact you shortly.",
     }
 
     $("#container_1").html(`<h2>${form.title}</h2>`);
     $("#employeeIDspace").html(`<div class=row>
                             <div class="input-field col s3">
-                            <input id="input_text" type="text" data-length="3" maxlength="3" required>
+                            <input id="input_text" type="text" data-length="3" maxlength="3" class="validate" />
                             <label for="input_text">Employee ID</label></div></div>`);
 
 
@@ -130,11 +130,17 @@ $(document).ready(function () {
     $("#submitB").on("click", function (event) {
 
         event.preventDefault();
-       // if (form.employeeID === "") {
-          //  console.log("test");
-          //  $("#afterSub").block({ message: '<h3>You are required to enter your employee ID.</h3>' });
-           // $.blockUI({ message: '<h3>You are required to enter your employee ID.</h3>' })
-       // };
+        if ($('#input_text').val().length < 1) {
+            $.blockUI({ message: "<h4>You must enter an Employee ID</h4>" });
+            setTimeout($.unblockUI, 2000); 
+            return false;
+          }
+
+        else if ($('#input_text').val().length < 3) {
+            $.blockUI({ message: "<h4>Please check your Employee ID</h4>" });
+            setTimeout($.unblockUI, 2000); 
+            return false;
+          }
 
         form.employeeID = parseInt($("#input_text").val().trim());
         getScore();
