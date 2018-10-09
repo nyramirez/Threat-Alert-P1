@@ -22,7 +22,7 @@ $('html').mousemove(function (e) {
 
 
 $(document).ready(function () {
-    $('#contaianer').css('display', 'none');
+    $('#contaianer').css('display', 'none');//don't display anything under this div
     $('#firstDiv').css('background-image', 'url(./assets/pictures/green-forest-trees.jpg)');
     $('#firstDiv').css('height', '94%');
     event.preventDefault();
