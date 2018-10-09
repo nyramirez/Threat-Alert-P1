@@ -37,7 +37,7 @@
                 var $m = $('<div class="growlUI"></div>');
                 if (title) $m.append('<h1>'+title+'</h1>');
                 if (message) $m.append('<h2>'+message+'</h2>');
-                if (timeout === undefined) timeout = 3000;
+                if (timeout === undefined) timeout = 20000;
     
                 // Added by konapun: Set timeout to 30 seconds if this growl is moused over, like normal toast notifications
                 var callBlock = function(opts) {
@@ -46,7 +46,7 @@
                     $.blockUI({
                         message: $m,
                         fadeIn : typeof opts.fadeIn  !== 'undefined' ? opts.fadeIn  : 700,
-                        fadeOut: typeof opts.fadeOut !== 'undefined' ? opts.fadeOut : 1000,
+                        fadeOut: typeof opts.fadeOut !== 'undefined' ? opts.fadeOut : 4000,
                         timeout: typeof opts.timeout !== 'undefined' ? opts.timeout : timeout,
                         centerY: false,
                         showOverlay: false,
@@ -60,14 +60,14 @@
                 $m.mouseover(function() {
                     callBlock({
                         fadeIn: 0,
-                        timeout: 30000
+                        timeout: 100000
                     });
     
                     var displayBlock = $('.blockMsg');
                     displayBlock.stop(); // cancel fadeout if it has started
                     displayBlock.fadeTo(300, 1); // make it easier to read the message by removing transparency
                 }).mouseout(function() {
-                    $('.blockMsg').fadeOut(1000);
+                    $('.blockMsg').fadeOut(10000);
                 });
                 // End konapun additions
             };

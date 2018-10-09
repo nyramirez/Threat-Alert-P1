@@ -81,7 +81,7 @@ jumbotron{
 }
 
 .button{
-  border:1px solid #333;
+ 
   background: paleturquoise;
   height:40px;
   align-items: center;
@@ -97,12 +97,9 @@ jumbotron{
   position:absolute;
   display:none;
 }
-.dialog label{
-  display:inline-block;
-  color:#cecece;
-}
+
 input[type=text]{
-  border:1px solid #333;
+
   display:inline-block;
   margin:5px;
   text-align: center;

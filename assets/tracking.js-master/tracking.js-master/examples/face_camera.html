@@ -52,8 +52,8 @@
           <div id="modal1" class="modal col-lg-3 col-md-4 col-sm-5 rounded">
             <div class="modal-content border-0">
               <h4>Clock-in</h4>
-              <input align=center id="input_text" type="text" id="name" data-length="3" maxlength="3" placeholder="ENTER EMPLOYEE ID"
-                class='required' />
+              <input align=center id="input_text" type="text" id="name" data-length="3" maxlength="3" placeholder="ENTER EMPLOYEE ID" class='required'
+              />
             </div>
             <div class="modal-footer">
               <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="btnOK">OK</a>
@@ -68,6 +68,7 @@
       </div>
     </div>
     <script>
+
       window.onload = function () {
         display();
         //global variables
@@ -203,7 +204,8 @@
           reset();
         });
 
-        // functions to rest clock-in
+
+        // functions to reset clock-in
         function resetFunct() {
           display();
           clockInMsg.empty();
