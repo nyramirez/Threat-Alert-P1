@@ -110,6 +110,8 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 // Puts the image pointed to by the file name into storage
 // for future use in identifying somebody.  And stores the image
 // URL as part of the employee record.
+// Heavily edited to allow usage for storing images in Firestore and 
+// using them in face++
 async function addImage(sEmployeeID, oFile) {
   // the dialog box used to get the oFile doesn't give the path, so we have to add it
   //   var sShortName = oFile.name;
@@ -123,13 +125,9 @@ async function addImage(sEmployeeID, oFile) {
         console.log('Uploaded a file!');
         await (url = oImageRef.getDownloadURL());
 //        oImageRef.getDownloadURL().then(function (url) {
-            //      var iEmp = 2;
             // for (var iEmp = 0; iEmp < aoCompany.length; iEmp++) {
-            //   //        if (aoCompany[iEmp].sImageFile === sShortName) {
-            //   iEmpID = parseInt(sEmployeeID) - 100;
-            //   if (aoCompany[iEmp].iempID === iEmpID) {
+            //   if (aoCompany[iEmp].sImageFile === sShortName) {
             //     let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
-            //     //let oThisEmp = empsRef.doc(sEmployeeID);
             //     oThisEmp.update({
             //       sImageLink: url
             //     });
@@ -160,6 +158,8 @@ async function getImages() {
   // This will return an array of image links for the image URLs,
   // so we can get the employee id from the comparison.  The array is indexed
   // by employee ID.
+  // No longer in use.  Intended for identifying an employee from his/her picture.
+  // We dropped that feature.
   var asImageLinks = [];
 
   let oDoc = await (empsRef.get());
@@ -198,6 +198,8 @@ function setEmotions(iEmpNum, oEmotions) {
   // This will put each emotion's "score" into an
   // array (discarding the oldest if there are n stored
   // already).
+  // Changed to avoid having an array of objects in Firestore.  I wasn't
+  // able to get that to work (although apparently it should).
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   oThisEmp.get().then(oDoc => {
     if (oDoc.exists) {
@@ -290,6 +292,7 @@ function displayEmployees(employees) {
   $("#pendingIssues").html(totalIssues);
 }
 
+// modified to add the HTML stuff
 async function isManager() {
   event.preventDefault();
   var email = $("#email").val().trim();
@@ -344,7 +347,6 @@ async function listEmployees(iManagerID) {
       aiEmp.push(oDoc.docs[i].id);
     }
   }
-  //  console.log("Employees: ", +aiEmp);
   return (aiEmp);
 }
 
@@ -358,7 +360,7 @@ function testListEmployeeDetails(managerID) {
 }
 
 async function listEmployeeDetails(iManagerID) {
-  // returns an array of the manager's employees
+  // returns an array of the manager's employees with all details
   // must call this with a then - see testListEmployees
   var query = empsRef.where('managerID', '==', iManagerID);
   let oDoc = await (query.get());
@@ -385,7 +387,7 @@ function testGetEmployeeDetails(empID, isFlag) {
 }
 
 async function getEmployeeDetails(iEmpNum, isFlag) {
-  // returns an object with the employee info
+  // displays the employee info
   // must call this with a then - see testListEmployees
   var oEmp;
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
@@ -430,7 +432,7 @@ async function getDepressionResults(iEmpNum) {
 }
 
 function findArrayID() {
-  // Find the train in the array
+  // Find the employee in the array, fill in first and last names
   for (arrayID = 0; arrayID < aoEmp.length; arrayID++) {
     if (aoEmp[arrayID].empID === empID) {
       myEmp = aoEmp[arrayID].firstName + " " + aoEmp[arrayID].lastName;
