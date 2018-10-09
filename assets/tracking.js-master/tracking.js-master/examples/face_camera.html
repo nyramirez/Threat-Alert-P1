@@ -71,14 +71,8 @@
     <script>
 
       window.onload = function () {
-        //function to display modal box once window loads
-        function display() {
-          $("#modal1 input[type=text]").val('');
-          $("#modal1").show(500);
-        }
-
         display();
-
+        //global variables
         var timeSpace = $("<div class='timeSpace py-auto text-center py-3'>");
         var clockInMsg = $("<div>");
         var video = document.getElementById('video');
@@ -88,7 +82,7 @@
         var file;
         context.drawImage(video, 0, 0, 320, 240);
 
-        //face tracker function
+        //enables camera
         var tracker = new tracking.ObjectTracker(['face']);
         tracker.setInitialScale(4);
         tracker.setStepSize(2);
@@ -98,8 +92,15 @@
         tracking.track('#video', tracker, {
           camera: true
         });
+        //function to display modal box once window loads
+        function display() {
+          $("#modal1 input[type=text]").val('');
+          $("#modal1").show(500);
+        }
+
         //on click once employee enters employee ID
         $("#btnOK").click(function () {
+          //preventing user to clocking-in without a password
           if ($('#input_text').val().length < 1) {
             $.blockUI({ message: "<h1>You must enter an Employee ID</h1>" });
             setTimeout($.unblockUI, 2000); 
@@ -126,8 +127,6 @@
               `<h3 class='center-align'>You are now clocked-in.<br>Have a great day at work!`);
             $(".welcome").append(clockInMsg);
           });
-
-
 
           function func() {
             return;
@@ -195,7 +194,7 @@
               //          file = new File([imageData], "test.png", {
               //            type: 'image.png'
               //          });
-
+              //FACE++ API 
               urltoFile(imageData, 'test.png', 'image/png')
                 .then(function (file) {
                   console.log(file);
@@ -259,7 +258,7 @@
           reset();
         });
 
-
+        // functions to rest clock-in
         function resetFunct() {
           display();
           clockInMsg.empty();
@@ -281,14 +280,6 @@
         // context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
 
         // });
-
-
-
-
-        //$(".demo-frame").html(`<div><h5>Time: ${timeStamp}</h5></div>`);
-
-
-
         //});
 
         //var gui = new dat.GUI();
