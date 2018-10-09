@@ -38,6 +38,8 @@ class Employee {
 
 var aoCompany = [{}];
 var aoEmp = [];
+var myEmp, arrayID;
+var totalIssues = 0;
 
 class Emotions {
   constructor(iFear, iAnger, iSad) {
@@ -61,7 +63,7 @@ const empsRef = firestore.collection('employees');
 // walk through the employees, adding them
 function addAllEmployees() {
   for (var i = 0; i < aoCompany.length; i++) {
-    addEmployee(i, aoCompany[i]).then(function () {});
+    addEmployee(i, aoCompany[i]).then(function () { });
     // the following doesn't work, because of the inability to create File objects
     // (see below)
     //       if (aoCompany[i].sImageFile != "") {
@@ -261,30 +263,31 @@ function compareEmotions(iEmpNum, oEmotions) {
 //testIsManager();
 
 function testIsManager() {
- 
+
   console.log(empsRef);
   isManager(email, password).then(function (iMgr) {
-    
+
   });
 }
 
-function displayEmployees(employees){
-  var length=employees.length;
-  console.log("length:" +length);
-  for(i=0;i<length;i++){
-    var issues=0;
-    if(employees[i].aiAnger!=0 || employees[i].aiFear!=0 || employees[i].aiSad!=0 ){
-      issues+=1;
+//displaying only those employees which have some issues
+function displayEmployees(employees) {
+  var length = employees.length;
+  console.log("length:" + length);
+  for (i = 0; i < length; i++) {
+    var issues = 0;
+    if (employees[i].aiAnger != 0 || employees[i].aiFear != 0 || employees[i].aiSad != 0) {
+      issues += 1;
+      $("tbody").append(`<tr id="${employees[i].empID}">
+      <td>${employees[i].empID}</td>
+       <td>${employees[i].firstName + " " + employees[i].lastName}</td>
+       <td>${employees[i].email}</td>
+       <td>${issues}</td>
+   </tr>`);
     }
-    $("#pendingIssues").html(issues);
-    $("tbody").append( `<tr id="${employees[i].empID}">
-               <td>${employees[i].empID}</td>
-                <td>${employees[i].firstName+" "+employees[i].lastName}</td>
-                <td>${employees[i].email}</td>
-                <td>${issues}</td>
-            </tr>`);
+    totalIssues += issues;
   }
- 
+  $("#pendingIssues").html(totalIssues);
 }
 
 async function isManager() {
@@ -296,28 +299,30 @@ async function isManager() {
   var query = empsRef.where('isManager', '==', true).where('password', '==', password).where('email', '==', email);
   let oDoc = await (query.get());
   if (oDoc.docs.length > 0) {
-    managerID= (parseInt(oDoc.docs[0].id));
-  }else{
-    managerID= (-1);
+    managerID = (parseInt(oDoc.docs[0].id));
+  } else {
+    managerID = (-1);
   }
   console.log(managerID);
-    if (managerID > 0) {
-      console.log("Success");
-      $("#displayMessage").html("");
-      $('#firstDiv').css('display', 'none');
-      $('#contaianer').css('display', 'block');
-      getEmployeeDetails(managerID,true);//is Manager
-      listEmployeeDetails(managerID);
+  if (managerID > 0) {
+    localStorage.clear();
+    localStorage.setItem("email", email);
+    console.log("Success");
+    $("#displayMessage").html("");
+    $('#firstDiv').css('display', 'none');
+    $('#contaianer').css('display', 'block');
+    getEmployeeDetails(managerID, true);//is Manager
+    listEmployeeDetails(managerID);
+  } else {
+    console.log("Failure");
+    if (email === "" || password === "") {
+      $("#displayMessage").attr("class", "error");
+      $("#displayMessage").html("Incorrect email/password");
     } else {
-      console.log("Failure");
-      if (email === "" || password === "") {
-        $("#displayMessage").attr("class", "error");
-        $("#displayMessage").html("Incorrect email/password");
-      } else {
-        $("#displayMessage").attr("class", "error");
-        $("#displayMessage").html("Invalid Login");
-      }
+      $("#displayMessage").attr("class", "error");
+      $("#displayMessage").html("Invalid Login");
     }
+  }
 }
 
 //testListEmployees();
@@ -333,14 +338,14 @@ async function listEmployees(iManagerID) {
   // must call this with a then - see testListEmployees
   aiEmp = [];
   var query = empsRef.where('managerID', '==', iManagerID);
-  let oDoc = await(query.get());
+  let oDoc = await (query.get());
   if (oDoc.docs.length > 0) {
     for (var i = 0; i < oDoc.docs.length; i++) {
       aiEmp.push(oDoc.docs[i].id);
     }
   }
   //  console.log("Employees: ", +aiEmp);
-  return (aiEmp);   
+  return (aiEmp);
 }
 
 //testListEmployeeDetails();
@@ -369,27 +374,29 @@ async function listEmployeeDetails(iManagerID) {
 
 //testGetEmployeeDetails();
 
-function testGetEmployeeDetails(empID,isFlag) {
+function testGetEmployeeDetails(empID, isFlag) {
   getEmployeeDetails(empID).then(function (oEmp) {
     console.log(oEmp);
-    if(isFlag){
-    $("#managerName").text(oEmp.firstName +" "+oEmp.lastName);
-    $("#managerEE").text("Employee ID: " +empID);
+    if (isFlag) {
+      $("#managerName").text(oEmp.firstName + " " + oEmp.lastName);
+      $("#managerEE").text("Employee ID: " + empID);
     }
   });
 }
 
-async function getEmployeeDetails(iEmpNum,isFlag) {
+async function getEmployeeDetails(iEmpNum, isFlag) {
   // returns an object with the employee info
   // must call this with a then - see testListEmployees
   var oEmp;
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   let oEmpDoc = await (oThisEmp.get());
-  oEmp=(oEmpDoc.data());
-  if(isFlag){
-    $("#managerName").text(oEmp.firstName +" "+oEmp.lastName);
-    $("#managerEE").text("Employee ID: " +iEmpNum);
-    }
+  oEmp = (oEmpDoc.data());
+  if (isFlag) {
+    var mgrName = oEmp.firstName + " " + oEmp.lastName;
+    $("#managerName").text(mgrName);
+    $("#managerEE").text("Employee ID: " + iEmpNum);
+    localStorage.setItem("ManagerName", mgrName);
+  }
 }
 
 //testDepression();
@@ -421,3 +428,40 @@ async function getDepressionResults(iEmpNum) {
   sDepression = oDoc.data().sDepression;
   return (sDepression);
 }
+
+function findArrayID() {
+  // Find the train in the array
+  for (arrayID = 0; arrayID < aoEmp.length; arrayID++) {
+    if (aoEmp[arrayID].empID === empID) {
+      myEmp = aoEmp[arrayID].firstName + " " + aoEmp[arrayID].lastName;
+      break;
+    }
+  }
+}
+
+function getValues() {
+  var employeeName = myEmp;
+  var managerEmail = localStorage.getItem("email");
+  var managerName = localStorage.getItem("ManagerName");
+  var templateVariables = {
+    from_name: "Support Team",
+    to_name: managerName,
+    emp_name: employeeName,
+    message_html: `
+        <a href="https://www.google.com/">Click here for survey.</a>
+    `,
+    recipient: managerEmail
+  };
+
+  emailjs.send('gmail', 'template_Dz2E8H0d', templateVariables)
+    .then(function (res) {
+      console.log('success');
+      $('.modal').modal();
+      $('#modal1').modal('open');
+    }, function (err) {
+      $('.modal').modal();
+      $('#modal2').modal('open');
+      console.log('nope', err);
+    });
+}
+
