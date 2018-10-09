@@ -158,25 +158,24 @@ $(document).ready(function () {
         $('#beforeSub').css('display', 'block');
     }
 
-    $('#submitB').click(function(){
-        form.employeeID = parseInt($("#input_text").val().trim());
-        var check = true;
-        $("input:radio").each(function(){
-            var name = $(this).attr("name");
-            if($("input:radio[name="+name+"]:checked").length == 0){
-                check = false;
-            }
-        });
+   // $('#submitB').click(function(){
+     //   var check = true;
+       // $("input:radio").each(function(){
+          //  var name = $(this).attr("name");
+          //  if($("input:radio[name="+name+"]:checked").length == 0){
+            //    check = false;
+           // }
+        //});
         
-        if(check && !(form.employeeID==="")){
-            $.blockUI({ message: '<h3>Please wait while we process your answers.</h3>' });}
-        else if(!(form.employeeID==="")){
-            location.reload()
-        }   
-        else{
-            $.blockUI({ message: '<h3>Please wait while we process your answers.</h3>' });;
-        }
-    });
+       // if(check){
+           // $.blockUI({ message: '<h3>Please wait while we process your answers.</h3>' });}
+            // else if(!(form.employeeID==="")){
+          //  location.reload()
+        //}   
+       // else{
+        //    $.blockUI({ message: '<h3>Please wait while we process your answers.</h3>' });;
+        //}
+   // });
 
     displayQuestionnaire();
     questionsAnswersDisplay(questionnaire);
