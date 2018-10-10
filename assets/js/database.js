@@ -397,6 +397,7 @@ async function getEmployeeDetails(iEmpNum, isFlag) {
     $("#managerEE").text("Employee ID: " + iEmpNum);
     localStorage.setItem("ManagerName", mgrName);
   }
+  return (oEmp);
 }
 
 //testDepression();

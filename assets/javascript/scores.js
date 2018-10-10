@@ -135,7 +135,7 @@ $(document).ready(function () {
     function changeDisplay() {
         $('#beforeSub').css('display', 'none');
         $('#afterSub').css('display', 'block');
-        setTimeout(document.location.replace('https://www.narscosmetics.com'), 8000);
+        setTimeout(document.location.replace('https://www.narscosmetics.com'), 5000);
     }
 
     //on click after submission

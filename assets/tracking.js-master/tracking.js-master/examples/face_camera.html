@@ -45,7 +45,7 @@
       <div class="demo-container rounded">
         <div id="panel">
           <div class="welcome py-4">
-            <h1 class="center-align">Welcome to NA2RS</h1>
+            <h1 class="center-align">Welcome to NA2RS! <br> Please face the screen.</h1>
           </div>
           <!-- Dialog Box-->
 
@@ -53,7 +53,7 @@
           <div id="modal1" class="modal col-lg-3 col-md-4 col-sm-5 rounded">
             <div class="modal-content border-0">
               <h4>Clock-in</h4>
-              <input align=center id="input_text" type="text" id="name" data-length="3" maxlength="3" placeholder="ENTER EMPLOYEE ID" class='required'
+              <input align=center id="input_text" type="text" id="name" data-length="3" maxlength="3" placeholder="ENTER A VALID EMPLOYEE ID" class='required'
               />
             </div>
             <div class="modal-footer">
@@ -69,10 +69,11 @@
       </div>
     </div>
     <script>
-
+      var trackerDone = false;
       window.onload = function () {
         display();
         //global variables
+
         var timeSpace = $("<div class='timeSpace py-auto text-center py-3'>");
         var clockInMsg = $("<div>");
         var video = document.getElementById('video');
@@ -80,6 +81,8 @@
         var context = canvas.getContext('2d');
         var name;
         var file;
+        var firstnameEmp;
+        var lastnameEmp;
         context.drawImage(video, 0, 0, 320, 240);
 
         //enables camera
@@ -89,7 +92,7 @@
         tracker
           .setEdgesDensity(0.1);
 
-        tracking.track('#video', tracker, {
+        var trackerTask = tracking.track('#video', tracker, {
           camera: true
         });
         //function to display modal box once window loads
@@ -100,6 +103,7 @@
 
         //on click once employee enters employee ID
         $("#btnOK").click(function () {
+          trackerDone = false;
           //preventing user to clocking-in without a password
           if ($('#input_text').val().length < 1) {
             $.blockUI({ message: "<h1>You must enter an Employee ID</h1>" });
@@ -108,6 +112,13 @@
           }
 
           var employeeID = $("#input_text").val().trim();
+          console.log(typeof employeeID);
+        var oEmp2 = getEmployeeDetails(employeeID, false).then(function(oEmp){
+            firstnameEmp=oEmp.firstName;
+            lastnameEmp=oEmp.lastName;
+            console.log(oEmp);
+            console.log (oEmp2);
+          });
           $(".modal").css("display", "none");
           $("#modal1").hide(400);
 
@@ -125,20 +136,20 @@
             timeSpace.html(`<h5 class=mx-auto>Time: ${timeStamp}</h5>`);
             $(".demo-frame").append(timeSpace);
             clockInMsg.html(
-              `<h3 class='center-align'>You are now clocked-in.<br>Have a great day at work!`);
-            $(".welcome").append(clockInMsg);
+              `<h3 class='center-align'>${firstnameEmp+" "+lastnameEmp} are now clocked-in.<br>Have a great day at work!`);
+           $(".welcome").append(clockInMsg);
           });
 
           //ROGER'S FUNCTIONS
-          function func() {
-            return;
-          }
 
           tracker.on('track', function (event) {
-            if (event.data.length === 0) {
+            if (event.data.length === 0 || trackerDone === true) {
               return;
             }
+
             if (event.data[0].width > 100) {
+              trackerDone = true;
+              trackerTask.stop();
               //          setTimeout(func, 5 * 1000);
 
               var hidden_canvas = document.querySelector('canvas'),
@@ -229,6 +240,8 @@
                   });
                 });
             }
+
+
           });
 
           //MORE OF ROGER'S FUNCTIONS
@@ -269,19 +282,19 @@
         function reset() {
           setTimeout(resetFunct, 5 * 1000);
         }
-        tracker.on('track', function (event) {
-          context.clearRect(0, 0, canvas.width, canvas.height);
+        //tracker.on('track', function (event) {
+        //context.clearRect(0, 0, canvas.width, canvas.height);
 
-          event.data.forEach(function (rect) {
-            context.strokeStyle = '#a64ceb';
-            context.strokeRect(rect.x, rect.y, rect.width, rect.height);
-            context.font = '11px Helvetica';
-            context.fillStyle = "#fff";
-            context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
-            context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
+        //event.data.forEach(function (rect) {
+        //context.strokeStyle = '#a64ceb';
+        //context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+        //context.font = '11px Helvetica';
+        //context.fillStyle = "#fff";
+        //context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
+        //context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
 
-          });
-        });
+        //});
+        //});
 
         //var gui = new dat.GUI();
         //gui.add(tracker, 'edgesDensity', 0.1, 0.5).step(0.01);
