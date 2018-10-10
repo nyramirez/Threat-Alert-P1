@@ -97,11 +97,11 @@ $(document).ready(function () {
                 form.depStatus = "Severe Depression";
                 break;
             default:
-                form.depStatus = "Employee has not completed PHQ-9 assesment.";
+                form.depStatus = "Employee has not completed PHQ-9 assessment.";
         }
         form.depStatus = $(`<script>${form.depStatus}</script>`);
-        putAssessment(form.employeeID, form.depStatus);
-        console.log(form.depStatus);
+        //putAssessment(form.employeeID, form.depStatus);
+        //console.log(form.depStatus);
     }
 
     //on click answer to get a number value from every question
@@ -122,7 +122,6 @@ $(document).ready(function () {
         for (var k = 0; k < form.sumScoreArray.length; k++) {
             form.totalScore += form.sumScoreArray[k];
         }
-        console.log(form.totalScore);
         return form.totalScore;
     }
 
@@ -131,7 +130,7 @@ $(document).ready(function () {
         $('#beforeSub').css('display', 'none');
         $('#afterSub').css('display', 'block');
         setTimeout(function () {
-            document.location.replace('https://www.narscosmetics.com');
+            document.location.replace('./Threat-Alert-P1/finalPage.html');
         }, 3000);
     }
 
@@ -151,9 +150,7 @@ $(document).ready(function () {
             return false;
         }
 
-
         form.employeeID = parseInt($("#input_text").val().trim());
-        console.log(form.employeeID);
         getScore();
         phq9testResults();
         checkInputs();
@@ -176,13 +173,11 @@ $(document).ready(function () {
         });
 
         if (check) {
-            $.blockUI({ message: '<h5>Thank you for submitting your assesment! </br></br> Your manager will contact you shortly.</h5>' });
+            $.blockUI({ message: '<h5>Thank you for submitting your assessment! </br></br> Your manager will contact you shortly.</h5>' });
             setTimeout(function () {
                 changeDisplay();
                 $.unblockUI;
             }, 5000);
-
-
         }
         else {
             $.blockUI({ message: $('#modalquestion'), css: { width: '275px' } });
