@@ -475,7 +475,7 @@ function putAssessment(iEmpNum, sValue) {
   oThisEmp.get().then(oDoc => {
     if (oDoc.exists) {
       oThisEmp.update({
-        assesResult: sValue
+        assessmentResult: sValue
       });
 
     }
