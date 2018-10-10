@@ -209,9 +209,17 @@ async function getEmotions(iEmpNum) {
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   let oDoc = await (oThisEmp.get());
   if (oDoc.exists) {
-    emoThis.aiFear = oDoc.data().aiFear[1];     // for now, just returning [1]
-    emoThis.aiAnger = oDoc.data().aiAnger[1];
-    emoThis.aiSad = oDoc.data().aiSad[1];
+    let iAngerLen = oDoc.data().aiAnger.length;
+    let iFearLen = oDoc.data().aiFear.length;
+    let iSadLen = oDoc.data().aiSad.length;
+    if (iFearLen > 0) {
+      emoThis.aiFear = oDoc.data().aiFear[iFearLen - 1];
+    }
+    if (iAngerLen > 0) {
+      emoThis.aiAnger = oDoc.data().aiAnger[iAngerLen - 1];
+    }
+    if (iSadLen > 0) {
+    emoThis.aiSad = oDoc.data().aiSad[iSadLen - 1];
   }
   return (emoThis);
 }
