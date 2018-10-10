@@ -43,11 +43,6 @@ $(document).ready(function () {
         count: 0,
     }
 
-    //after submission object
-    //var afterSubmitting = {
-      //  msg: "Thank you for submitting your assesment! </br></br> Your manager will contact you shortly.",
-    //}
-
 
     $('input#input_text, textarea#textarea2').characterCounter();
 
@@ -105,13 +100,13 @@ $(document).ready(function () {
                 form.depStatus = "Employee has not completed PHQ-9 assesment.";
         }
         form.depStatus = $(`<script>${form.depStatus}</script>`);
+        putAssessment(form.employeeID, form.depStatus);
         console.log(form.depStatus);
     }
 
     //on click answer to get a number value from every question
     $(document.body).on("click", '.chosen', function () {
         var chosen = $(this);
-        console.log(this);
         for (var i = 0; i < questionnaire.length; i++) {
             for (var j = 0; j < questionnaire[i].answers.length; j++) {
                 if (chosen.text() === questionnaire[i].answers[j] && parseInt(chosen.attr("data")) === i) {
@@ -135,8 +130,11 @@ $(document).ready(function () {
     function changeDisplay() {
         $('#beforeSub').css('display', 'none');
         $('#afterSub').css('display', 'block');
-        setTimeout(document.location.replace('https://www.narscosmetics.com'), 5000);
+        setTimeout(function () {
+            document.location.replace('https://www.narscosmetics.com');
+        }, 3000);
     }
+
 
     //on click after submission
     $("#submitB").on("click", function (event) {
@@ -153,21 +151,17 @@ $(document).ready(function () {
             return false;
         }
 
-        
-        checkInputs();
+
         form.employeeID = parseInt($("#input_text").val().trim());
         console.log(form.employeeID);
         getScore();
         phq9testResults();
-        //getDepressionResult(iEmpNum);
-        changeDisplay();
+        checkInputs();
 
     });
 
     //function to show form before submission
     function displayQuestionnaire() {
-        //$("#afterSub").html(`<h2>${afterSubmitting.msg}</h2>`);
-        //$("#afterSub").append(afterSubmitting.closeButton);
         $('#afterSub').css('display', 'none');
         $('#beforeSub').css('display', 'block');
     }
@@ -183,31 +177,38 @@ $(document).ready(function () {
 
         if (check) {
             $.blockUI({ message: '<h5>Thank you for submitting your assesment! </br></br> Your manager will contact you shortly.</h5>' });
-            setTimeout($.unblockUI, 8000); 
-            
+            setTimeout(function () {
+                changeDisplay();
+                $.unblockUI;
+            }, 5000);
+
+
         }
         else {
-            $.blockUI({ message: $('#modalquestion'), css: { width: '275px' } }); 
+            $.blockUI({ message: $('#modalquestion'), css: { width: '275px' } });
+
             $('#yes').click(function () {
                 $.blockUI({ message: "<h5>Please wait while we process your answers...</h5>" });
-                setTimeout($.unblockUI, 8000); 
-            
+                console.log('hi');
+                setTimeout(function () {
+                    changeDisplay();
+                }, 5000);
 
-            $.ajax({ 
-                url: 'wait.php', 
-                cache: false, 
-                complete: function() { 
-                    // unblock when remote call returns 
-                    $.unblockUI(); 
-                } 
-            }); 
-        }); 
+                // $.ajax({ 
+                //     url: 'https://www.narscosmetics.com/', 
+                //     cache: false, 
+                //     complete: function() { 
+                //         // unblock when remote call returns 
+                //         $.unblockUI(); 
+                //     } 
+                //}); 
+            });
 
             $('#no').click(function () {
                 console.log("works");
                 window.location.reload(true);
-                $.unblockUI(); 
-                return false; 
+                $.unblockUI();
+                return false;
             });
         }
     }
@@ -217,7 +218,7 @@ $(document).ready(function () {
     questionsAnswersDisplay(questionnaire);
 });
 
-
+//questionnaire dynamics
 //PHQ-9 Depression Test
 //Scoring{}
 //minimalDep=1-4
