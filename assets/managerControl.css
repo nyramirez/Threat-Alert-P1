@@ -242,7 +242,7 @@ button:hover {
     color: black;
     top: 3vh;
     left: 7vw;
-    height: 35vh;
+    height: 39vh;
     width: 40vw;
     background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
@@ -254,7 +254,7 @@ button:hover {
     color: black;
     top: 3vh;
     right: 7vw;
-    height: 35vh;
+    height: 39vh;
     width: 40vw;
     background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
@@ -338,6 +338,14 @@ table >tbody >tr{
     cursor: pointer;
     right: 1vw;
     top: 1vh;
+}
+
+#companyName {
+  position: absolute;
+  z-index: 40;
+  right: 10vw;
+  top: 10vh;
+  font-size: 3rem;
 }
 
 /* Media queries  */
