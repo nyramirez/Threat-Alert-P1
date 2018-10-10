@@ -314,7 +314,7 @@ async function isManager() {
     $("#displayMessage").html("");
     $('#firstDiv').css('display', 'none');
     $('#contaianer').css('display', 'block');
-    getEmployeeDetails(managerID, true);//is Manager
+    getEmployeeDetails(managerID, true);//is Manager//fetches managers name 
     listEmployeeDetails(managerID);
   } else {
     console.log("Failure");
@@ -450,7 +450,7 @@ function getValues() {
     to_name: managerName,
     emp_name: employeeName,
     message_html: `
-        <a href="https://www.google.com/">Click here for survey.</a>
+        <a href="https://nyramirez.github.io/Threat-Alert-P1/questionnaires.html">Click here for survey.</a>
     `,
     recipient: managerEmail
   };
@@ -458,8 +458,8 @@ function getValues() {
   emailjs.send('gmail', 'template_Dz2E8H0d', templateVariables)
     .then(function (res) {
       console.log('success');
-      $('.modal').modal();
-      $('#modal1').modal('open');
+      $('.modal').modal();//initializes your modal
+      $('#modal1').modal('open');//open up your modal
     }, function (err) {
       $('.modal').modal();
       $('#modal2').modal('open');
