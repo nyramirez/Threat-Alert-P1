@@ -215,7 +215,7 @@ button:hover {
     width: 1976px;
     height: 1383px;
     z-index: 6;
-    background-image: url('./pictures/S6WCriT.jpg');
+    background-image: url('../pictures/S6WCriT.jpg');
     left: -89px;
     top: -191px;
   }
@@ -223,7 +223,7 @@ button:hover {
     width: 977px;
     height: 904px;
     z-index: 8;
-    background-image: url('./pictures/aeffA4C.png');
+    background-image: url('../pictures/aeffA4C.png');
     left: -83px;
     top: 280px;
   }
@@ -231,7 +231,7 @@ button:hover {
     width: 1082px;
     height: 729px;
     z-index: 10;
-    background-image: url('./pictures/QAyjA6B.png');
+    background-image: url('../pictures/QAyjA6B.png');
     left: 718px;
     top: 300px;
 }
