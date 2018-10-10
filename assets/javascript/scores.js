@@ -131,7 +131,7 @@ $(document).ready(function () {
         $('#beforeSub').css('display', 'none');
         $('#afterSub').css('display', 'block');
         setTimeout(function () {
-            document.location.replace('https://www.narscosmetics.com');
+            document.location.replace('https://nyramirez.github.io/Threat-Alert-P1/finalPage.html');
         }, 3000);
     }
 

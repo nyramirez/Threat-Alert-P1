@@ -318,6 +318,7 @@ function displayEmployees(employees) {
        <td>${employees[i].firstName + " " + employees[i].lastName}</td>
        <td>${employees[i].email}</td>
        <td>${issues}</td>
+
        <td>${employees[i].assessmentResult}</td>
    </tr>`);
     }
