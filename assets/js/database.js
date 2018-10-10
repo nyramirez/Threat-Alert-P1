@@ -374,10 +374,10 @@ async function listEmployeeDetails(iManagerID) {
   displayEmployees(aoEmp);
 }
 
-//testGetEmployeeDetails();
+//testGetEmployeeDetails(0, false);
 
 function testGetEmployeeDetails(empID, isFlag) {
-  getEmployeeDetails(empID).then(function (oEmp) {
+  getEmployeeDetails(empID, isFlag).then(function (oEmp) {
     console.log(oEmp);
     if (isFlag) {
       $("#managerName").text(oEmp.firstName + " " + oEmp.lastName);
@@ -390,15 +390,20 @@ async function getEmployeeDetails(iEmpNum, isFlag) {
   // displays the employee info
   // must call this with a then - see testListEmployees
   var oEmp;
+  var oEmpty = new Employee ("", "", "", false, "", "", "", 999);
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   let oEmpDoc = await (oThisEmp.get());
   oEmp = (oEmpDoc.data());
+  if (oEmp == undefined) {    // invalid employee number
+    return (oEmpty);
+  }
   if (isFlag) {
     var mgrName = oEmp.firstName + " " + oEmp.lastName;
     $("#managerName").text(mgrName);
     $("#managerEE").text("Employee ID: " + iEmpNum);
     localStorage.setItem("ManagerName", mgrName);
   }
+  return (oEmp);
 }
 
 //testDepression();
