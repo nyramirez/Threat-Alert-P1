@@ -469,6 +469,27 @@ async function getDepressionResults(iEmpNum) {
   return (sDepression);
 }
 
+function putAssessment(iEmpNum, sValue) {
+  let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
+  oThisEmp.get().then(oDoc => {
+    if (oDoc.exists) {
+      oThisEmp.update({
+        assesResult: sValue
+      });
+
+    }
+  });
+}
+
+async function getAssessment(iEmpNum) {
+  // must call this with a then - see testDepression
+  let sAssessment = "";
+  let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
+  let oDoc = await (oThisEmp.get());
+  sAssessment = oDoc.data().assesResult;
+  return (sAssessment);
+}
+
 function findArrayID() {
   // Find the employee in the array, fill in first and last names
   for (arrayID = 0; arrayID < aoEmp.length; arrayID++) {
