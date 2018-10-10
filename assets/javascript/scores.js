@@ -81,7 +81,10 @@ $(document).ready(function () {
     //questionnaire results
     function phq9testResults() {
         switch (true) {
-            case form.totalScore <= 4:
+            case form.depStatus===0:
+                form.depStatus="No depression";
+                break;
+            case form.totalScore >=1 && form.totalScore<= 4:
                 form.depStatus = "Minimal Depression";
                 break;
             case form.totalScore > 4 && form.totalScore < 10:
@@ -97,11 +100,10 @@ $(document).ready(function () {
                 form.depStatus = "Severe Depression";
                 break;
             default:
-                form.depStatus = "Employee has not completed PHQ-9 assesment.";
+                form.depStatus = "a.";
         }
         
         putAssessment(form.employeeID, form.depStatus);
-        console.log(form.depStatus);
         return form.depStatus;
     }
 
