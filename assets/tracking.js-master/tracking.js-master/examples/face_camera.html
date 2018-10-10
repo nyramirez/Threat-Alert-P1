@@ -11,7 +11,6 @@
     <!-- MomentJS Link to Document -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>  -->
     <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
-    <!--    <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase-admin.js"></script> -->
     <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-storage.js"></script>
@@ -106,7 +105,11 @@
           trackerDone = false;
           //preventing user to clocking-in without a password
           if ($('#input_text').val().length < 1) {
-            $.blockUI({ message: "<h1>You must enter an Employee ID</h1>" });
+
+            $.blockUI({
+              message: "<h1>You must enter an Employee ID</h1>"
+            });
+
             setTimeout($.unblockUI, 2000);
             return false;
           }
@@ -154,12 +157,9 @@
 
               var hidden_canvas = document.querySelector('canvas'),
                 video = document.querySelector('video'),
-                //            image = document.querySelector('img.photo'),
-
                 // Get the exact size of the video element.
                 width = video.videoWidth,
                 height = video.videoHeight,
-
                 // Context object for working with the canvas.
                 context = hidden_canvas.getContext('2d');
 
@@ -172,62 +172,25 @@
 
               // Get an image dataURL from the canvas.
               var imageData = hidden_canvas.toDataURL('image/png');
-              // document.querySelector('#dl-btn').href = imageData;
-              //console.log(imageData.length);
-              /*
-                        var promise = navigator.mediaDevices.getUserMedia({
-                            audio: false,
-                            video: true
-                          })
-                          .then(function (stream) {
-                            console.log(stream);
-                          })
-                          .catch(function (err) {
-                            console.log(err);
-                          });
-              */
-              //             let mediaStreamTrack = mediaStream.getVideoTracks()[0];
-              //     imageCapture = new ImageCapture(mediaStreamTrack);
-              //     console.log(imageCapture);
-              // })
-              // const img = img || document.querySelector('img');
 
-              // imageCapture.takePhoto()
-              // .then(blob => {
-              //     let url = window.URL.createObjectURL(blob);
-              //     img.src = url;
-              //     window.URL.revokeObjectURL(url); 
-              // })
-              // .catch(error);
-
-
-
-              //console.log(event.data[0].x, event.data[0].y, event.data[0].width, event.data[0].height);
-              //imageData = imageData.slice(22);
-              //          file = new File([imageData], "test.png", {
-              //            type: 'image.png'
-              //          });
-
-
-              //FACE++ API 
+              // Reformat the file to make something we can give to face++
               urltoFile(imageData, 'test.png', 'image/png')
                 .then(function (file) {
                   console.log(file);
 
-                  addImage(employeeID, file).then(function (url) {
-                    console.log(url);
+                  // Put the image into Firestore, so we have a URL to give Face++
+                  addImage(employeeID, file).then(function (urlFromFirestore) {
 
+                    //FACE++ API 
                     var queryURL = "https://api-us.faceplusplus.com/facepp/v3/detect";
                     var API_KEY = "cKYAUp9G8wVG1XId1bmDMSGFD5wxU6tZ";
                     var API_SECRET = "0CSTJZCXhE-gSZD_EWl8vDsCRsR1Nlny";
-                    //            var imageURL = "https://firebasestorage.googleapis.com/v0/b/rgb-rps.appspot.com/o/Roger.jpg?alt=media&token=4648484d-7008-439f-b22f-be2957f45499";
-                    var imageURL = url;
                     $.ajax({
                       url: queryURL,
                       data: {
                         api_key: API_KEY,
                         api_secret: API_SECRET,
-                        image_url: imageURL,
+                        image_url: urlFromFirestore,
                         return_attributes: "emotion"
                       },
                       method: "POST"
@@ -252,10 +215,6 @@
                 return res.arrayBuffer();
               })
               .then(function (buf) {
-                //            var shortBuf = buf.slice(0, 30);
-                //            var enc = new TextDecoder("utf-8");
-                //            console.log(enc.decode(shortBuf));
-                //            console.log("SB: ", shortBuf);
                 return new File([buf], filename, {
                   type: mimeType
                 });
@@ -263,16 +222,11 @@
             );
           }
 
-          //Usage example:
-          urltoFile('data:text/plain;base64,aGVsbG8gd29ybGQ=', 'hello.txt', 'text/plain')
-            .then(function (file) {
-              console.log(file);
-            })
-
           reset();
         });
 
-        // functions to rest clock-in
+
+        // functions to reset clock-in
         function resetFunct() {
           display();
           clockInMsg.empty();
