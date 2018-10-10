@@ -488,7 +488,7 @@ async function getAssessment(iEmpNum) {
   let sAssessment = "";
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   let oDoc = await (oThisEmp.get());
-  sAssessment = oDoc.data().assesResult;
+  sAssessment = oDoc.data().assessmentResult;
   return (sAssessment);
 }
 

@@ -99,9 +99,10 @@ $(document).ready(function () {
             default:
                 form.depStatus = "Employee has not completed PHQ-9 assesment.";
         }
-        form.depStatus = $(`<script>${form.depStatus}</script>`);
+        
         putAssessment(form.employeeID, form.depStatus);
         console.log(form.depStatus);
+        return form.depStatus;
     }
 
     //on click answer to get a number value from every question
