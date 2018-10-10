@@ -63,7 +63,7 @@ const empsRef = firestore.collection('employees');
 // walk through the employees, adding them
 function addAllEmployees() {
   for (var i = 0; i < aoCompany.length; i++) {
-    addEmployee(i, aoCompany[i]).then(function () { });
+    addEmployee(i, aoCompany[i]).then(function () {});
     // the following doesn't work, because of the inability to create File objects
     // (see below)
     //       if (aoCompany[i].sImageFile != "") {
@@ -120,26 +120,26 @@ async function addImage(sEmployeeID, oFile) {
   //  var sFullFileName = "../pictures/" + oFile.name;
   //  oFile.name = sFullFileName;
   var oImageRef = fbRef.child(oFile.name);
-    await (oImageRef.put(oFile));
-//  oImageRef.put(oFile).then(function (snapshot) {
-        console.log('Uploaded a file!');
-        await (url = oImageRef.getDownloadURL());
-//        oImageRef.getDownloadURL().then(function (url) {
-            // for (var iEmp = 0; iEmp < aoCompany.length; iEmp++) {
-            //   if (aoCompany[iEmp].sImageFile === sShortName) {
-            //     let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
-            //     oThisEmp.update({
-            //       sImageLink: url
-            //     });
-            //     break;
-            //   }
-        // }
-        return (url);
-//        });
-    // },
-    // function (err) {
-    //   console.log("Error: " + err);
-    // });
+  await (oImageRef.put(oFile));
+  //  oImageRef.put(oFile).then(function (snapshot) {
+  console.log('Uploaded a file!');
+  await (url = oImageRef.getDownloadURL());
+  //        oImageRef.getDownloadURL().then(function (url) {
+  // for (var iEmp = 0; iEmp < aoCompany.length; iEmp++) {
+  //   if (aoCompany[iEmp].sImageFile === sShortName) {
+  //     let oThisEmp = empsRef.doc(iEmp.toString().padStart(3, '0'));
+  //     oThisEmp.update({
+  //       sImageLink: url
+  //     });
+  //     break;
+  //   }
+  // }
+  return (url);
+  //        });
+  // },
+  // function (err) {
+  //   console.log("Error: " + err);
+  // });
 }
 
 //testGetImages ();
@@ -182,18 +182,50 @@ async function getImages() {
 //testSetEmotions();
 
 function testSetEmotions() {
-  var oTestEmotions1 = new Emotions(4, 7, 6);
-  var oTestEmotions2 = new Emotions(6, 8, 2);
+  var oTestEmotions1 = new Emotions(7, 0, 0);
+  //  var oTestEmotions2 = new Emotions(6, 8, 2);
 
-  setEmotions(0, oTestEmotions1);
-  let oDeltaEmotions = compareEmotions(0, oTestEmotions2);
-  console.log(oDeltaEmotions);
-  setEmotions(0, oTestEmotions2);
-  oDeltatEmtions = compareEmotions(0, oTestEmotions1);
-  console.log(oDeltaEmotions);
+  setEmotions(0, oTestEmotions1).then(() => {
+    //    setEmotions(0, oTestEmotions2).then(() => {
+    console.log(oTestEmotions1);
+    //    });
+  });
+}
+//  let oDeltaEmotions = compareEmotions(0, oTestEmotions2);
+//  console.log(oDeltaEmotions);
+//  oDeltatEmotions = compareEmotions(0, oTestEmotions1);
+//  console.log(oDeltaEmotions);
+
+//testGetEmotions ();
+
+function testGetEmotions() {
+  getEmotions(0).then(function (oEmotions) {
+    console.log(oEmotions);
+  });
 }
 
-function setEmotions(iEmpNum, oEmotions) {
+async function getEmotions(iEmpNum) {
+  emoThis = new Emotions(0, 0, 0);
+  let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
+  let oDoc = await (oThisEmp.get());
+  if (oDoc.exists) {
+    let iAngerLen = oDoc.data().aiAnger.length;
+    let iFearLen = oDoc.data().aiFear.length;
+    let iSadLen = oDoc.data().aiSad.length;
+    if (iFearLen > 0) {
+      emoThis.aiFear = oDoc.data().aiFear[iFearLen - 1];
+    }
+    if (iAngerLen > 0) {
+      emoThis.aiAnger = oDoc.data().aiAnger[iAngerLen - 1];
+    }
+    if (iSadLen > 0) {
+      emoThis.aiSad = oDoc.data().aiSad[iSadLen - 1];
+    }
+  }
+  return (emoThis);
+}
+
+async function setEmotions(iEmpNum, oEmotions) {
   // we'll have a definition of the emotionsObject
   // This will put each emotion's "score" into an
   // array (discarding the oldest if there are n stored
@@ -201,35 +233,36 @@ function setEmotions(iEmpNum, oEmotions) {
   // Changed to avoid having an array of objects in Firestore.  I wasn't
   // able to get that to work (although apparently it should).
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
-  oThisEmp.get().then(oDoc => {
-    if (oDoc.exists) {
-      let iNumEmotions = oDoc.data().aiAnger.length;
-      var aiFear = oDoc.data().aiFear;
-      var aiAnger = oDoc.data().aiAnger;
-      var aiSad = oDoc.data().aiSad;
-      if (iNumEmotions >= EMOTIONS_MAX) {
-        for (var i = 0; i < EMOTIONS_MAX - 1; i++) {
-          // move them all down 1
-          aiSad[i] = aiSad[i + 1];
-          aiAnger[i] = aiAnger[i + 1];
-          aiFear[i] = aiFear[i + 1];
-        }
-        aiSad[EMOTIONS_MAX - 1] = oEmotions.iSad;
-        aiAnger[EMOTIONS_MAX - 1] = oEmotions.iAnger;
-        aiFear[EMOTIONS_MAX - 1] = oEmotions.iFear;
-      } else { // less than max - just add these
-        aiSad[iNumEmotions] = oEmotions.iSad;
-        aiAnger[iNumEmotions] = oEmotions.iAnger;
-        aiFear[iNumEmotions] = oEmotions.iFear;
+  //oThisEmp.get().then(oDoc => {
+  let oDoc = await (oThisEmp.get());
+  if (oDoc.exists) {
+    let iNumEmotions = oDoc.data().aiAnger.length;
+    var aiFear = oDoc.data().aiFear;
+    var aiAnger = oDoc.data().aiAnger;
+    var aiSad = oDoc.data().aiSad;
+    if (iNumEmotions >= EMOTIONS_MAX) {
+      for (var i = 0; i < EMOTIONS_MAX - 1; i++) {
+        // move them all down 1
+        aiSad[i] = aiSad[i + 1];
+        aiAnger[i] = aiAnger[i + 1];
+        aiFear[i] = aiFear[i + 1];
       }
-      oThisEmp.update({
-        aiAnger: aiAnger,
-        aiSad: aiSad,
-        aiFear: aiFear
-      });
+      aiSad[EMOTIONS_MAX - 1] = oEmotions.iSad;
+      aiAnger[EMOTIONS_MAX - 1] = oEmotions.iAnger;
+      aiFear[EMOTIONS_MAX - 1] = oEmotions.iFear;
+    } else { // less than max - just add these
+      aiSad[iNumEmotions] = oEmotions.iSad;
+      aiAnger[iNumEmotions] = oEmotions.iAnger;
+      aiFear[iNumEmotions] = oEmotions.iFear;
     }
-    return;
-  });
+    await (oThisEmp.update({
+      aiAnger: aiAnger,
+      aiSad: aiSad,
+      aiFear: aiFear
+    }));
+    console.log(oThisEmp);
+  }
+  return;
 }
 
 function compareEmotions(iEmpNum, oEmotions) {
@@ -375,10 +408,10 @@ async function listEmployeeDetails(iManagerID) {
   displayEmployees(aoEmp);
 }
 
-//testGetEmployeeDetails();
+//testGetEmployeeDetails(0, false);
 
 function testGetEmployeeDetails(empID, isFlag) {
-  getEmployeeDetails(empID).then(function (oEmp) {
+  getEmployeeDetails(empID, isFlag).then(function (oEmp) {
     console.log(oEmp);
     if (isFlag) {
       $("#managerName").text(oEmp.firstName + " " + oEmp.lastName);
@@ -391,15 +424,20 @@ async function getEmployeeDetails(iEmpNum, isFlag) {
   // displays the employee info
   // must call this with a then - see testListEmployees
   var oEmp;
+  var oEmpty = new Employee("", "", "", false, "", "", "", 999);
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   let oEmpDoc = await (oThisEmp.get());
   oEmp = (oEmpDoc.data());
+  if (oEmp == undefined) { // invalid employee number
+    return (oEmpty);
+  }
   if (isFlag) {
     var mgrName = oEmp.firstName + " " + oEmp.lastName;
     $("#managerName").text(mgrName);
     $("#managerEE").text("Employee ID: " + iEmpNum);
     localStorage.setItem("ManagerName", mgrName);
   }
+  return (oEmp);
 }
 
 //testDepression();
@@ -430,6 +468,27 @@ async function getDepressionResults(iEmpNum) {
   let oDoc = await (oThisEmp.get());
   sDepression = oDoc.data().sDepression;
   return (sDepression);
+}
+
+function putAssessment(iEmpNum, sValue) {
+  let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
+  oThisEmp.get().then(oDoc => {
+    if (oDoc.exists) {
+      oThisEmp.update({
+        assesResult: sValue
+      });
+
+    }
+  });
+}
+
+async function getAssessment(iEmpNum) {
+  // must call this with a then - see testDepression
+  let sAssessment = "";
+  let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
+  let oDoc = await (oThisEmp.get());
+  sAssessment = oDoc.data().assesResult;
+  return (sAssessment);
 }
 
 function findArrayID() {
@@ -467,4 +526,3 @@ function getValues() {
       console.log('nope', err);
     });
 }
-
