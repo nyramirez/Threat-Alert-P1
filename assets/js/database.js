@@ -219,7 +219,8 @@ async function getEmotions(iEmpNum) {
       emoThis.aiAnger = oDoc.data().aiAnger[iAngerLen - 1];
     }
     if (iSadLen > 0) {
-    emoThis.aiSad = oDoc.data().aiSad[iSadLen - 1];
+  b    emoThis.aiSad = oDoc.data().aiSad[iSadLen - 1];
+    }
   }
   return (emoThis);
 }
