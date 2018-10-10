@@ -215,7 +215,7 @@ button:hover {
     width: 1480px;
     height: 1150px;
     z-index: 6;
-    background-image: url('./pictures/S6WCriT.jpg');
+    background-image: url('../pictures/S6WCriT.jpg');
     left: -89px;
     top: -191px;
   }
@@ -223,7 +223,7 @@ button:hover {
     width: 877px;
     height: 804px;
     z-index: 8;
-    background-image: url('./pictures/aeffA4C.png');
+    background-image: url('../pictures/aeffA4C.png');
     left: -83px;
     top: 80px;
   }
@@ -231,9 +231,9 @@ button:hover {
     width: 1082px;
     height: 729px;
     z-index: 10;
-    background-image: url('./pictures/QAyjA6B.png');
-    left: 618px;
-    top: 200px;
+    background-image: url('../pictures/QAyjA6B.png');
+    left: 718px;
+    top: 300px;
 }
 /* ********* Manager Format ************** */
 
@@ -242,7 +242,7 @@ button:hover {
     color: black;
     top: 3vh;
     left: 7vw;
-    height: 35vh;
+    height: 39vh;
     width: 40vw;
     background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
@@ -254,7 +254,7 @@ button:hover {
     color: black;
     top: 3vh;
     right: 7vw;
-    height: 35vh;
+    height: 39vh;
     width: 40vw;
     background-color: rgba(245, 245, 245, 0.5);
     z-index: 20;
@@ -338,6 +338,14 @@ table >tbody >tr{
     cursor: pointer;
     right: 1vw;
     top: 1vh;
+}
+
+#companyName {
+  position: absolute;
+  z-index: 40;
+  right: 10vw;
+  top: 10vh;
+  font-size: 3rem;
 }
 
 /* Media queries  */

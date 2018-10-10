@@ -102,8 +102,9 @@ $(document).ready(function () {
             default:
                 form.depStatus = "a.";
         }
-        form.depStatus = $(`<script>${form.depStatus}</script>`);
+        
         putAssessment(form.employeeID, form.depStatus);
+        return form.depStatus;
     }
 
     //on click answer to get a number value from every question
