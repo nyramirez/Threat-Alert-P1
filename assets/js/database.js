@@ -349,7 +349,7 @@ async function isManager() {
     $("#displayMessage").html("");
     $('#firstDiv').css('display', 'none');
     $('#contaianer').css('display', 'block');
-    getEmployeeDetails(managerID, true);//is Manager//fetches managers name 
+    getEmployeeDetails(managerID, true); //is Manager//fetches managers name 
     listEmployeeDetails(managerID);
   } else {
     console.log("Failure");
@@ -425,7 +425,7 @@ async function getEmployeeDetails(iEmpNum, isFlag) {
   // displays the employee info
   // must call this with a then - see testListEmployees
   var oEmp;
-  var oEmpty = new Employee ("", "", "F", false, "", "", "", 999);
+  var oEmpty = new Employee("", "", "F", false, "", "", "", 999);
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   let oEmpDoc = await (oThisEmp.get());
   oEmp = (oEmpDoc.data());
@@ -488,7 +488,7 @@ async function getAssessment(iEmpNum) {
   let sAssessment = "";
   let oThisEmp = empsRef.doc(iEmpNum.toString().padStart(3, '0'));
   let oDoc = await (oThisEmp.get());
-  sAssessment = oDoc.data().assesResult;
+  sAssessment = oDoc.data().assessmentResult;
   return (sAssessment);
 }
 
@@ -519,8 +519,8 @@ function getValues() {
   emailjs.send('gmail', 'template_Dz2E8H0d', templateVariables)
     .then(function (res) {
       console.log('success');
-      $('.modal').modal();//initializes your modal
-      $('#modal1').modal('open');//open up your modal
+      $('.modal').modal(); //initializes your modal
+      $('#modal1').modal('open'); //open up your modal
     }, function (err) {
       $('.modal').modal();
       $('#modal2').modal('open');
