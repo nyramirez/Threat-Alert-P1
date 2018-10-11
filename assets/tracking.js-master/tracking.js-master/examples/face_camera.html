@@ -140,7 +140,7 @@
             timeSpace.html(`<h5 class=mx-auto>Time: ${timeStamp}</h5>`);
             $(".demo-frame").append(timeSpace);
             clockInMsg.html(
-              `<h3 class='center-align'>${firstnameEmp + " " + lastnameEmp} are now clocked-in.<br>Have a great day at work!`);
+              `<h3 class='center-align'>Hello ${firstnameEmp + " " + lastnameEmp}, you are now clocked-in.<br>Have a great day at work!`);
             $(".welcome").append(clockInMsg);
           });
 
@@ -154,7 +154,6 @@
             if (event.data[0].width > 100) {
               trackerDone = true;
               trackerTask.stop();
-              //          setTimeout(func, 5 * 1000);
 
               var hidden_canvas = document.querySelector('canvas'),
                 video = document.querySelector('video'),
@@ -165,11 +164,11 @@
                 context = hidden_canvas.getContext('2d');
 
               // Set the canvas to the same dimensions as the video.
-              hidden_canvas.width = width;
-              hidden_canvas.height = height;
+              // hidden_canvas.width = width;
+              // hidden_canvas.height = height;
 
               // Draw a copy of the current frame from the video on the canvas.
-              context.drawImage(video, 0, 0, width, height);
+              context.drawImage(video, 0, 0, 320, 240);
 
               // Get an image dataURL from the canvas.
               var imageData = hidden_canvas.toDataURL('image/png');
