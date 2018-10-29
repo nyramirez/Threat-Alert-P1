@@ -492,7 +492,7 @@ async function getAssessment(iEmpNum) {
   return (sAssessment);
 }
 
-function findArrayID() {
+/* function findArrayID() {
   // Find the employee in the array, fill in first and last names
   for (arrayID = 0; arrayID < aoEmp.length; arrayID++) {
     if (aoEmp[arrayID].empID === empID) {
@@ -526,4 +526,4 @@ function getValues() {
       $('#modal2').modal('open');
       console.log('nope', err);
     });
-}
+} */

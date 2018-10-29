@@ -30,7 +30,9 @@ $(document).ready(function () {
 });
 
 $("body").on("click", "tr", function() {
-    empID = parseInt($(this).attr("id"));
+   /*  empID = parseInt($(this).attr("id"));
      findArrayID(); 
-     getValues();
+     getValues(); */
+     $('.modal').modal(); //initializes your modal
+     $('#modal1').modal('open'); //open up your modal
 });
