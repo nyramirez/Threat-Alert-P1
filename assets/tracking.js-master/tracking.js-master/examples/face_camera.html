@@ -44,7 +44,8 @@
       <div class="demo-container rounded">
         <div id="panel">
           <div class="welcome py-4">
-            <h1 class="center-align">Welcome to NA2RS! <br> Please face the screen.</h1>
+            <h1 class="center-align">Welcome to NA2RS!
+              <br> Please face the screen.</h1>
           </div>
           <!-- Dialog Box-->
 
@@ -52,8 +53,10 @@
           <div id="modal1" class="modal col-lg-3 col-md-4 col-sm-5 rounded">
             <div class="modal-content border-0">
               <h4>Clock-in</h4>
+
               <input align="center" id="input_text" type="text" id="name" data-length="3" maxlength="3" placeholder="ENTER A VALID EMPLOYEE ID" class='required'
               />
+
             </div>
             <div class="modal-footer">
               <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="btnOK">OK</a>
@@ -116,11 +119,11 @@
 
           var employeeID = $("#input_text").val().trim();
           console.log(typeof employeeID);
-        var oEmp2 = getEmployeeDetails(employeeID, false).then(function(oEmp){
-            firstnameEmp=oEmp.firstName;
-            lastnameEmp=oEmp.lastName;
+          var oEmp2 = getEmployeeDetails(employeeID, false).then(function (oEmp) {
+            firstnameEmp = oEmp.firstName;
+            lastnameEmp = oEmp.lastName;
             console.log(oEmp);
-            console.log (oEmp2);
+            console.log(oEmp2);
           });
           $(".modal").css("display", "none");
           $("#modal1").hide(400);
@@ -139,8 +142,8 @@
             timeSpace.html(`<h5 class=mx-auto>Time: ${timeStamp}</h5>`);
             $(".demo-frame").append(timeSpace);
             clockInMsg.html(
-              `<h3 class='center-align'>${firstnameEmp+" "+lastnameEmp} are now clocked-in.<br>Have a great day at work!`);
-           $(".welcome").append(clockInMsg);
+              `<h3 class='center-align'>Hello ${firstnameEmp + " " + lastnameEmp}, you are now clocked-in.<br>Have a great day at work!`);
+            $(".welcome").append(clockInMsg);
           });
 
           //ROGER'S FUNCTIONS
@@ -153,7 +156,6 @@
             if (event.data[0].width > 100) {
               trackerDone = true;
               trackerTask.stop();
-              //          setTimeout(func, 5 * 1000);
 
               var hidden_canvas = document.querySelector('canvas'),
                 video = document.querySelector('video'),
@@ -164,11 +166,11 @@
                 context = hidden_canvas.getContext('2d');
 
               // Set the canvas to the same dimensions as the video.
-              hidden_canvas.width = width;
-              hidden_canvas.height = height;
+              // hidden_canvas.width = width;
+              // hidden_canvas.height = height;
 
               // Draw a copy of the current frame from the video on the canvas.
-              context.drawImage(video, 0, 0, width, height);
+              context.drawImage(video, 0, 0, 320, 240);
 
               // Get an image dataURL from the canvas.
               var imageData = hidden_canvas.toDataURL('image/png');
